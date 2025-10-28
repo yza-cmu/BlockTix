@@ -279,12 +279,49 @@ Prompts Used:
 Tool Used: Claude
 
 ================================================================================
+PHASE 7: DOCUMENTATION GENERATION
+================================================================================
+
+Purpose: Creating progress tracking documentation
+Prompts Used:
+- "i need to document everything we completed so far. we finished phase 1 with foundry setup, all 3 contracts (BlockTixMain, TicketNFT, PriceOracle), and their interfaces. can you help me create a COMPLETED.md file that tracks this"
+- "add to COMPLETED.md that we finished phase 3.1 with all unit tests. we have 31 tests for BlockTixMain, 32 for TicketNFT, and 40 for PriceOracle, all passing"
+- "update COMPLETED.md with phase 5.1 and 5.2 deployment stuff. we created Deploy.s.sol script and deployed to local anvil at these addresses: BlockTixMain 0x9fE46..., TicketNFT 0xe7f17..., PriceOracle 0x5FbDB..."
+- "we need PROGRESS.md to track detailed implementation steps. include all the tasks from ROADMAP.md that we completed with timestamps and what we did"
+Tool Used: Claude
+
+Purpose: Generating system architecture documentation
+Prompts Used:
+- "i need to create architecture diagram but dont have design tools. can you create DIAGRAM.md with detailed specs so a designer can make the diagrams for us?"
+- "in DIAGRAM.md describe the 3 contract architecture: BlockTixMain is hub, TicketNFT handles ERC721 tokens, PriceOracle does dynamic pricing. show how they interact"
+- "add to DIAGRAM.md the data flow for ticket purchase: user sends ETH to BlockTixMain, it calls PriceOracle for price, mints NFT from TicketNFT, distributes fees"
+- "include security architecture in DIAGRAM.md showing ReentrancyGuard, Ownable, access modifiers, and pull payment pattern"
+Tool Used: Claude
+
+Purpose: Creating demo walkthrough documentation
+Prompts Used:
+- "we deployed to anvil successfully. can you create DEMO.md with step by step commands to demo the whole system"
+- "in DEMO.md show how to create event, buy tickets, demonstrate surge pricing at 50%, 75%, 90% thresholds"
+- "add ticket resale demo to DEMO.md using cast commands. show approving NFT then calling transferTicket with the 20% markup limit"
+- "include withdrawal demo and ticket usage (check-in) in DEMO.md using the organizer account"
+- "make DEMO.md use the actual deployed addresses from our anvil deployment and the test accounts anvil gives us"
+Tool Used: Claude
+
+Purpose: Updating main documentation
+Prompts Used:
+- "README.md needs to be updated with our actual architecture not the planned one. we only have contracts/ folder done, no frontend yet"
+- "update README.md repository structure to show: 3 contracts in src/, 3 interfaces, test/unit/ with our test files, Deploy.s.sol script"
+- "add smart contract architecture section to README explaining BlockTixMain, TicketNFT, PriceOracle with their functions and interactions"
+- "README should show actual stats: 103 tests, 100% pass rate, deployed to anvil with addresses"
+Tool Used: Claude
+
+================================================================================
 REFLECTION ON AI USAGE
 ================================================================================
 
 Throughout this project, AI (Claude) was used primarily as a learning tool and
-reference guide rather than for direct code generation. The prompts show a
-progression from basic setup questions to more advanced architectural decisions.
+reference guide. The prompts show a progression from basic setup questions to
+more advanced architectural decisions, with hands-on implementation throughout.
 
 Key areas where AI helped with learning:
 - Understanding Foundry framework vs other tools like Hardhat
@@ -293,8 +330,8 @@ Key areas where AI helped with learning:
 - Grasping smart contract design patterns and best practices
 - Learning command-line tools (forge, cast, anvil)
 
-AI was used as a teaching assistant and documentation resource, and for small
-code generation as well as error fixtures.
+
+AI was used as a teaching assistant and documentation resource, and for small code generation as well as error fixtures.
 
 ================================================================================
 END OF AI USAGE LOG
