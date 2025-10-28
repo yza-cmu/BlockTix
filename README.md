@@ -13,133 +13,33 @@ BlockTix/
 │   │   ├── PriceOracle.sol        # Dynamic pricing and fee calculation contract
 │   │   └── interfaces/
 │   │       ├── IBlockTix.sol      # Main contract interface
-│   │       └── ITicketNFT.sol     # NFT interface specifications
+│   │       ├── ITicketNFT.sol     # NFT interface specifications
+│   │       └── IPriceOracle.sol   # Price oracle interface
 │   │
 │   ├── test/
-│   │   ├── unit/
-│   │   │   ├── BlockTixMain.t.sol # Unit tests for main contract
-│   │   │   ├── TicketNFT.t.sol    # NFT functionality tests
-│   │   │   └── PriceOracle.t.sol  # Pricing mechanism tests
-│   │   ├── integration/
-│   │   │   └── E2E.t.sol          # End-to-end workflow tests
-│   │   └── fuzz/
-│   │       └── BlockTixFuzz.t.sol # Fuzz testing for edge cases
+│   │   └── unit/
+│   │       ├── BlockTixMain.t.sol # Unit tests for main contract (31 tests)
+│   │       ├── TicketNFT.t.sol    # NFT functionality tests (32 tests)
+│   │       └── PriceOracle.t.sol  # Pricing mechanism tests (40 tests)
 │   │
 │   ├── script/
-│   │   ├── Deploy.s.sol           # Deployment script for all contracts
-│   │   ├── Verify.s.sol           # Etherscan verification script
-│   │   └── Upgrade.s.sol          # Upgrade management script
+│   │   └── Deploy.s.sol           # Deployment script for all contracts
 │   │
 │   ├── lib/                       # Dependencies (managed by Foundry)
-│   │   └── openzeppelin-contracts/
+│   │   ├── forge-std/             # Foundry standard library
+│   │   └── openzeppelin-contracts/# OpenZeppelin v5.x contracts
 │   │
 │   ├── foundry.toml               # Foundry configuration
 │   ├── .env.example               # Environment variables template
 │   └── remappings.txt             # Import remappings
 │
-├── frontend/                       # Next.js + wagmi + viem client
-│   ├── src/
-│   │   ├── app/
-│   │   │   ├── layout.tsx         # Root layout with providers
-│   │   │   ├── page.tsx           # Landing page
-│   │   │   ├── events/            # Event browsing and details
-│   │   │   ├── tickets/           # Ticket management interface
-│   │   │   └── profile/           # User dashboard
-│   │   │
-│   │   ├── components/
-│   │   │   ├── wallet/            # Wallet connection components
-│   │   │   ├── tickets/           # Ticket-specific UI components
-│   │   │   └── common/            # Shared UI components
-│   │   │
-│   │   ├── hooks/
-│   │   │   ├── useBlockTix.ts     # Contract interaction hooks
-│   │   │   └── useTicketNFT.ts    # NFT-specific hooks
-│   │   │
-│   │   ├── lib/
-│   │   │   ├── config.ts          # Wagmi configuration
-│   │   │   ├── contracts.ts       # Contract ABIs and addresses
-│   │   │   └── txLogger.ts        # Transaction measurement utility
-│   │   │
-│   │   └── utils/
-│   │       └── constants.ts       # App constants and configurations
-│   │
-│   ├── public/                    # Static assets
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── next.config.js
-│
-├── metrics/                        # Performance and testing metrics
-│   ├── gas/
-│   │   ├── gas-snapshot.txt       # Foundry gas snapshots
-│   │   └── gas-optimization.md    # Before/after optimization analysis
-│   │
-│   ├── coverage/
-│   │   ├── coverage-summary.txt   # Test coverage report
-│   │   └── lcov.info             # Detailed coverage data
-│   │
-│   ├── latency/
-│   │   ├── latency.csv           # Transaction latency measurements
-│   │   └── performance-report.md  # Performance analysis
-│   │
-│   ├── security/
-│   │   ├── slither-summary.txt   # Slither static analysis output
-│   │   └── audit-report.md       # Security findings and mitigations
-│   │
-│   └── deploy.json                # Deployment metadata
-│
-├── docs/                          # Project documentation
-│   ├── architecture/
-│   │   ├── system-design.md      # Overall system architecture
-│   │   ├── smart-contracts.md    # Contract design documentation
-│   │   └── data-flow.md          # Data flow and event architecture
-│   │
-│   ├── api/
-│   │   └── contract-api.md       # Contract interface documentation
-│   │
-│   ├── user-guides/
-│   │   ├── setup.md              # Development setup guide
-│   │   ├── deployment.md         # Deployment instructions
-│   │   └── testing.md            # Testing procedures
-│   │
-│   └── sprints/                  # Sprint deliverables
-│       ├── sprint1/
-│       │   ├── concept.pdf       # 1-page concept document
-│       │   ├── whychain-canvas.pdf
-│       │   ├── literature-scan.pdf
-│       │   └── team-charter.pdf
-│       ├── sprint2/
-│       │   ├── architecture.pdf  # System architecture diagram
-│       │   ├── threat-model.pdf
-│       │   └── poc-demo.mp4
-│       ├── sprint3/
-│       │   ├── mvp-demo.mp4
-│       │   ├── usability-test1.pdf
-│       │   └── metrics-pack-v1.zip
-│       └── sprint4/
-│           ├── beta-demo.mp4
-│           ├── security-audit.pdf
-│           └── metrics-pack-final.zip
-│
-├── scripts/                       # Automation scripts
-│   ├── test-all.sh               # Run all tests with coverage
-│   ├── deploy-sepolia.sh         # Deploy to Sepolia testnet
-│   ├── measure-gas.sh            # Generate gas measurements
-│   └── generate-metrics.sh       # Compile all metrics
-│
-├── usability/                     # Usability testing materials
-│   ├── test-plans/
-│   │   └── test-protocol.md      # Testing methodology
-│   ├── results/
-│   │   └── usability.csv         # Test results data
-│   └── recordings/                # Session recordings (if applicable)
-│
-├── .github/                       # GitHub configurations
-│   └── workflows/
-│       ├── test.yml              # CI testing workflow
-│       └── coverage.yml          # Coverage reporting workflow
-│
+├── COMPLETED.md                    # Phase completion tracking
+├── PROGRESS.md                     # Detailed progress log
+├── DIAGRAM.md                      # System architecture specifications
+├── DEMO.md                         # Live demo walkthrough
+├── ROADMAP.md                      # Implementation roadmap
 ├── .gitignore
-├── README.md                      # This file
+├── README.md                       # This file
 └── LICENSE
 
 ```
@@ -149,11 +49,9 @@ BlockTix/
 ## Build and Installation
 
 ### Prerequisites
-- Node.js LTS (v18+)
 - Git
 - Foundry toolkit (forge, cast, anvil)
-- MetaMask browser extension
-- Sepolia testnet ETH
+- Sepolia testnet ETH (for testnet deployment)
 
 ### Smart Contracts Setup
 
@@ -171,25 +69,14 @@ cp .env.example .env
 # Compile contracts
 forge build
 
-# Run tests
+# Run all tests (103 tests)
 forge test -vv
-```
 
-### Frontend Setup
+# Run tests with gas reporting
+forge test --gas-report
 
-```bash
-# Navigate to frontend directory
-cd frontend/
-
-# Install dependencies
-npm install
-
-# Copy environment variables
-cp .env.example .env.local
-# Configure with contract addresses
-
-# Run development server
-npm run dev
+# Generate coverage report
+forge coverage
 ```
 
 ---
@@ -198,204 +85,273 @@ npm run dev
 
 ### Contract Testing
 
-**Location**: `contracts/test/`
+**Location**: `contracts/test/unit/`
+
+**Test Coverage**:
+- BlockTixMain.t.sol : 31 tests covering event creation, ticket purchasing, transfers, withdrawals, fee management
+- TicketNFT.t.sol : 32 tests covering minting, burning, URI management, ERC-721 compliance
+- PriceOracle.t.sol : 40 tests covering pricing calculations, surge pricing, time decay, access control
 
 **Commands**:
-- `forge test`: Run all tests
-- `forge test -vv`: Run with verbose logging
-- `forge test --match-test testSpecificFunction`: Run specific test
-- `forge coverage`: Generate coverage report
+- `forge test` : Run all tests
+- `forge test -vv` : Run with verbose logging
+- `forge test --match-test testSpecificFunction` : Run specific test
+- `forge test --match-contract BlockTixMain` : Run tests for specific contract
+- `forge coverage` : Generate coverage report
 
-**Output Files**:
-- `metrics/coverage/coverage-summary.txt`: Overall coverage percentages
-- `metrics/coverage/lcov.info`: Detailed line-by-line coverage
+**Test Results**:
+- Total Tests : 103
+- Pass Rate : 100% (103/103 passing)
+- Compilation : SUCCESS (0 errors, 0 warnings)
 
 ### Gas Measurements
 
 **Commands**:
-- `forge snapshot`: Generate gas snapshot
-- `forge snapshot --diff`: Compare with previous snapshot
-
-**Output Files**:
-- `metrics/gas/gas-snapshot.txt`: Gas usage per function
-- `metrics/gas/gas-optimization.md`: Optimization analysis document
-
-### Frontend Testing
-
-**Location**: `frontend/src/__tests__/`
-
-**Commands**:
-- `npm test`: Run test suite
-- `npm run test:coverage`: Generate coverage report
+- `forge snapshot` : Generate gas snapshot
+- `forge snapshot --diff` : Compare with previous snapshot
+- `forge test --gas-report` : Display gas usage during tests
 
 ---
 
 ## Deployment Procedures
 
-### Sepolia Testnet Deployment
+### Local Anvil Deployment
 
 **Script Location**: `contracts/script/Deploy.s.sol`
+
+**Steps**:
+1. Start Anvil local testnet:
+```bash
+anvil
+```
+
+2. Deploy contracts (in separate terminal):
+```bash
+cd contracts/
+forge script script/Deploy.s.sol:Deploy --rpc-url http://localhost:8545 --broadcast
+```
+
+**Deployment Configuration**:
+- Platform Fee : 250 basis points (2.5%)
+- Demand Multiplier : 1000 basis points (10%)
+- Time Decay : 500 basis points (5%)
+- Base URI : https://blocktix.io/metadata/
+
+**Deployment Order**:
+1. PriceOracle contract
+2. TicketNFT contract
+3. BlockTixMain contract
+4. Configure cross-contract references
+5. Verify deployment
+
+**Local Deployment Addresses** (Anvil Chain ID 31337):
+- BlockTixMain : 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+- TicketNFT : 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+- PriceOracle : 0x5FbDB2315678afecb367f032d93F642f64180aa3
+
+### Sepolia Testnet Deployment
 
 **Command**:
 ```bash
 forge script script/Deploy.s.sol:Deploy --rpc-url $SEPOLIA_RPC_URL --broadcast --verify
 ```
 
-**Output Files**:
-- `metrics/deploy.json`: Contains deployment metadata including:
-  - Chain identifier
-  - Contract addresses
-  - Creation transaction hashes
-  - Block numbers
-  - Compiler version
-  - Etherscan verification links
-
 ### Contract Verification
-
-**Script Location**: `contracts/script/Verify.s.sol`
 
 **Command**:
 ```bash
 forge verify-contract --chain sepolia <CONTRACT_ADDRESS> src/BlockTixMain.sol:BlockTixMain --etherscan-api-key $ETHERSCAN_API_KEY
 ```
 
----
-
-## Metrics Collection
-
-### Transaction Latency Measurement
-
-**Utility Location**: `frontend/src/lib/txLogger.ts`
-
-**Process**:
-1. The txLogger utility automatically measures transaction metrics
-2. Execute primary write operations through the frontend
-3. Data is logged to console and saved to CSV
-
-**Output File**: `metrics/latency/latency.csv`
-
-**CSV Format**:
-```
-txHash,blockNumber,latencyMs,gasUsed,effectiveGasPrice,calldataBytes,status
-```
-
-### Security Analysis
-
-**Tool**: Slither static analyzer
-
-**Command**:
-```bash
-slither contracts/src/ --print human-summary > metrics/security/slither-summary.txt
-```
-
-**Output Files**:
-- `metrics/security/slither-summary.txt`: Categorized findings by severity
-- `metrics/security/audit-report.md`: Detailed analysis with mitigations
-
-### Usability Testing
-
-**Test Protocol**: `usability/test-plans/test-protocol.md`
-
-**Output File**: `usability/results/usability.csv`
-
-**CSV Format**:
-```
-testerId,success,timeOnTaskSec,SEQ_1to7,comment
-```
+**See Also**: `DEMO.md` for complete live demo walkthrough
 
 ---
 
-## Sprint Deliverables
+## Smart Contract Architecture
 
-### Sprint Packaging
+### System Overview
 
-Each sprint deliverable is packaged according to course requirements:
+BlockTix implements a modular three-contract architecture for decentralized event ticketing with the following key features:
+- Event creation and management by organizers
+- Dynamic pricing with surge pricing thresholds
+- ERC-721 NFT tickets with resale controls
+- Platform fee distribution
+- Pull payment pattern for withdrawals
 
-**Naming Convention**: `67404-FALL25-BlockTix-Sprint[N].zip`
+### Contract Descriptions
 
-**Contents**:
-- Code snapshot (tagged in Git)
-- `RUN.md` with setup instructions
-- Sprint-specific deliverables (see `docs/sprints/`)
-- Metrics pack (Sprint 3+)
+#### BlockTixMain.sol
+**Purpose**: Central hub contract managing events, ticket sales, and financial flows
 
-### Metrics Micro-Pack
+**Key Features**:
+- Event creation with customizable parameters (total tickets, base price, event date, resale markup limits)
+- Ticket purchasing with dynamic pricing via PriceOracle integration
+- Ticket transfer/resale with enforced markup limits
+- Ticket usage tracking (check-in functionality)
+- Event cancellation by organizers
+- Withdrawal system with platform fee distribution (2.5% default)
+- Access control (Ownable for admin functions)
+- Reentrancy protection on all payable functions
 
-**Package Name**: `67404-BlockTix-metrics.zip`
+**Core Functions**:
+- `createEvent()` : Create new ticketed events
+- `purchaseTicket()` : Buy tickets with dynamic pricing
+- `transferTicket()` : Resell tickets with price validation
+- `useTicket()` : Mark tickets as used (organizer only)
+- `cancelEvent()` : Cancel events (organizer only)
+- `withdraw()` : Withdraw accumulated funds
+- `updatePlatformFee()` : Update platform fee (owner only)
 
-**Required Files**:
-1. `gas-snapshot.txt` - Foundry gas measurements
-2. `coverage-summary.txt` - Test coverage summary
-3. `latency.csv` - Transaction performance data
-4. `deploy.json` - Deployment metadata
-5. `slither-summary.txt` - Security analysis (Sprint 4 only)
+**State Management**:
+- Event struct : eventId, organizer, name, totalTickets, ticketsSold, basePrice, eventDate, isActive, maxResaleMarkup
+- Ticket struct : ticketId, eventId, currentOwner, purchasePrice, isUsed
+- Mappings for events, tickets, pending withdrawals
 
----
+#### TicketNFT.sol
+**Purpose**: ERC-721 NFT contract representing event tickets
 
-## Development Workflow
+**Key Features**:
+- Full ERC-721 compliance (extends OpenZeppelin ERC721URIStorage)
+- Safe minting with metadata URI storage
+- Batch minting capability for efficiency
+- Burn functionality for expired/used tickets
+- Base URI management system
+- Access control (only BlockTixMain can mint)
+- Token existence tracking
+- Event-to-token mapping
 
-### Branch Strategy
-- `main`: Production-ready code
-- `develop`: Integration branch
-- `sprint-N`: Sprint-specific development
-- `feature/*`: Individual features
+**Core Functions**:
+- `mint()` : Mint single ticket NFT
+- `batchMint()` : Mint multiple tickets efficiently
+- `burn()` : Burn ticket NFTs
+- `setTokenURI()` : Set individual token metadata
+- `setBaseURI()` : Update base URI for all tokens
+- `getEventId()` : Get event ID for a ticket
 
-### Commit Standards
-Follow conventional commits:
-- `feat:` New features
-- `fix:` Bug fixes
-- `test:` Test additions/modifications
-- `docs:` Documentation updates
-- `refactor:` Code refactoring
-- `perf:` Performance improvements
+#### PriceOracle.sol
+**Purpose**: Dynamic pricing engine with surge pricing and time decay
 
-### Code Review Process
-1. All code requires PR review before merging
-2. Tests must pass in CI
-3. Coverage must meet minimum threshold (80%)
-4. Security checks must pass
+**Key Features**:
+- Dynamic pricing algorithm based on demand
+- Surge pricing with 3 thresholds:
+  - 50% sold : 5% price increase
+  - 75% sold : 10% price increase
+  - 90% sold : 20% price increase
+- Time-based pricing adjustments (early bird discounts)
+- Price validation for resales
+- Platform fee calculation logic
+- Price history tracking per event
+- Emergency pause functionality
+- Configurable surge multipliers
 
----
+**Core Functions**:
+- `calculatePrice()` : Calculate dynamic price based on demand
+- `calculatePriceWithTimeDecay()` : Calculate price with time adjustments
+- `validateResalePrice()` : Validate resale prices against markup limits
+- `setDemandMultiplier()` : Update demand multiplier
+- `setTimeDecay()` : Update time decay factor
+- `setSurgeMultipliers()` : Configure surge pricing thresholds
+- `getPriceHistory()` : Retrieve price history for events
 
-## Key Contract Functions
+### Contract Interactions
 
-### BlockTixMain Contract
-Primary interface for event and ticket management. Handles event creation, ticket minting, transfers, and resale rules.
+1. **Event Creation Flow**:
+   - Organizer calls `BlockTixMain.createEvent()`
+   - Event struct created and stored
+   - EventCreated event emitted
 
-### TicketNFT Contract
-ERC-721 compliant NFT implementation for tickets. Manages token metadata and ownership.
+2. **Ticket Purchase Flow**:
+   - Buyer calls `BlockTixMain.purchaseTicket(eventId)` with ETH payment
+   - BlockTixMain queries PriceOracle for current price
+   - BlockTixMain calls TicketNFT.mint() to create NFT
+   - Ticket struct created and ownership assigned
+   - Platform fee calculated and added to pendingWithdrawals
+   - Organizer share added to pendingWithdrawals
+   - Excess payment refunded to buyer
+   - TicketPurchased event emitted
 
-### PriceOracle Contract
-Handles dynamic pricing calculations and fee structures for primary and secondary sales.
+3. **Ticket Resale Flow**:
+   - Seller approves BlockTixMain to transfer NFT
+   - Seller calls `BlockTixMain.transferTicket(ticketId, buyer)` with ETH payment
+   - BlockTixMain validates resale price against markup limit
+   - Platform fee calculated from resale price
+   - Seller earnings added to pendingWithdrawals
+   - NFT transferred via TicketNFT contract
+   - Ticket ownership updated
+   - TicketTransferred event emitted
+
+4. **Withdrawal Flow**:
+   - User calls `BlockTixMain.withdraw()`
+   - Contract sends accumulated balance to user
+   - WithdrawalProcessed event emitted
+
+### Security Features
+
+- **ReentrancyGuard**: Protects all state-changing payable functions
+- **Ownable**: Restricts admin functions to contract owner
+- **Pausable**: Emergency pause on PriceOracle
+- **Custom Errors**: Gas-efficient error handling
+- **Checks-Effects-Interactions**: External calls after state updates
+- **Pull Payment Pattern**: Users withdraw rather than automatic transfers
+- **Access Modifiers**: `onlyBlockTixMain` on TicketNFT and PriceOracle functions
+
+### Dependencies
+
+- OpenZeppelin Contracts v5.x:
+  - ERC721.sol, ERC721URIStorage.sol
+  - Ownable.sol
+  - ReentrancyGuard.sol
+  - Pausable.sol
+- Foundry forge-std for testing
 
 ---
 
 ## Environment Variables
 
 ### Contracts (.env)
-```
-SEPOLIA_RPC_URL=
-PRIVATE_KEY=
-ETHERSCAN_API_KEY=
+```bash
+PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+SEPOLIA_RPC_URL=https://sepolia.infura.io/v3/YOUR_INFURA_KEY
+ETHERSCAN_API_KEY=YOUR_ETHERSCAN_API_KEY
 ```
 
-### Frontend (.env.local)
-```
-NEXT_PUBLIC_BLOCKTIX_ADDRESS=
-NEXT_PUBLIC_TICKET_NFT_ADDRESS=
-NEXT_PUBLIC_PRICE_ORACLE_ADDRESS=
-NEXT_PUBLIC_SEPOLIA_RPC_URL=
-```
+**Note**: The private key above is the default Anvil test key. NEVER use this on mainnet or with real funds.
+
+---
+
+## Project Documentation
+
+### Key Files
+- `COMPLETED.md` : Tracks completed phases and achievements
+- `PROGRESS.md` : Detailed progress log with metrics
+- `DIAGRAM.md` : System architecture specifications
+- `DEMO.md` : Live demo walkthrough with cast commands
+- `ROADMAP.md` : Implementation roadmap
+
+### Current Implementation Status
+
+**Completed Phases**:
+- Phase 1 : Environment Setup and Contract Foundation
+- Phase 3.1 : Unit Tests Implementation (103 tests, 100% pass rate)
+- Phase 5.1 & 5.2 : Deployment Script and Local Anvil Deployment
+
+**Statistics**:
+- Total Contracts : 3
+- Total Interfaces : 3
+- Total Test Files : 3
+- Lines of Smart Contract Code : ~1,160
+- Lines of Test Code : ~1,850
+- Total Tests : 103
+- Test Pass Rate : 100%
+- Compilation Status : SUCCESS
 
 ---
 
 ## Team Information
 
-**Group 4 - BlockTix Team**
+**Group 4 : BlockTix Team**
 
 Repository maintained according to 67-404 Fall 2025 course requirements.
-
-For detailed implementation specifics, refer to the documentation in `/docs/`.
 
 ---
 
