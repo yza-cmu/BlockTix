@@ -84,7 +84,7 @@ contract PriceOracle is Ownable, Pausable {
         uint256 eventId,
         uint256 basePrice,
         uint256 ticketsSold
-    ) external whenNotPaused returns (uint256) {
+    ) external whenNotPaused onlyBlockTixMain returns (uint256) {
         uint256 price = basePrice;
 
         // Apply surge pricing based on tickets sold percentage
@@ -115,7 +115,7 @@ contract PriceOracle is Ownable, Pausable {
         uint256 ticketsSold,
         uint256 totalTickets,
         uint256 eventDate
-    ) external whenNotPaused returns (uint256) {
+    ) external whenNotPaused onlyBlockTixMain returns (uint256) {
         uint256 price = basePrice;
 
         // Apply surge pricing
