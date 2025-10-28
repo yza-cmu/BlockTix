@@ -293,16 +293,8 @@ Key areas where AI helped with learning:
 - Grasping smart contract design patterns and best practices
 - Learning command-line tools (forge, cast, anvil)
 
-The human developer clearly:
-- Wrote the actual code themselves (evidenced by debugging questions)
-- Made architectural decisions (questions compare options, ask for pros/cons)
-- Tested and iterated (many questions about fixing errors they encountered)
-- Researched and asked follow-up questions showing deeper understanding
-- Applied knowledge across different parts of the project
-
-AI was used as a teaching assistant and documentation resource, not as a code
-generator. The questions show genuine learning and problem-solving rather than
-requesting completed solutions.
+AI was used as a teaching assistant and documentation resource, and for small
+code generation as well as error fixtures.
 
 ================================================================================
 END OF AI USAGE LOG
