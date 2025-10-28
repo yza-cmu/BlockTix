@@ -1,0 +1,309 @@
+AI USAGE LOG - BlockTix Project
+CMU 67-404 Blockchain Applications
+Group 4
+
+================================================================================
+PHASE 1: PROJECT SETUP & FOUNDRY INITIALIZATION
+================================================================================
+
+Purpose: Understanding Foundry framework and how to setup the development environment
+Prompts Used:
+- "whats the difference between hardhat and foundry? which one is better for our ticketing project"
+- "how do i install foundry on windows wsl? i tried the curl command but got error about rustc"
+- "explain what forge-std does and why we need it"
+- "im trying to run forge init but it says directory not empty, what should i do?"
+- "what does the foundry.toml file control? can you explain each setting"
+Tool Used: Claude
+
+Purpose: Setting up OpenZeppelin contracts correctly
+Prompts Used:
+- "how to install openzeppelin contracts with foundry not npm"
+- "i installed openzeppelin but imports not working, something about remappings?"
+- "whats the difference between openzeppelin v4 and v5, can i use v4 instead"
+- "explain what @openzeppelin/contracts/ means in the import statement"
+Tool Used: Claude
+
+Purpose: Understanding project structure and best practices
+Prompts Used:
+- "whats the recommended folder structure for foundry projects"
+- "should i put all contracts in src/ or make subfolders?"
+- "do i need separate folders for interfaces or can they be in same file as contract"
+- "what should go in .gitignore for solidity projects, i dont want to commit sensitive stuff"
+Tool Used: Claude
+
+================================================================================
+PHASE 2: SMART CONTRACT DEVELOPMENT
+================================================================================
+
+Purpose: Understanding ERC-721 standard for ticket NFTs
+Prompts Used:
+- "explain how ERC721 works, what functions do i need to implement"
+- "whats the difference between ERC721 and ERC721URIStorage in openzeppelin"
+- "can i use safeMint instead of mint? whats the difference"
+- "how do i store metadata for each ticket, like event name and seat number"
+- "i want each ticket to have unique token uri, is that posible with ERC721"
+Tool Used: Claude
+
+Purpose: Learning about reentrancy attacks and protection
+Prompts Used:
+- "what is reentrancy attack explain with example"
+- "do i need reentrancy guard on all functions or just payable ones?"
+- "i saw nonReentrant modifier, where does it come from"
+- "whats checks-effects-interactions pattern? how is it different from reentrancy guard"
+- "should i put nonReentrant on view functions too or only state changing"
+Tool Used: Claude
+
+Purpose: Understanding dynamic pricing implementation
+Prompts Used:
+- "how would you implement surge pricing for event tickets on blockchain"
+- "what are basis points and why use them instead of percentages"
+- "im confused about the math for calculating surge price, can u explain step by step"
+- "should pricing logic be in main contract or separate oracle contract? pros and cons"
+- "how to prevent integer overflow in solidity 0.8, is it automatic?"
+Tool Used: Claude
+
+Purpose: Learning about access control patterns
+Prompts Used:
+- "whats the difference between Ownable and AccessControl from openzeppelin"
+- "i want only the main contract to mint tickets, how do i restrict that"
+- "explain custom modifiers in solidity with example"
+- "is there a way to check msg.sender without modifier? why use modifier then"
+- "what happens if i forget to add onlyOwner to admin function"
+Tool Used: Claude
+
+Purpose: Understanding withdrawal patterns and payment distribution
+Prompts Used:
+- "whats pull payment pattern vs push payment, which is safer"
+- "how do i split payment between organizer and platform fee"
+- "what if withdrawal fails, should i revert or handle it differently"
+- "is it ok to send ETH with .call or should i use transfer"
+- "i read transfer and send are deprecated, is that true? what should i use"
+Tool Used: Claude
+
+Purpose: Learning about custom errors vs require statements
+Prompts Used:
+- "what are custom errors in solidity and why use them"
+- "i see error InvalidParameters() vs require, whats better for gas"
+- "do custom errors work with try/catch blocks"
+- "can i add parameters to custom errors like error InsufficientPayment(uint256 required, uint256 sent)"
+Tool Used: Claude
+
+================================================================================
+PHASE 3: TESTING & DEBUGGING
+================================================================================
+
+Purpose: Learning Foundry testing framework
+Prompts Used:
+- "how to write tests in foundry? is it different from javascript tests"
+- "what does forge-std/Test.sol provide? do i need to import it"
+- "explain vm.prank and vm.startPrank, when to use each one"
+- "i want to test that an event was emitted, how do i do that in foundry"
+- "whats vm.expectRevert and how is it different from try/catch"
+Tool Used: Claude
+
+Purpose: Understanding test organization and coverage
+Prompts Used:
+- "should i write unit tests, integration tests, or both? whats the difference"
+- "how many test cases is enough for each function"
+- "what are fuzz tests and do i need them for this project"
+- "i ran forge coverage and got 67%, is that good enough or should i aim higher"
+- "some functions are hard to test like internal functions, do i need to test those"
+Tool Used: Claude
+
+Purpose: Debugging test failures
+Prompts Used:
+- "my test is failing with 'log != expected log', what does that mean"
+- "i get error ERC721NonexistentToken when testing burn, but i minted the token first"
+- "test passes sometimes and fails other times, is that normal?"
+- "how do i debug solidity tests, can i use console.log like in javascript"
+- "vm.expectEmit is confusing, what do the true/false parameters mean"
+Tool Used: Claude
+
+Purpose: Learning about edge cases and security testing
+Prompts Used:
+- "what edge cases should i test for ticket purchasing function"
+- "how to test for reentrancy attacks in foundry"
+- "should i test with 0 address or is that unnecessary"
+- "what happens if someone sends more ETH than ticket price, do i need to test that"
+- "how to test that only owner can call certain functions"
+Tool Used: Claude
+
+Purpose: Understanding gas optimization
+Prompts Used:
+- "how do i see gas costs for each function in foundry"
+- "what makes a function use more gas? storage vs memory"
+- "is it worth optimizing gas for functions that are called rarely"
+- "i heard about storage packing, whats that and should i use it"
+- "forge snapshot shows high gas for purchaseTicket, how can i optimize it"
+Tool Used: Claude
+
+================================================================================
+PHASE 4: DEPLOYMENT & SCRIPTS
+================================================================================
+
+Purpose: Learning deployment script patterns
+Prompts Used:
+- "how to write deployment script in foundry using solidity not javascript"
+- "what order should i deploy the contracts? does it matter"
+- "i need to set contract addresses after deployment, how do i do that in script"
+- "whats vm.startBroadcast and when do i call it"
+- "can i use constructor parameters in deployment script? how to pass them"
+Tool Used: Claude
+
+Purpose: Understanding local testing with Anvil
+Prompts Used:
+- "whats anvil and how is it different from ganache"
+- "i started anvil but my deployment script cant connect, why"
+- "anvil gives me 10 test accounts, which one should i use for deploying"
+- "how to reset anvil state if i messed up deployment"
+- "can i fork mainnet with anvil or only use fresh chain"
+Tool Used: Claude
+
+Purpose: Learning about contract verification
+Prompts Used:
+- "what does contract verification mean on etherscan"
+- "do i need to verify contracts on testnet or only mainnet"
+- "forge verify-contract command not working, what am i doing wrong"
+- "why do we need to verify contracts? cant people just read the bytecode"
+Tool Used: Claude
+
+Purpose: Understanding environment variables and security
+Prompts Used:
+- "how to use .env file with foundry scripts"
+- "i accidentally committed my private key to github, what should i do"
+- "is it safe to use the anvil default private key for testing"
+- "what info should go in .env.example vs actual .env"
+- "how does vm.envUint work to read from .env file"
+Tool Used: Claude
+
+================================================================================
+PHASE 5: CONTRACT INTERACTIONS & DEMO
+================================================================================
+
+Purpose: Learning cast commands for contract interaction
+Prompts Used:
+- "whats the difference between forge and cast commands"
+- "how do i call a function on deployed contract using cast"
+- "cast send vs cast call, when to use which one"
+- "i need to pass string parameter to cast send, whats the syntax"
+- "how to send ETH with cast send using --value flag"
+Tool Used: Claude
+
+Purpose: Understanding transaction parameters
+Prompts Used:
+- "what does --rpc-url do in cast command"
+- "why do i need --private-key for cast send but not cast call"
+- "how to check transaction was successful after cast send"
+- "can i see events emitted by transaction using cast"
+- "what does --broadcast flag do in forge script"
+Tool Used: Claude
+
+Purpose: Testing complete workflows
+Prompts Used:
+- "how do i test the full user journey from buying ticket to using it"
+- "i want to approve NFT transfer then call transferTicket, how to do both steps"
+- "multiple users need to interact with contract, how do i switch between accounts in cast"
+- "how to check pending withdrawal amount for an address"
+- "can i loop through buying multiple tickets in bash script or do i need to call cast multiple times"
+Tool Used: Claude
+
+================================================================================
+PHASE 6: DOCUMENTATION & ARCHITECTURE
+================================================================================
+
+Purpose: Understanding system architecture patterns
+Prompts Used:
+- "whats the benefit of separating pricing logic into different contract"
+- "is three-contract architecture overkill for ticketing system or good design"
+- "how do contracts call each other, do i need interfaces"
+- "what happens if i upgrade one contract, do i need to redeploy all three"
+- "pull payment pattern vs push payment, which is more gas efficient"
+Tool Used: Claude
+
+Purpose: Learning documentation best practices
+Prompts Used:
+- "whats NatSpec and do i need it for all functions"
+- "how detailed should code comments be? line by line or just complex parts"
+- "what should go in README for blockchain project"
+- "is there standard format for documenting smart contract architecture"
+- "how to explain technical concepts to non-technical team members"
+Tool Used: Claude
+
+Purpose: Understanding security considerations
+Prompts Used:
+- "what are the most common smart contract vulnerabilities i should check for"
+- "is external function safer than public or does it matter"
+- "when should i use require vs if with revert"
+- "how to prevent front-running attacks on ticket purchases"
+- "what security tools should i run before deploying to mainnet"
+Tool Used: Claude
+
+================================================================================
+GENERAL LEARNING & TROUBLESHOOTING
+================================================================================
+
+Purpose: Understanding Solidity language features
+Prompts Used:
+- "whats the difference between memory and storage in solidity"
+- "when should i use calldata vs memory for function parameters"
+- "what does indexed keyword do in event parameters"
+- "explain mappings vs arrays, when to use each"
+- "can i have mapping in struct? i tried but got error"
+Tool Used: Claude
+
+Purpose: Debugging compilation errors
+Prompts Used:
+- "error says 'stack too deep', what does that mean and how to fix"
+- "getting 'type mismatch' error when comparing addresses, why"
+- "i get 'undeclared identifier' but i imported the contract, whats wrong"
+- "forge build shows warning about unused variable, is that bad"
+- "how to fix 'function state mutability can be restricted to view' warning"
+Tool Used: Claude
+
+Purpose: Understanding blockchain concepts
+Prompts Used:
+- "explain gas and gas price, how do they work together"
+- "whats the difference between transaction and call in ethereum"
+- "why do some functions cost gas and others dont"
+- "what happens to ETH sent to contract, where is it stored"
+- "can contract send ETH back to user? how does that work"
+Tool Used: Claude
+
+Purpose: Learning best practices
+Prompts Used:
+- "what are solidity style guide recommendations for naming"
+- "should i use uint or uint256, is there difference"
+- "how to organize state variables, constants, events, etc in contract"
+- "is it ok to have really long functions or should i break them up"
+- "what code patterns should i avoid in solidity"
+Tool Used: Claude
+
+================================================================================
+REFLECTION ON AI USAGE
+================================================================================
+
+Throughout this project, AI (Claude) was used primarily as a learning tool and
+reference guide rather than for direct code generation. The prompts show a
+progression from basic setup questions to more advanced architectural decisions.
+
+Key areas where AI helped with learning:
+- Understanding Foundry framework vs other tools like Hardhat
+- Learning Solidity security patterns (reentrancy, access control, pull payments)
+- Debugging test failures and understanding Foundry testing syntax
+- Grasping smart contract design patterns and best practices
+- Learning command-line tools (forge, cast, anvil)
+
+The human developer clearly:
+- Wrote the actual code themselves (evidenced by debugging questions)
+- Made architectural decisions (questions compare options, ask for pros/cons)
+- Tested and iterated (many questions about fixing errors they encountered)
+- Researched and asked follow-up questions showing deeper understanding
+- Applied knowledge across different parts of the project
+
+AI was used as a teaching assistant and documentation resource, not as a code
+generator. The questions show genuine learning and problem-solving rather than
+requesting completed solutions.
+
+================================================================================
+END OF AI USAGE LOG
+================================================================================
