@@ -3,8 +3,8 @@ pragma solidity ^0.8.24;
 
 /**
  * @title IPriceOracle
- * @notice Interface for the PriceOracle contract
- * @dev Defines pricing and validation functions for the ticketing system
+ * @notice Interface for PriceOracle contract
+ * @dev defines pricing and validation functions for ticketing system
  */
 interface IPriceOracle {
     // Structs
@@ -27,10 +27,10 @@ interface IPriceOracle {
     error InvalidAddress();
 
     /**
-     * @notice Calculate dynamic price for a ticket
-     * @param eventId ID of the event
-     * @param basePrice Base price of the ticket
-     * @param ticketsSold Number of tickets already sold
+     * @notice Calculate dynamic price for ticket
+     * @param eventId ID of event
+     * @param basePrice Base price of ticket
+     * @param ticketsSold Number of tickets sold already
      * @return Calculated price in wei
      */
     function calculatePrice(uint256 eventId, uint256 basePrice, uint256 ticketsSold) external returns (uint256);

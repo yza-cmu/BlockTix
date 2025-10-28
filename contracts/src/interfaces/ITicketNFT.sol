@@ -5,8 +5,8 @@ import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
 /**
  * @title ITicketNFT
- * @notice Interface for the TicketNFT contract
- * @dev Extends IERC721 with ticket-specific functionality
+ * @notice Interface for TicketNFT contract
+ * @dev extends IERC721 with ticket specific functionality
  */
 interface ITicketNFT is IERC721 {
     // Events
@@ -21,10 +21,10 @@ interface ITicketNFT is IERC721 {
     error InvalidAddress();
 
     /**
-     * @notice Mint a new ticket NFT
-     * @param to Address to mint the ticket to
-     * @param eventId ID of the event this ticket is for
-     * @return tokenId The ID of the newly minted ticket
+     * @notice Mint new ticket NFT
+     * @param to Address to mint ticket to
+     * @param eventId ID of event this ticket is for
+     * @return tokenId ID of newly minted ticket
      */
     function mint(address to, uint256 eventId) external returns (uint256);
 

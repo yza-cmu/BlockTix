@@ -8,7 +8,7 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 /**
  * @title TicketNFT
  * @notice ERC-721 NFT contract for event tickets
- * @dev Each ticket is represented as a unique NFT token
+ * @dev Each ticket is represented as unique NFT token
  */
 contract TicketNFT is ERC721URIStorage, Ownable {
     // State Variables
@@ -17,7 +17,7 @@ contract TicketNFT is ERC721URIStorage, Ownable {
     string private _baseTokenURI;
 
     // Mappings
-    mapping(uint256 => uint256) public tokenToEvent; // tokenId => eventId
+    mapping(uint256 => uint256) public tokenToEvent; // maps tokenId to eventId
     mapping(uint256 => bool) public isBurned;
 
     // Events
@@ -55,10 +55,10 @@ contract TicketNFT is ERC721URIStorage, Ownable {
     }
 
     /**
-     * @notice Mint a new ticket NFT
-     * @param to Address to mint the ticket to
-     * @param eventId ID of the event this ticket is for
-     * @return tokenId The ID of the newly minted ticket
+     * @notice Mint new ticket NFT
+     * @param to Address to mint ticket to
+     * @param eventId ID of event this ticket is for
+     * @return tokenId ID of newly minted ticket
      */
     function mint(address to, uint256 eventId) external onlyBlockTixMain returns (uint256) {
         uint256 tokenId = _tokenIdCounter++;
@@ -98,9 +98,9 @@ contract TicketNFT is ERC721URIStorage, Ownable {
     }
 
     /**
-     * @notice Burn a ticket NFT
-     * @param tokenId ID of the ticket to burn
-     * @dev Can be called by token owner or BlockTixMain contract
+     * @notice Burn ticket NFT
+     * @param tokenId ID of ticket to burn
+     * @dev can be called by token owner or BlockTixMain contract
      */
     function burn(uint256 tokenId) external {
         if (msg.sender != ownerOf(tokenId) && msg.sender != blockTixMain) {
@@ -115,9 +115,9 @@ contract TicketNFT is ERC721URIStorage, Ownable {
     }
 
     /**
-     * @notice Set the token URI for a specific token
-     * @param tokenId ID of the token
-     * @param uri Metadata URI for the token
+     * @notice Set token URI for specific token
+     * @param tokenId ID of token
+     * @param uri Metadata URI for token
      */
     function setTokenURI(uint256 tokenId, string memory uri) external onlyBlockTixMain {
         _setTokenURI(tokenId, uri);
@@ -156,9 +156,9 @@ contract TicketNFT is ERC721URIStorage, Ownable {
     }
 
     /**
-     * @notice Get the event ID for a given token
-     * @param tokenId ID of the token
-     * @return eventId The event ID
+     * @notice Get event ID for given token
+     * @param tokenId ID of token
+     * @return eventId event ID
      */
     function getEventId(uint256 tokenId) external view returns (uint256) {
         return tokenToEvent[tokenId];

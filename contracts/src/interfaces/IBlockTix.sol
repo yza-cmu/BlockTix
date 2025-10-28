@@ -3,8 +3,8 @@ pragma solidity ^0.8.24;
 
 /**
  * @title IBlockTix
- * @notice Interface for the BlockTixMain contract
- * @dev Defines core ticketing system functionality
+ * @notice Interface for BlockTixMain contract
+ * @dev defines core ticketing system functionality
  */
 interface IBlockTix {
     // Structs
@@ -81,9 +81,9 @@ interface IBlockTix {
     ) external returns (uint256);
 
     /**
-     * @notice Purchase a ticket for an event
-     * @param eventId ID of the event
-     * @return ticketId ID of the purchased ticket
+     * @notice Purchase ticket for event
+     * @param eventId ID of event
+     * @return ticketId ID of purchased ticket
      */
     function purchaseTicket(uint256 eventId) external payable returns (uint256);
 

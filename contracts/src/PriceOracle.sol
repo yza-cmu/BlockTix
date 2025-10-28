@@ -7,12 +7,12 @@ import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
 /**
  * @title PriceOracle
  * @notice Handles dynamic pricing for ticket sales based on demand and time
- * @dev Implements surge pricing and time-based adjustments
+ * @dev implements surge pricing and time based adjustments
  */
 contract PriceOracle is Ownable, Pausable {
     // State Variables
-    uint256 public demandMultiplierBasisPoints; // Basis points (100 = 1%)
-    uint256 public timeDecayBasisPoints; // Basis points for time-based discount
+    uint256 public demandMultiplierBasisPoints; // basis points, 100 = 1%
+    uint256 public timeDecayBasisPoints; // basis points for time based discount
     address public blockTixMain;
 
     // Price adjustment thresholds
@@ -74,10 +74,10 @@ contract PriceOracle is Ownable, Pausable {
     }
 
     /**
-     * @notice Calculate dynamic price for a ticket
-     * @param eventId ID of the event
-     * @param basePrice Base price of the ticket
-     * @param ticketsSold Number of tickets already sold
+     * @notice Calculate dynamic price for ticket
+     * @param eventId ID of event
+     * @param basePrice Base price of ticket
+     * @param ticketsSold Number of tickets sold already
      * @return Calculated price in wei
      */
     function calculatePrice(
@@ -149,7 +149,7 @@ contract PriceOracle is Ownable, Pausable {
      * @param originalPrice Original purchase price
      * @param resalePrice Proposed resale price
      * @param maxMarkupBasisPoints Maximum allowed markup in basis points
-     * @return bool True if resale price is valid
+     * @return bool true if resale price is valid
      */
     function validateResalePrice(
         uint256 originalPrice,
@@ -162,9 +162,9 @@ contract PriceOracle is Ownable, Pausable {
 
     /**
      * @notice Internal function to apply surge pricing based on tickets sold
-     * @param basePrice Base price
-     * @param ticketsSold Number of tickets sold
-     * @return price Adjusted price
+     * @param basePrice base price
+     * @param ticketsSold number of tickets sold
+     * @return price adjusted price
      */
     function _applySurgePricing(uint256 basePrice, uint256 ticketsSold) internal view returns (uint256) {
         if (ticketsSold >= SURGE_THRESHOLD_3) {

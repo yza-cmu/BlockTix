@@ -17,7 +17,7 @@ contract BlockTixMain is ReentrancyGuard, Ownable {
     IPriceOracle public priceOracle;
 
     uint256 public eventCount;
-    uint256 public platformFeePercentage; // Basis points (100 = 1%)
+    uint256 public platformFeePercentage; // basis points, 100 = 1%
 
     // Structs
     struct Event {
