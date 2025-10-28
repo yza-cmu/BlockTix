@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+lib/
+
+# Environment variables
+.env
+*.env
+!.env.example
+
+# Build outputs
+out/
+cache/
+artifacts/
+typechain/
+typechain-types/
+
+# Coverage
+coverage/
+coverage.json
+*.lcov
+
+# Gas reports
+.gas-snapshot
+
+# Foundry
+broadcast/
+cache_hardhat/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Testing
+*.tsbuildinfo
+
+# Frontend
+.next/
+dist/
+build/
+.turbo/
