@@ -1,0 +1,110 @@
+yyous@YousefOMEN:/mnt/c/Users/yyous/OneDrive/Desktop/Blockchain/BlockTix/contracts$   forge script script/Deploy.s.sol --rpc-url http://localhost:8545 --broadcast
+[⠢] Compiling...
+No files changed, compilation skipped
+Script ran successfully.
+
+== Logs ==
+  ===========================================
+  BlockTix Deployment Script
+  ===========================================
+  Deployer address: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+  Chain ID: 31337
+
+  Step 1: Deploying PriceOracle...
+  PriceOracle deployed at: 0x5FbDB2315678afecb367f032d93F642f64180aa3
+
+  Step 2: Deploying TicketNFT...
+  TicketNFT deployed at: 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+
+  Step 3: Deploying BlockTixMain...
+  BlockTixMain deployed at: 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+
+  Step 4: Configuring contract references...
+  - TicketNFT.blockTixMain set to: 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+  - PriceOracle.blockTixMain set to: 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+
+  Step 5: Verifying deployment...
+  All verifications passed!
+
+  ===========================================
+  Deployment Summary
+  ===========================================
+  Network: Chain ID 31337
+  Deployer: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+
+  Deployed Contracts:
+  -------------------------------------------
+  BlockTixMain: 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+  TicketNFT: 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+  PriceOracle: 0x5FbDB2315678afecb367f032d93F642f64180aa3
+
+  Configuration:
+  -------------------------------------------
+  Platform Fee: 250 bp (2.5%)
+  Demand Multiplier: 1000 bp (10%)
+  Time Decay: 500 bp (5%)
+  Base URI: https://blocktix.io/metadata/
+
+  Ownership:
+  -------------------------------------------
+  BlockTixMain Owner: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+  TicketNFT Owner: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+  PriceOracle Owner: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+  ===========================================
+
+## Setting up 1 EVM.
+
+==========================
+
+Chain 31337
+
+Estimated gas price: 2.000000001 gwei
+
+Estimated total gas used for script: 5329139
+
+Estimated amount required: 0.010658278005329139 ETH
+
+==========================
+
+##### anvil-hardhat
+✅  [Success] Hash: 0x97d9eb71b839466b441a477f497e667ea44d19371dabbd6b1f76c255a66af005
+Block: 2
+Paid: 0.000027056231526495 ETH (30647 gas * 0.882834585 gwei)
+
+
+##### anvil-hardhat
+✅  [Success] Hash: 0x5b67ddb2adc3c500c89e147023844de495e4e249764d27553d1833cfd1653bb2
+Contract Address: 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+Block: 2
+Paid: 0.0013068070661004 ETH (1480240 gas * 0.882834585 gwei)
+
+
+##### anvil-hardhat
+✅  [Success] Hash: 0xba2b07554c6c253ff81170a9b7743bc9007775afbb79c899b2948644fd3554c0
+Contract Address: 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+Block: 2
+Paid: 0.00142479437704731 ETH (1613886 gas * 0.882834585 gwei)
+
+
+##### anvil-hardhat
+✅  [Success] Hash: 0x673be0b79713ecfdebc64a7950a46407a1155ffeb39af4f961411b9a25b0da3f
+Block: 2
+Paid: 0.00002700590995515 ETH (30590 gas * 0.882834585 gwei)
+
+
+##### anvil-hardhat
+✅  [Success] Hash: 0xc38f7d10bdcd4c7443a2b867aa1343101a43ba89bd0bc4fbb247596a7af93aee
+Contract Address: 0x5FbDB2315678afecb367f032d93F642f64180aa3
+Block: 1
+Paid: 0.00094015000094015 ETH (940150 gas * 1.000000001 gwei)
+
+✅ Sequence #1 on anvil-hardhat | Total Paid: 0.003725813585569505 ETH (4095513 gas * avg 0.906267668 gwei)
+
+
+==========================
+
+ONCHAIN EXECUTION COMPLETE & SUCCESSFUL.
+
+Transactions saved to: /mnt/c/Users/yyous/OneDrive/Desktop/Blockchain/BlockTix/contracts/broadcast/Deploy.s.sol/31337/run-latest.json
+
+Sensitive values saved to: /mnt/c/Users/yyous/OneDrive/Desktop/Blockchain/BlockTix/contracts/cache/Deploy.s.sol/31337/run-latest.json
