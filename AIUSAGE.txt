@@ -279,6 +279,145 @@ Prompts Used:
 Tool Used: Claude
 
 ================================================================================
+PHASE 5.3: SEPOLIA TESTNET DEPLOYMENT
+================================================================================
+
+Purpose: Understanding Sepolia deployment process
+Prompts Used:
+- "ok so local anvil works, now i need to deploy to sepolia. whats different from local deployment"
+- "i need sepolia ETH, which faucet actually works? tried 3 and they all fail"
+- "getting 'insufficient funds' even though i have 0.5 sepolia ETH, why"
+- "do i need different gas settings for sepolia vs local? transaction keeps failing"
+- "how long should sepolia transaction take? its been pending for 5 minutes"
+Tool Used: Claude
+
+Purpose: Learning contract verification on Etherscan
+Prompts Used:
+- "contracts deployed but etherscan shows bytecode only, how do i verify them"
+- "forge verify-contract syntax is confusing, can you explain the parameters"
+- "verification failed saying constructor arguments invalid, how do i encode them"
+- "one contract verified but the other two failed with 'already verified', what does that mean"
+- "after verification can i interact with contract on etherscan or do i still need cast"
+Tool Used: Claude
+
+Purpose: Recording deployment metadata
+Prompts Used:
+- "i need to create deploy.json with all the deployment info. what fields should i include"
+- "how do i get the exact block number and timestamp from deployment transaction"
+- "should deploy.json include gas costs? how to calculate total deployment cost"
+- "what format should addresses be in json, with 0x or without"
+Tool Used: Claude
+
+================================================================================
+PHASE 3.2: COVERAGE REPORT GENERATION
+================================================================================
+
+Purpose: Understanding test coverage metrics
+Prompts Used:
+- "how do i generate coverage report in foundry, is there a command"
+- "forge coverage output is confusing, what do lines vs statements vs branches mean"
+- "we got 97% line coverage, is that good enough or should we aim for 100%"
+- "some lines showing uncovered but i wrote tests for that function, why"
+- "how to generate lcov.info file from forge coverage"
+Tool Used: Claude
+
+Purpose: Interpreting coverage results
+Prompts Used:
+- "what does 'branch not covered' mean in the report"
+- "is it worth testing all edge cases just to get 100% coverage"
+- "how to find which specific lines are uncovered without reading whole report"
+- "coverage shows 0% for script files, do i need to test deployment scripts too"
+Tool Used: Claude
+
+================================================================================
+PHASE 3.4 / 4.3: GAS SNAPSHOT GENERATION
+================================================================================
+
+Purpose: Learning gas profiling with forge
+Prompts Used:
+- "how do i measure gas usage for all contract functions"
+- "whats forge snapshot and how is it different from forge test --gas-report"
+- "i ran forge snapshot and got .gas-snapshot file, what do these numbers mean"
+- "gas costs are different each test run, is that normal or am i doing something wrong"
+- "should gas snapshot include only production functions or test functions too"
+Tool Used: Claude
+
+Purpose: Understanding gas optimization opportunities
+Prompts Used:
+- "purchaseTicket uses 500k gas, is that too high for a ticket purchase"
+- "which functions should i prioritize for gas optimization"
+- "i see some functions use 20k gas and others 200k, whats causing the difference"
+- "is it worth optimizing functions that are only called once during setup"
+Tool Used: Claude
+
+================================================================================
+PHASE 7: TRANSACTION PERFORMANCE MEASUREMENT
+================================================================================
+
+Purpose: Learning to collect transaction metrics
+Prompts Used:
+- "i need to measure transaction latency on sepolia. how do i capture the time from sending to confirmation"
+- "what data should i collect for each transaction? hash, gas, block number, what else"
+- "how to calculate calldata size in bytes for a transaction"
+- "is there a way to automate measuring 9 transactions or do i track each manually"
+Tool Used: Claude
+
+Purpose: Understanding transaction states and monitoring
+Prompts Used:
+- "transaction is pending for 2 minutes, how long is normal on sepolia"
+- "how do i check if transaction succeeded or failed after sending with cast"
+- "cast receipt shows status 0x1, what does that mean"
+- "some transactions confirm in 12 seconds others take 60 seconds, why so variable"
+- "how to get effectiveGasPrice from transaction receipt"
+Tool Used: Claude
+
+Purpose: Creating latency CSV format
+Prompts Used:
+- "i need to format transaction data as CSV. what columns are required"
+- "should latency be in milliseconds or seconds in the CSV"
+- "how to calculate latency if i only have transaction timestamp and block timestamp"
+- "CSV needs status field, should it be success/fail or 1/0 or true/false"
+Tool Used: Claude
+
+================================================================================
+PHASE 6: INTERFACE RUNBOOK CREATION
+================================================================================
+
+Purpose: Writing comprehensive operations documentation
+Prompts Used:
+- "i need to create RUN.md with complete setup instructions. what sections should i include"
+- "how detailed should CLI commands be? show every parameter or just basics"
+- "for etherscan interface guide, what operations can users do directly on etherscan"
+- "should RUN.md assume user has foundry installed or include installation steps"
+Tool Used: Claude
+
+Purpose: Documenting CLI operations with cast
+Prompts Used:
+- "i want to document all 7 main operations using cast commands. how to structure it clearly"
+- "for createEvent cast command, how do i explain each parameter so its not confusing"
+- "how to show transaction monitoring steps after cast send"
+- "some operations need multiple steps like approve then transfer, how to document that flow"
+- "should i include example transaction hashes or use placeholders"
+Tool Used: Claude
+
+Purpose: Creating helper scripts
+Prompts Used:
+- "we have empty script files that need to be filled. what should test-all.sh actually do"
+- "measure-gas.sh should run forge snapshot and save to metrics folder, what commands"
+- "generate-metrics.sh needs to create all 5 metrics files, how to structure that script"
+- "should scripts check for errors and exit or just run all commands"
+- "how to make scripts work from repository root or from contracts directory"
+Tool Used: Claude
+
+Purpose: Adding troubleshooting section
+Prompts Used:
+- "what are common errors users will hit when running the setup"
+- "how to explain 'insufficient payment' error without being too technical"
+- "should troubleshooting include network issues or just contract errors"
+- "what to tell users if their transaction fails due to gas issues"
+Tool Used: Claude
+
+================================================================================
 PHASE 7: DOCUMENTATION GENERATION
 ================================================================================
 
@@ -313,6 +452,35 @@ Prompts Used:
 - "update README.md repository structure to show: 3 contracts in src/, 3 interfaces, test/unit/ with our test files, Deploy.s.sol script"
 - "add smart contract architecture section to README explaining BlockTixMain, TicketNFT, PriceOracle with their functions and interactions"
 - "README should show actual stats: 103 tests, 100% pass rate, deployed to anvil with addresses"
+Tool Used: Claude
+
+Purpose: Updating documentation for Sprint 3 completion
+Prompts Used:
+- "sprint 3 is done, need to update PROGRESS.md to reflect sepolia deployment, gas snapshot, coverage reports completed"
+- "COMPLETED.md needs new sections for phase 3.4 gas snapshot and phase 6 runbook creation"
+- "how should i document the metrics micro-pack? we have 5 files: gas, coverage, latency, deploy, lcov"
+- "PROGRESS.md still shows sprint 3 as 'in progress', need to change status to completed and update metrics table"
+- "should i update the roadmap or just keep it as the original plan"
+Tool Used: Claude
+
+================================================================================
+METRICS VALIDATION & QUALITY CHECKS
+================================================================================
+
+Purpose: Ensuring metrics files are correct format
+Prompts Used:
+- "how do i verify that latency.csv has the right columns and format"
+- "is there a way to check that deploy.json is valid json without manually reading it"
+- "gas snapshot has 105 entries, should i verify each one or just spot check a few"
+- "coverage summary shows percentages, how do i know if the numbers are accurate"
+- "do all metrics need to be from production sepolia or can some be from testing"
+Tool Used: Claude
+
+Purpose: Troubleshooting duplicate files
+Prompts Used:
+- "i have gas-snapshot in two places: contracts/.gas-snapshot and metrics/gas/, which one should i keep"
+- "found gas snapshot files in contracts/metrics/ too, should i delete that whole folder"
+- "after deleting duplicates, how do i verify the right gas snapshot file is in the right place"
 Tool Used: Claude
 
 ================================================================================
