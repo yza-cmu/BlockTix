@@ -1,0 +1,139 @@
+Warning: optimizer settings and `viaIR` have been disabled for accurate coverage reports.
+If you encounter "stack too deep" errors, consider using `--ir-minimum` which enables `viaIR` with minimum optimization resolving most of the errors
+Compiling 58 files with Solc 0.8.24
+Solc 0.8.24 finished in 1.64s
+Compiler run successful with warnings:
+Warning (3420): Source file does not specify required compiler version! Consider adding "pragma solidity ^0.8.24;"
+--> script/Upgrade.s.sol
+
+Warning (3420): Source file does not specify required compiler version! Consider adding "pragma solidity ^0.8.24;"
+--> script/Verify.s.sol
+
+Warning (3420): Source file does not specify required compiler version! Consider adding "pragma solidity ^0.8.24;"
+--> test/fuzz/BlockTixFuzz.t.sol
+
+Warning (3420): Source file does not specify required compiler version! Consider adding "pragma solidity ^0.8.24;"
+--> test/integration/E2E.t.sol
+
+Analysing contracts...
+Running tests...
+
+Ran 40 tests for test/unit/PriceOracle.t.sol:PriceOracleTest
+[PASS] test_CalculatePriceWithTimeDecay_NoDecay() (gas: 109051)
+[PASS] test_CalculatePriceWithTimeDecay_RevertWhenPaused() (gas: 22382)
+[PASS] test_CalculatePriceWithTimeDecay_SurgeAndDecay() (gas: 115738)
+[PASS] test_CalculatePriceWithTimeDecay_WithDecay() (gas: 112392)
+[PASS] test_CalculatePrice_NoSurge() (gas: 110358)
+[PASS] test_CalculatePrice_RecordsPriceHistory() (gas: 264957)
+[PASS] test_CalculatePrice_RevertNotBlockTixMain() (gas: 18367)
+[PASS] test_CalculatePrice_RevertWhenPaused() (gas: 21623)
+[PASS] test_CalculatePrice_Surge1() (gas: 111007)
+[PASS] test_CalculatePrice_Surge2() (gas: 110983)
+[PASS] test_CalculatePrice_Surge3() (gas: 110959)
+[PASS] test_CalculatePrice_VeryHighTicketsSold() (gas: 110894)
+[PASS] test_CalculatePrice_ZeroBasePrice() (gas: 88037)
+[PASS] test_Constructor_RevertInvalidAddress() (gas: 131137)
+[PASS] test_Constructor_Success() (gas: 23587)
+[PASS] test_GetLatestPrice_NoHistory() (gas: 8841)
+[PASS] test_GetLatestPrice_WithHistory() (gas: 185788)
+[PASS] test_GetPriceHistory_Empty() (gas: 9388)
+[PASS] test_GetPriceHistory_Multiple() (gas: 259579)
+[PASS] test_Pause_RevertNotOwner() (gas: 13769)
+[PASS] test_Pause_Success() (gas: 13673)
+[PASS] test_SetBlockTixMain_RevertInvalidAddress() (gas: 11314)
+[PASS] test_SetBlockTixMain_RevertNotOwner() (gas: 16626)
+[PASS] test_SetBlockTixMain_Success() (gas: 25673)
+[PASS] test_SetDemandMultiplier_RevertExceedsMax() (gas: 11249)
+[PASS] test_SetDemandMultiplier_RevertNotOwner() (gas: 14301)
+[PASS] test_SetDemandMultiplier_Success() (gas: 20748)
+[PASS] test_SetSurgeMultipliers_RevertInvalidOrder() (gas: 12168)
+[PASS] test_SetSurgeMultipliers_RevertNotOwner() (gas: 15223)
+[PASS] test_SetSurgeMultipliers_Success() (gas: 30999)
+[PASS] test_SetTimeDecay_RevertExceedsMax() (gas: 11402)
+[PASS] test_SetTimeDecay_RevertNotOwner() (gas: 14411)
+[PASS] test_SetTimeDecay_Success() (gas: 20925)
+[PASS] test_Unpause_RevertNotOwner() (gas: 19411)
+[PASS] test_Unpause_Success() (gas: 13713)
+[PASS] test_ValidateResalePrice_ExactLimit() (gas: 8136)
+[PASS] test_ValidateResalePrice_Invalid() (gas: 7573)
+[PASS] test_ValidateResalePrice_Valid() (gas: 7503)
+[PASS] test_ValidateResalePrice_VeryHighMarkup() (gas: 7529)
+[PASS] test_ValidateResalePrice_ZeroMarkup() (gas: 7540)
+Suite result: ok. 40 passed; 0 failed; 0 skipped; finished in 28.16ms (85.11ms CPU time)
+
+Ran 31 tests for test/unit/BlockTixMain.t.sol:BlockTixMainTest
+[PASS] test_CancelEvent_RevertInvalidEventId() (gas: 14274)
+[PASS] test_CancelEvent_RevertNotOrganizer() (gas: 204805)
+[PASS] test_CancelEvent_Success() (gas: 192837)
+[PASS] test_CreateEvent_MultipleEvents() (gas: 389260)
+[PASS] test_CreateEvent_RevertInvalidBasePrice() (gas: 14836)
+[PASS] test_CreateEvent_RevertInvalidTotalTickets() (gas: 14825)
+[PASS] test_CreateEvent_RevertPastEventDate() (gas: 14782)
+[PASS] test_CreateEvent_Success() (gas: 215815)
+[PASS] test_GetEvent() (gas: 209088)
+[PASS] test_GetEvent_RevertInvalidId() (gas: 15576)
+[PASS] test_GetTicket() (gas: 508192)
+[PASS] test_PurchaseTicket_FeeDistribution() (gas: 510390)
+[PASS] test_PurchaseTicket_RevertEventNotActive() (gas: 201354)
+[PASS] test_PurchaseTicket_RevertInsufficientPayment() (gas: 299933)
+[PASS] test_PurchaseTicket_RevertInvalidEventId() (gas: 27099)
+[PASS] test_PurchaseTicket_RevertSoldOut() (gas: 733313)
+[PASS] test_PurchaseTicket_Success() (gas: 523752)
+[PASS] test_PurchaseTicket_WithRefund() (gas: 512384)
+[PASS] test_TransferTicket_RevertMarkupExceeded() (gas: 548901)
+[PASS] test_TransferTicket_RevertNotOwner() (gas: 519014)
+[PASS] test_TransferTicket_RevertTicketUsed() (gas: 571726)
+[PASS] test_TransferTicket_Success() (gas: 573421)
+[PASS] test_UpdatePlatformFee_RevertExceedsMax() (gas: 11292)
+[PASS] test_UpdatePlatformFee_RevertNotOwner() (gas: 14344)
+[PASS] test_UpdatePlatformFee_Success() (gas: 20769)
+[PASS] test_UseTicket_RevertAlreadyUsed() (gas: 530692)
+[PASS] test_UseTicket_RevertNotOrganizer() (gas: 506966)
+[PASS] test_UseTicket_Success() (gas: 534776)
+[PASS] test_Withdraw_MultipleTickets() (gas: 715004)
+[PASS] test_Withdraw_RevertNoFunds() (gas: 18834)
+[PASS] test_Withdraw_Success() (gas: 501045)
+Suite result: ok. 31 passed; 0 failed; 0 skipped; finished in 29.59ms (172.25ms CPU time)
+
+Ran 32 tests for test/unit/TicketNFT.t.sol:TicketNFTTest
+[PASS] test_ApproveToSelf_Allowed() (gas: 142098)
+[PASS] test_Approve_Success() (gas: 144121)
+[PASS] test_BalanceOf() (gas: 247186)
+[PASS] test_BatchMint_RevertNotBlockTixMain() (gas: 17490)
+[PASS] test_BatchMint_SingleTicket() (gas: 114777)
+[PASS] test_BatchMint_Success() (gas: 358257)
+[PASS] test_Burn_ByBlockTixMain() (gas: 113974)
+[PASS] test_Burn_ByOwner() (gas: 115416)
+[PASS] test_Burn_RevertAlreadyBurned() (gas: 113134)
+[PASS] test_Burn_RevertNotAuthorized() (gas: 117520)
+[PASS] test_Constructor_RevertInvalidAddress() (gas: 113481)
+[PASS] test_Constructor_Success() (gas: 30499)
+[PASS] test_Exists() (gas: 120568)
+[PASS] test_Exists_AfterBurn() (gas: 113825)
+[PASS] test_GetCurrentTokenId() (gas: 194816)
+[PASS] test_GetEventId() (gas: 194344)
+[PASS] test_MintToZeroAddress_Reverts() (gas: 38047)
+[PASS] test_Mint_MultipleTimes() (gas: 250912)
+[PASS] test_Mint_RevertNotBlockTixMain() (gas: 15775)
+[PASS] test_Mint_Success() (gas: 124495)
+[PASS] test_SafeTransferFrom_Success() (gas: 130510)
+[PASS] test_SetApprovalForAll_Success() (gas: 40965)
+[PASS] test_SetBaseURI_RevertNotOwner() (gas: 14865)
+[PASS] test_SetBaseURI_Success() (gas: 22050)
+[PASS] test_SetBlockTixMain_RevertInvalidAddress() (gas: 11357)
+[PASS] test_SetBlockTixMain_RevertNotOwner() (gas: 16647)
+[PASS] test_SetBlockTixMain_Success() (gas: 25738)
+[PASS] test_SetTokenURI_RevertNotBlockTixMain() (gas: 116043)
+[PASS] test_SetTokenURI_Success() (gas: 149516)
+[PASS] test_TokenURI_WithBaseURI() (gas: 123311)
+[PASS] test_TransferToZeroAddress_Reverts() (gas: 115895)
+[PASS] test_Transfer_Success() (gas: 127633)
+Suite result: ok. 32 passed; 0 failed; 0 skipped; finished in 29.65ms (70.74ms CPU time)
+
+Ran 2 tests for test/Counter.t.sol:CounterTest
+[PASS] testFuzz_SetNumber(uint256) (runs: 256, μ: 28667, ~: 29289)
+[PASS] test_Increment() (gas: 28784)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 19.24ms (19.03ms CPU time)
+
+Ran 4 test suites in 88.56ms (106.64ms CPU time): 105 tests passed, 0 failed, 0 skipped (105 total tests)
+Wrote LCOV report.
