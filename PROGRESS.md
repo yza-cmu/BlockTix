@@ -109,32 +109,38 @@
 
 ### Phase 5.3: Deploy to Sepolia Testnet
 
-**Status:** 📋 Pending
+**Status:** ✅ COMPLETED
 **Priority:** HIGH
-**Estimated Effort:** 2-3 hours
+**Completion Date:** 2025-11-09
 
 **Tasks:**
-- [ ] Configure Sepolia RPC endpoint in environment
-- [ ] Obtain Sepolia testnet ETH from faucet
-- [ ] Execute deployment script on Sepolia
-- [ ] Monitor and verify deployment transactions
-- [ ] Verify contracts on Etherscan
-- [ ] Document deployed contract addresses
-- [ ] Test contract interactions on Sepolia
+- [x] Configure Sepolia RPC endpoint in environment
+- [x] Obtain Sepolia testnet ETH from faucet
+- [x] Execute deployment script on Sepolia
+- [x] Monitor and verify deployment transactions
+- [x] Verify contracts on Etherscan
+- [x] Document deployed contract addresses
+- [x] Test contract interactions on Sepolia
 
 **Deliverables:**
-- Sepolia deployment addresses (3 contracts)
-- Etherscan verification links
-- Deployment transaction hashes
-- Gas cost analysis for production deployment
-- Updated `.env.example` with Sepolia configuration
+- ✅ Sepolia deployment addresses (3 contracts)
+  - BlockTixMain: `0x4572b63734CE8395CB32E199cfb2239f9e7D7095`
+  - TicketNFT: `0xF82bA5dac740Ab9955800ff5e807d16bC4014861`
+  - PriceOracle: `0x3c7D84D7AF3Fb18AcFFF66d310fca456eB76245e`
+- ✅ Etherscan verification links
+  - [BlockTixMain](https://sepolia.etherscan.io/address/0x4572b63734ce8395cb32e199cfb2239f9e7d7095)
+  - [TicketNFT](https://sepolia.etherscan.io/address/0xf82ba5dac740ab9955800ff5e807d16bc4014861)
+  - [PriceOracle](https://sepolia.etherscan.io/address/0x3c7d84d7af3fb18acfff66d310fca456eb76245e)
+- ✅ Deployment transaction hashes (saved in `broadcast/Deploy.s.sol/11155111/run-latest.json`)
+- ✅ Gas cost analysis: 4,096,525 total gas (~0.0042 ETH)
+- ✅ Deployment metadata documented in `metrics/deploy.json`
 
 **Acceptance Criteria:**
-- All 3 contracts deployed to Sepolia successfully
-- Etherscan verification shows verified source code
-- Contracts are accessible and functional via Etherscan
-- Cross-contract references properly configured
-- Deployment metadata documented
+- ✅ All 3 contracts deployed to Sepolia successfully
+- ✅ Etherscan verification shows verified source code
+- ✅ Contracts are accessible and functional via Etherscan
+- ✅ Cross-contract references properly configured
+- ✅ Deployment metadata documented
 
 ---
 

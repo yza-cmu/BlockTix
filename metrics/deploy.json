@@ -1,0 +1,61 @@
+{
+  "network": "sepolia",
+  "chainId": 11155111,
+  "deployer": "0x1bA94e09c8B1d8f54A43A6Eb269C4DA10Cc111Cb",
+  "blockNumber": 9594488,
+  "blockHash": "0x65389bbc2c4993b49d7bbc22e3169944729b313d9f0a63a81ff0a47cc09b4e38",
+  "timestamp": 1762712580,
+  "deploymentDate": "2025-11-09",
+  "contracts": {
+    "PriceOracle": {
+      "address": "0x3c7D84D7AF3Fb18AcFFF66d310fca456eB76245e",
+      "transactionHash": "0xa8d11224ab12b9244c4d8a2772158b1ec8e514cbd7d6c4bd80794ef1e1f7e72f",
+      "gasUsed": 941174,
+      "etherscanUrl": "https://sepolia.etherscan.io/address/0x3c7d84d7af3fb18acfff66d310fca456eb76245e",
+      "verified": true
+    },
+    "TicketNFT": {
+      "address": "0xF82bA5dac740Ab9955800ff5e807d16bC4014861",
+      "transactionHash": "0x852b07bbfafe5bd573d1bfbceda4faab172914c7e0d9900e784cff7735836dc6",
+      "gasUsed": 1613886,
+      "etherscanUrl": "https://sepolia.etherscan.io/address/0xf82ba5dac740ab9955800ff5e807d16bc4014861",
+      "verified": true
+    },
+    "BlockTixMain": {
+      "address": "0x4572b63734CE8395CB32E199cfb2239f9e7D7095",
+      "transactionHash": "0x5bb23a124f2947949137c0e3e7af83b293594b779eb6eccaa8edb091ecab098a",
+      "gasUsed": 1480228,
+      "etherscanUrl": "https://sepolia.etherscan.io/address/0x4572b63734ce8395cb32e199cfb2239f9e7d7095",
+      "verified": true
+    }
+  },
+  "configurationTransactions": [
+    {
+      "description": "Set BlockTixMain address in TicketNFT",
+      "transactionHash": "0xd4c8cc52a10fa5287a8c0646d224fba9cb26ca5cab4883c55c0433f05474bfa6",
+      "gasUsed": 30647
+    },
+    {
+      "description": "Set BlockTixMain address in PriceOracle",
+      "transactionHash": "0x8b1d184529274b57629bf941aa2e4ee0d9efab65c8c5baff9947ecfa7d88b9fc",
+      "gasUsed": 30590
+    }
+  ],
+  "gasMetrics": {
+    "totalGasUsed": 4096525,
+    "averageGasPrice": "0.001026842 gwei",
+    "totalCostETH": "0.004205868",
+    "breakdown": {
+      "PriceOracle": 941174,
+      "TicketNFT": 1613886,
+      "BlockTixMain": 1480228,
+      "configuration": 61237
+    }
+  },
+  "configuration": {
+    "platformFee": "250 bp (2.5%)",
+    "demandMultiplier": "1000 bp (10%)",
+    "timeDecay": "500 bp (5%)",
+    "baseURI": "https://blocktix.io/metadata/"
+  }
+}

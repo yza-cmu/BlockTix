@@ -391,8 +391,8 @@ This document tracks the completed phases and achievements of the BlockTix proje
 
 ## Phase 5: Deployment Infrastructure
 
-**Status:** Phase 5.1 & 5.2 COMPLETED
-**Date Completed:** 2025-10-28
+**Status:** Phase 5.1, 5.2, & 5.3 COMPLETED
+**Date Completed:** 2025-11-09
 
 ### 5.1 Create Deployment Script 
 
@@ -473,26 +473,74 @@ This document tracks the completed phases and achievements of the BlockTix proje
 - All verifications passed
 - Ownership assigned correctly
 
+### 5.3 Deploy to Sepolia Testnet
+
+**Completed Tasks:**
+- Configured Sepolia RPC endpoint via Infura
+- Obtained 0.1012 Sepolia ETH from faucet
+- Executed deployment script on Sepolia testnet
+- Monitored all 5 deployment transactions
+- Verified all 3 contracts on Etherscan automatically
+- Documented deployment addresses and metadata
+- Created deployment metrics file
+
+**Deliverables:**
+
+#### Sepolia Deployment Addresses
+- **BlockTixMain:** `0x4572b63734CE8395CB32E199cfb2239f9e7D7095`
+- **TicketNFT:** `0xF82bA5dac740Ab9955800ff5e807d16bC4014861`
+- **PriceOracle:** `0x3c7D84D7AF3Fb18AcFFF66d310fca456eB76245e`
+
+#### Etherscan Verification Links
+- **BlockTixMain:** https://sepolia.etherscan.io/address/0x4572b63734ce8395cb32e199cfb2239f9e7d7095
+- **TicketNFT:** https://sepolia.etherscan.io/address/0xf82ba5dac740ab9955800ff5e807d16bc4014861
+- **PriceOracle:** https://sepolia.etherscan.io/address/0x3c7d84d7af3fb18acfff66d310fca456eb76245e
+
+#### Deployment Transaction Hashes
+1. **PriceOracle Deployment:** `0xa8d11224ab12b9244c4d8a2772158b1ec8e514cbd7d6c4bd80794ef1e1f7e72f`
+2. **TicketNFT Deployment:** `0x852b07bbfafe5bd573d1bfbceda4faab172914c7e0d9900e784cff7735836dc6`
+3. **BlockTixMain Deployment:** `0x5bb23a124f2947949137c0e3e7af83b293594b779eb6eccaa8edb091ecab098a`
+4. **TicketNFT Configuration:** `0xd4c8cc52a10fa5287a8c0646d224fba9cb26ca5cab4883c55c0433f05474bfa6`
+5. **PriceOracle Configuration:** `0x8b1d184529274b57629bf941aa2e4ee0d9efab65c8c5baff9947ecfa7d88b9fc`
+
+#### Deployment Metrics
+- **Deployer Address:** `0x1bA94e09c8B1d8f54A43A6Eb269C4DA10Cc111Cb`
+- **Network:** Sepolia Testnet (Chain ID: 11155111)
+- **Block Number:** 9594488
+- **Total Gas Used:** 4,096,525 gas
+- **Average Gas Price:** ~0.001027 gwei
+- **Total Cost:** ~0.0042 ETH
+- **Deployment Date:** November 9, 2025
+
+#### Gas Breakdown by Contract
+- **PriceOracle:** 941,174 gas
+- **TicketNFT:** 1,613,886 gas
+- **BlockTixMain:** 1,480,228 gas
+- **Configuration Calls:** 61,237 gas
+
+#### Deployment Metadata File
+- Created: `metrics/deploy.json`
+- Contains: All addresses, transaction hashes, gas costs, Etherscan links
+- Broadcast data saved to: `broadcast/Deploy.s.sol/11155111/run-latest.json`
+
+**Configuration Parameters (Production):**
+- Platform Fee: 250 basis points (2.5%)
+- Demand Multiplier: 1000 basis points (10%)
+- Time Decay: 500 basis points (5%)
+- Base URI: "https://blocktix.io/metadata/"
+
+**Validation:**
+- ✅ All 3 contracts deployed to Sepolia successfully
+- ✅ All contracts verified on Etherscan (source code visible)
+- ✅ Cross-contract references properly configured
+- ✅ All 5 transactions successful (no failures)
+- ✅ Contracts accessible via Etherscan
+- ✅ Deployment metadata documented
+- ✅ Gas costs within expected range (~4.1M gas total)
+
 ---
 
 ## Next Steps
-
-### Phase 3.2: Integration Tests (PENDING)
-- Create complete event lifecycle tests
-- Implement multi-user interaction scenarios
-- Test cross-contract communication
-- Verify fund flow through system
-
-### Phase 3.3: Fuzz Testing (PENDING)
-- Implement property-based tests
-- Create fuzz tests for arithmetic operations
-- Test boundary conditions
-- Verify invariants
-
-### Phase 3.4: Coverage Report Generation (PENDING)
-- Execute complete test suite with coverage tracking
-- Generate LCOV format coverage data
-- Create coverage summary
 
 ### Phase 4: Gas Optimization and Benchmarking (PENDING)
 - Initial gas snapshot
@@ -500,16 +548,20 @@ This document tracks the completed phases and achievements of the BlockTix proje
 - Final gas snapshot
 - Document optimizations
 
-### Phase 5.3: Deploy to Sepolia (PENDING)
-- Configure Sepolia RPC endpoint
-- Fund deployment wallet with Sepolia ETH
-- Execute deployment script on Sepolia
-- Verify contracts on Etherscan
+### Phase 6: CLI/Etherscan Interface Runbook (PENDING)
+- Create CLI interaction guide
+- Document Etherscan verification steps
+- Provide transaction submission examples
 
-### Phase 5.4: Generate Deployment Metadata (PENDING)
-- Collect all deployment information
-- Create standardized JSON structure
-- Include Etherscan verification links
+### Phase 7: Transaction Performance Measurement (PENDING)
+- Execute 9 transactions (3 events, 3 purchases, 3 transfers)
+- Collect latency data
+- Generate performance report
+
+### Phase 9: Usability Testing (PENDING)
+- Conduct testing with ≥3 participants
+- Collect feedback
+- Document findings
 
 ---
 
@@ -526,16 +578,26 @@ This document tracks the completed phases and achievements of the BlockTix proje
 - **Total Tests:** 105 (31 BlockTixMain + 32 TicketNFT + 40 PriceOracle + 2 Counter)
 - **Test Pass Rate:** 100% (105/105 passing)
 - **Compilation Status:** SUCCESS
-- **Deployment Status:** SUCCESS (Local Anvil)
+- **Deployment Status:** SUCCESS (Local Anvil + Sepolia Testnet)
 - **Dependencies Installed:** 2 (forge-std, OpenZeppelin)
 
 ### Deployment Information
-- **Local Deployment:** Complete (Chain ID 31337)
-- **Total Deployment Gas:** ~4.1M gas
-- **Deployment Cost:** ~0.0037 ETH
-- **Contracts Deployed:** 3/3
+
+#### Local Deployment (Anvil)
+- **Network:** Anvil (Chain ID 31337)
+- **Total Gas:** ~4.1M gas
+- **Cost:** ~0.0037 ETH
+- **Status:** Complete
+
+#### Sepolia Testnet Deployment
+- **Network:** Sepolia (Chain ID 11155111)
+- **Total Gas:** 4,096,525 gas
+- **Cost:** ~0.0042 ETH
+- **Block:** 9594488
+- **All Contracts Verified:** ✅ Yes
+- **Status:** Complete
 
 ---
 
-**Last Updated:** 2025-10-28
-**Current Phase:** Phase 5.1 & 5.2 Complete  ->  Ready for Phase 5.3 (Sepolia Deployment)
+**Last Updated:** 2025-11-09
+**Current Phase:** Phase 5.3 Complete  ->  Ready for Phase 7 (Transaction Performance Measurement)
