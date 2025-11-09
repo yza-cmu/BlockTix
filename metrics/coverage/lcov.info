@@ -1,139 +1,481 @@
-Warning: optimizer settings and `viaIR` have been disabled for accurate coverage reports.
-If you encounter "stack too deep" errors, consider using `--ir-minimum` which enables `viaIR` with minimum optimization resolving most of the errors
-Compiling 58 files with Solc 0.8.24
-Solc 0.8.24 finished in 1.64s
-Compiler run successful with warnings:
-Warning (3420): Source file does not specify required compiler version! Consider adding "pragma solidity ^0.8.24;"
---> script/Upgrade.s.sol
-
-Warning (3420): Source file does not specify required compiler version! Consider adding "pragma solidity ^0.8.24;"
---> script/Verify.s.sol
-
-Warning (3420): Source file does not specify required compiler version! Consider adding "pragma solidity ^0.8.24;"
---> test/fuzz/BlockTixFuzz.t.sol
-
-Warning (3420): Source file does not specify required compiler version! Consider adding "pragma solidity ^0.8.24;"
---> test/integration/E2E.t.sol
-
-Analysing contracts...
-Running tests...
-
-Ran 40 tests for test/unit/PriceOracle.t.sol:PriceOracleTest
-[PASS] test_CalculatePriceWithTimeDecay_NoDecay() (gas: 109051)
-[PASS] test_CalculatePriceWithTimeDecay_RevertWhenPaused() (gas: 22382)
-[PASS] test_CalculatePriceWithTimeDecay_SurgeAndDecay() (gas: 115738)
-[PASS] test_CalculatePriceWithTimeDecay_WithDecay() (gas: 112392)
-[PASS] test_CalculatePrice_NoSurge() (gas: 110358)
-[PASS] test_CalculatePrice_RecordsPriceHistory() (gas: 264957)
-[PASS] test_CalculatePrice_RevertNotBlockTixMain() (gas: 18367)
-[PASS] test_CalculatePrice_RevertWhenPaused() (gas: 21623)
-[PASS] test_CalculatePrice_Surge1() (gas: 111007)
-[PASS] test_CalculatePrice_Surge2() (gas: 110983)
-[PASS] test_CalculatePrice_Surge3() (gas: 110959)
-[PASS] test_CalculatePrice_VeryHighTicketsSold() (gas: 110894)
-[PASS] test_CalculatePrice_ZeroBasePrice() (gas: 88037)
-[PASS] test_Constructor_RevertInvalidAddress() (gas: 131137)
-[PASS] test_Constructor_Success() (gas: 23587)
-[PASS] test_GetLatestPrice_NoHistory() (gas: 8841)
-[PASS] test_GetLatestPrice_WithHistory() (gas: 185788)
-[PASS] test_GetPriceHistory_Empty() (gas: 9388)
-[PASS] test_GetPriceHistory_Multiple() (gas: 259579)
-[PASS] test_Pause_RevertNotOwner() (gas: 13769)
-[PASS] test_Pause_Success() (gas: 13673)
-[PASS] test_SetBlockTixMain_RevertInvalidAddress() (gas: 11314)
-[PASS] test_SetBlockTixMain_RevertNotOwner() (gas: 16626)
-[PASS] test_SetBlockTixMain_Success() (gas: 25673)
-[PASS] test_SetDemandMultiplier_RevertExceedsMax() (gas: 11249)
-[PASS] test_SetDemandMultiplier_RevertNotOwner() (gas: 14301)
-[PASS] test_SetDemandMultiplier_Success() (gas: 20748)
-[PASS] test_SetSurgeMultipliers_RevertInvalidOrder() (gas: 12168)
-[PASS] test_SetSurgeMultipliers_RevertNotOwner() (gas: 15223)
-[PASS] test_SetSurgeMultipliers_Success() (gas: 30999)
-[PASS] test_SetTimeDecay_RevertExceedsMax() (gas: 11402)
-[PASS] test_SetTimeDecay_RevertNotOwner() (gas: 14411)
-[PASS] test_SetTimeDecay_Success() (gas: 20925)
-[PASS] test_Unpause_RevertNotOwner() (gas: 19411)
-[PASS] test_Unpause_Success() (gas: 13713)
-[PASS] test_ValidateResalePrice_ExactLimit() (gas: 8136)
-[PASS] test_ValidateResalePrice_Invalid() (gas: 7573)
-[PASS] test_ValidateResalePrice_Valid() (gas: 7503)
-[PASS] test_ValidateResalePrice_VeryHighMarkup() (gas: 7529)
-[PASS] test_ValidateResalePrice_ZeroMarkup() (gas: 7540)
-Suite result: ok. 40 passed; 0 failed; 0 skipped; finished in 28.16ms (85.11ms CPU time)
-
-Ran 31 tests for test/unit/BlockTixMain.t.sol:BlockTixMainTest
-[PASS] test_CancelEvent_RevertInvalidEventId() (gas: 14274)
-[PASS] test_CancelEvent_RevertNotOrganizer() (gas: 204805)
-[PASS] test_CancelEvent_Success() (gas: 192837)
-[PASS] test_CreateEvent_MultipleEvents() (gas: 389260)
-[PASS] test_CreateEvent_RevertInvalidBasePrice() (gas: 14836)
-[PASS] test_CreateEvent_RevertInvalidTotalTickets() (gas: 14825)
-[PASS] test_CreateEvent_RevertPastEventDate() (gas: 14782)
-[PASS] test_CreateEvent_Success() (gas: 215815)
-[PASS] test_GetEvent() (gas: 209088)
-[PASS] test_GetEvent_RevertInvalidId() (gas: 15576)
-[PASS] test_GetTicket() (gas: 508192)
-[PASS] test_PurchaseTicket_FeeDistribution() (gas: 510390)
-[PASS] test_PurchaseTicket_RevertEventNotActive() (gas: 201354)
-[PASS] test_PurchaseTicket_RevertInsufficientPayment() (gas: 299933)
-[PASS] test_PurchaseTicket_RevertInvalidEventId() (gas: 27099)
-[PASS] test_PurchaseTicket_RevertSoldOut() (gas: 733313)
-[PASS] test_PurchaseTicket_Success() (gas: 523752)
-[PASS] test_PurchaseTicket_WithRefund() (gas: 512384)
-[PASS] test_TransferTicket_RevertMarkupExceeded() (gas: 548901)
-[PASS] test_TransferTicket_RevertNotOwner() (gas: 519014)
-[PASS] test_TransferTicket_RevertTicketUsed() (gas: 571726)
-[PASS] test_TransferTicket_Success() (gas: 573421)
-[PASS] test_UpdatePlatformFee_RevertExceedsMax() (gas: 11292)
-[PASS] test_UpdatePlatformFee_RevertNotOwner() (gas: 14344)
-[PASS] test_UpdatePlatformFee_Success() (gas: 20769)
-[PASS] test_UseTicket_RevertAlreadyUsed() (gas: 530692)
-[PASS] test_UseTicket_RevertNotOrganizer() (gas: 506966)
-[PASS] test_UseTicket_Success() (gas: 534776)
-[PASS] test_Withdraw_MultipleTickets() (gas: 715004)
-[PASS] test_Withdraw_RevertNoFunds() (gas: 18834)
-[PASS] test_Withdraw_Success() (gas: 501045)
-Suite result: ok. 31 passed; 0 failed; 0 skipped; finished in 29.59ms (172.25ms CPU time)
-
-Ran 32 tests for test/unit/TicketNFT.t.sol:TicketNFTTest
-[PASS] test_ApproveToSelf_Allowed() (gas: 142098)
-[PASS] test_Approve_Success() (gas: 144121)
-[PASS] test_BalanceOf() (gas: 247186)
-[PASS] test_BatchMint_RevertNotBlockTixMain() (gas: 17490)
-[PASS] test_BatchMint_SingleTicket() (gas: 114777)
-[PASS] test_BatchMint_Success() (gas: 358257)
-[PASS] test_Burn_ByBlockTixMain() (gas: 113974)
-[PASS] test_Burn_ByOwner() (gas: 115416)
-[PASS] test_Burn_RevertAlreadyBurned() (gas: 113134)
-[PASS] test_Burn_RevertNotAuthorized() (gas: 117520)
-[PASS] test_Constructor_RevertInvalidAddress() (gas: 113481)
-[PASS] test_Constructor_Success() (gas: 30499)
-[PASS] test_Exists() (gas: 120568)
-[PASS] test_Exists_AfterBurn() (gas: 113825)
-[PASS] test_GetCurrentTokenId() (gas: 194816)
-[PASS] test_GetEventId() (gas: 194344)
-[PASS] test_MintToZeroAddress_Reverts() (gas: 38047)
-[PASS] test_Mint_MultipleTimes() (gas: 250912)
-[PASS] test_Mint_RevertNotBlockTixMain() (gas: 15775)
-[PASS] test_Mint_Success() (gas: 124495)
-[PASS] test_SafeTransferFrom_Success() (gas: 130510)
-[PASS] test_SetApprovalForAll_Success() (gas: 40965)
-[PASS] test_SetBaseURI_RevertNotOwner() (gas: 14865)
-[PASS] test_SetBaseURI_Success() (gas: 22050)
-[PASS] test_SetBlockTixMain_RevertInvalidAddress() (gas: 11357)
-[PASS] test_SetBlockTixMain_RevertNotOwner() (gas: 16647)
-[PASS] test_SetBlockTixMain_Success() (gas: 25738)
-[PASS] test_SetTokenURI_RevertNotBlockTixMain() (gas: 116043)
-[PASS] test_SetTokenURI_Success() (gas: 149516)
-[PASS] test_TokenURI_WithBaseURI() (gas: 123311)
-[PASS] test_TransferToZeroAddress_Reverts() (gas: 115895)
-[PASS] test_Transfer_Success() (gas: 127633)
-Suite result: ok. 32 passed; 0 failed; 0 skipped; finished in 29.65ms (70.74ms CPU time)
-
-Ran 2 tests for test/Counter.t.sol:CounterTest
-[PASS] testFuzz_SetNumber(uint256) (runs: 256, μ: 28667, ~: 29289)
-[PASS] test_Increment() (gas: 28784)
-Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 19.24ms (19.03ms CPU time)
-
-Ran 4 test suites in 88.56ms (106.64ms CPU time): 105 tests passed, 0 failed, 0 skipped (105 total tests)
-Wrote LCOV report.
+TN:
+SF:script/Counter.s.sol
+DA:10,0
+FN:10,CounterScript.setUp
+FNDA:0,CounterScript.setUp
+DA:12,0
+FN:12,CounterScript.run
+FNDA:0,CounterScript.run
+DA:13,0
+DA:15,0
+DA:17,0
+FNF:2
+FNH:0
+LF:5
+LH:0
+BRF:0
+BRH:0
+end_of_record
+TN:
+SF:script/Deploy.s.sol
+DA:26,0
+FN:26,Deploy.run
+FNDA:0,Deploy.run
+DA:28,0
+DA:29,0
+DA:31,0
+DA:32,0
+DA:33,0
+DA:34,0
+DA:35,0
+DA:36,0
+DA:38,0
+DA:41,0
+DA:42,0
+DA:48,0
+DA:49,0
+DA:52,0
+DA:53,0
+DA:58,0
+DA:59,0
+DA:62,0
+DA:63,0
+DA:64,0
+DA:65,0
+DA:68,0
+DA:70,0
+DA:71,0
+DA:73,0
+DA:74,0
+DA:75,0
+DA:78,0
+DA:79,0
+BRDA:79,0,0,-
+BRDA:79,0,1,-
+DA:80,0
+BRDA:80,1,0,-
+BRDA:80,1,1,-
+DA:81,0
+BRDA:81,2,0,-
+BRDA:81,2,1,-
+DA:82,0
+BRDA:82,3,0,-
+BRDA:82,3,1,-
+DA:83,0
+BRDA:83,4,0,-
+BRDA:83,4,1,-
+DA:84,0
+DA:85,0
+DA:87,0
+DA:90,0
+DA:93,0
+FN:93,Deploy.printDeploymentSummary
+FNDA:0,Deploy.printDeploymentSummary
+DA:94,0
+DA:95,0
+DA:96,0
+DA:97,0
+DA:98,0
+DA:99,0
+DA:100,0
+DA:101,0
+DA:102,0
+DA:103,0
+DA:104,0
+DA:105,0
+DA:106,0
+DA:107,0
+DA:108,0
+DA:109,0
+DA:110,0
+DA:111,0
+DA:112,0
+DA:113,0
+DA:114,0
+DA:115,0
+DA:116,0
+DA:117,0
+DA:118,0
+DA:125,0
+FN:125,Deploy.deployWithParams
+FNDA:0,Deploy.deployWithParams
+DA:132,0
+DA:135,0
+DA:136,0
+DA:137,0
+DA:140,0
+DA:141,0
+DA:143,0
+DA:145,0
+FNF:3
+FNH:0
+LF:73
+LH:0
+BRF:10
+BRH:0
+end_of_record
+TN:
+SF:src/BlockTixMain.sol
+DA:100,31
+FN:100,BlockTixMain.constructor
+FNDA:31,BlockTixMain.constructor
+DA:105,31
+BRDA:105,0,0,-
+DA:107,31
+DA:108,31
+DA:109,31
+DA:120,25
+FN:120,BlockTixMain.createEvent
+FNDA:25,BlockTixMain.createEvent
+DA:127,25
+BRDA:127,1,0,3
+DA:128,3
+DA:131,22
+DA:133,22
+DA:145,22
+DA:147,22
+DA:154,20
+FN:154,BlockTixMain.purchaseTicket
+FNDA:20,BlockTixMain.purchaseTicket
+DA:155,20
+DA:157,20
+BRDA:157,2,0,1
+DA:158,19
+BRDA:158,3,0,1
+DA:159,18
+BRDA:159,4,0,1
+DA:161,17
+DA:162,17
+BRDA:162,5,0,1
+DA:164,16
+DA:166,16
+DA:174,16
+DA:175,16
+DA:178,16
+DA:179,16
+DA:181,16
+DA:182,16
+DA:185,16
+BRDA:185,6,0,1
+DA:186,1
+DA:187,1
+BRDA:187,7,0,-
+DA:190,16
+DA:192,16
+DA:200,4
+FN:200,BlockTixMain.transferTicket
+FNDA:4,BlockTixMain.transferTicket
+DA:201,4
+DA:203,4
+BRDA:203,8,0,1
+DA:204,1
+BRDA:204,9,0,1
+DA:206,2
+DA:207,2
+DA:209,2
+BRDA:209,10,0,-
+DA:212,2
+DA:213,2
+BRDA:213,11,0,1
+DA:216,1
+DA:217,1
+DA:219,1
+DA:220,1
+DA:223,1
+DA:224,1
+DA:227,1
+DA:229,1
+DA:237,5
+FN:237,BlockTixMain.useTicket
+FNDA:5,BlockTixMain.useTicket
+DA:238,5
+DA:239,5
+DA:241,5
+BRDA:241,12,0,1
+DA:242,1
+BRDA:242,13,0,1
+DA:244,3
+DA:246,3
+DA:254,4
+FN:254,BlockTixMain.cancelEvent
+FNDA:4,BlockTixMain.cancelEvent
+DA:255,4
+DA:257,4
+BRDA:257,14,0,1
+DA:258,3
+BRDA:258,15,0,1
+DA:260,2
+DA:262,2
+DA:268,3
+FN:268,BlockTixMain.withdraw
+FNDA:3,BlockTixMain.withdraw
+DA:269,3
+DA:271,3
+BRDA:271,16,0,1
+DA:273,2
+DA:275,2
+DA:276,2
+BRDA:276,17,0,-
+DA:277,0
+DA:278,0
+DA:281,2
+DA:289,3
+FN:289,BlockTixMain.updatePlatformFee
+FNDA:3,BlockTixMain.updatePlatformFee
+DA:290,2
+BRDA:290,18,0,1
+DA:292,1
+DA:293,1
+DA:295,1
+DA:302,5
+FN:302,BlockTixMain.getEvent
+FNDA:5,BlockTixMain.getEvent
+DA:303,5
+BRDA:303,19,0,1
+DA:304,4
+DA:311,4
+FN:311,BlockTixMain.getTicket
+FNDA:4,BlockTixMain.getTicket
+DA:312,4
+FNF:10
+FNH:10
+LF:81
+LH:79
+BRF:20
+BRH:16
+end_of_record
+TN:
+SF:src/Counter.sol
+DA:7,258
+FN:7,Counter.setNumber
+FNDA:258,Counter.setNumber
+DA:8,258
+DA:11,1
+FN:11,Counter.increment
+FNDA:1,Counter.increment
+DA:12,1
+FNF:2
+FNH:2
+LF:4
+LH:4
+BRF:0
+BRH:0
+end_of_record
+TN:
+SF:src/PriceOracle.sol
+DA:51,32
+FN:51,PriceOracle.onlyBlockTixMain
+FNDA:32,PriceOracle.onlyBlockTixMain
+DA:52,32
+BRDA:52,0,0,1
+DA:63,72
+FN:63,PriceOracle.constructor
+FNDA:72,PriceOracle.constructor
+DA:69,72
+BRDA:69,1,0,1
+DA:71,71
+DA:72,71
+DA:73,71
+DA:83,33
+FN:83,PriceOracle.calculatePrice
+FNDA:33,PriceOracle.calculatePrice
+DA:88,31
+DA:91,31
+DA:94,31
+DA:98,31
+DA:100,31
+DA:112,4
+FN:112,PriceOracle.calculatePriceWithTimeDecay
+FNDA:4,PriceOracle.calculatePriceWithTimeDecay
+DA:119,3
+DA:122,3
+DA:123,3
+DA:126,3
+BRDA:126,2,0,3
+DA:127,3
+DA:128,3
+DA:131,3
+BRDA:131,3,0,2
+DA:132,2
+DA:133,2
+DA:138,3
+DA:142,3
+DA:144,3
+DA:154,5
+FN:154,PriceOracle.validateResalePrice
+FNDA:5,PriceOracle.validateResalePrice
+DA:159,5
+DA:160,5
+DA:169,31
+FN:169,PriceOracle._applySurgePricing
+FNDA:31,PriceOracle._applySurgePricing
+DA:170,31
+BRDA:170,4,0,2
+BRDA:170,4,1,24
+DA:171,2
+DA:172,29
+BRDA:172,5,0,2
+BRDA:172,5,1,24
+DA:173,2
+DA:174,27
+BRDA:174,6,0,3
+DA:175,3
+DA:177,24
+DA:186,3
+FN:186,PriceOracle._applySurgePricingWithPercentage
+FNDA:3,PriceOracle._applySurgePricingWithPercentage
+DA:190,3
+BRDA:190,7,0,-
+BRDA:190,7,1,2
+DA:191,0
+DA:192,3
+BRDA:192,8,0,-
+BRDA:192,8,1,2
+DA:193,0
+DA:194,3
+BRDA:194,9,0,1
+DA:195,1
+DA:197,2
+DA:204,3
+FN:204,PriceOracle.setDemandMultiplier
+FNDA:3,PriceOracle.setDemandMultiplier
+DA:205,2
+BRDA:205,10,0,1
+DA:207,1
+DA:208,1
+DA:210,1
+DA:217,3
+FN:217,PriceOracle.setTimeDecay
+FNDA:3,PriceOracle.setTimeDecay
+DA:218,2
+BRDA:218,11,0,1
+DA:220,1
+DA:221,1
+DA:223,1
+DA:232,3
+FN:232,PriceOracle.setSurgeMultipliers
+FNDA:3,PriceOracle.setSurgeMultipliers
+DA:233,2
+BRDA:233,12,0,1
+DA:235,1
+DA:236,1
+DA:237,1
+DA:239,1
+DA:246,34
+FN:246,PriceOracle.setBlockTixMain
+FNDA:34,PriceOracle.setBlockTixMain
+DA:247,33
+BRDA:247,13,0,1
+DA:249,32
+DA:250,32
+DA:252,32
+DA:258,6
+FN:258,PriceOracle.pause
+FNDA:6,PriceOracle.pause
+DA:259,5
+DA:265,2
+FN:265,PriceOracle.unpause
+FNDA:2,PriceOracle.unpause
+DA:266,1
+DA:274,3
+FN:274,PriceOracle.getPriceHistory
+FNDA:3,PriceOracle.getPriceHistory
+DA:275,3
+DA:283,2
+FN:283,PriceOracle.getLatestPrice
+FNDA:2,PriceOracle.getLatestPrice
+DA:284,2
+DA:285,2
+BRDA:285,14,0,1
+DA:286,1
+FNF:15
+FNH:15
+LF:76
+LH:74
+BRF:19
+BRH:17
+end_of_record
+TN:
+SF:src/TicketNFT.sol
+DA:35,2
+FN:35,TicketNFT.onlyBlockTixMain
+FNDA:2,TicketNFT.onlyBlockTixMain
+DA:36,2
+BRDA:36,0,0,1
+DA:46,64
+FN:46,TicketNFT.constructor
+FNDA:64,TicketNFT.constructor
+DA:51,64
+BRDA:51,1,0,1
+DA:53,63
+DA:54,63
+DA:63,43
+FN:63,TicketNFT.mint
+FNDA:43,TicketNFT.mint
+DA:64,42
+DA:66,42
+DA:67,41
+DA:69,41
+DA:71,41
+DA:81,3
+FN:81,TicketNFT.batchMint
+FNDA:3,TicketNFT.batchMint
+DA:86,2
+DA:88,2
+DA:89,6
+DA:90,6
+DA:91,6
+DA:92,6
+DA:94,6
+DA:97,2
+DA:105,6
+FN:105,TicketNFT.burn
+FNDA:6,TicketNFT.burn
+DA:106,6
+BRDA:106,2,0,1
+DA:107,1
+DA:109,0
+BRDA:109,3,0,-
+DA:111,4
+DA:112,4
+DA:114,4
+DA:122,2
+FN:122,TicketNFT.setTokenURI
+FNDA:2,TicketNFT.setTokenURI
+DA:123,1
+DA:131,2
+FN:131,TicketNFT.setBaseURI
+FNDA:2,TicketNFT.setBaseURI
+DA:132,1
+DA:133,1
+DA:141,34
+FN:141,TicketNFT.setBlockTixMain
+FNDA:34,TicketNFT.setBlockTixMain
+DA:142,33
+BRDA:142,4,0,1
+DA:144,32
+DA:145,32
+DA:147,32
+DA:154,3
+FN:154,TicketNFT._baseURI
+FNDA:3,TicketNFT._baseURI
+DA:155,3
+DA:163,8
+FN:163,TicketNFT.getEventId
+FNDA:8,TicketNFT.getEventId
+DA:164,8
+DA:171,6
+FN:171,TicketNFT.getCurrentTokenId
+FNDA:6,TicketNFT.getCurrentTokenId
+DA:172,6
+DA:180,12
+FN:180,TicketNFT.exists
+FNDA:12,TicketNFT.exists
+DA:181,12
+FNF:12
+FNH:12
+LF:46
+LH:45
+BRF:5
+BRH:4
+end_of_record

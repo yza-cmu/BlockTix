@@ -1,6 +1,8 @@
 # BlockTix - Decentralized Event Ticketing Platform
 ## 67-404 Blockchain Applications - Group 4
 
+> **Quick Start:** For complete setup, deployment, and interface operations see **[RUN.md](RUN.md)**
+
 ### Repository Structure
 
 ```
@@ -33,11 +35,13 @@ BlockTix/
 │   ├── .env.example               # Environment variables template
 │   └── remappings.txt             # Import remappings
 │
+├── RUN.md                          # Operations runbook (setup, CLI, Etherscan guide)
 ├── COMPLETED.md                    # Phase completion tracking
 ├── PROGRESS.md                     # Detailed progress log
 ├── DIAGRAM.md                      # System architecture specifications
 ├── DEMO.md                         # Live demo walkthrough
 ├── ROADMAP.md                      # Implementation roadmap
+├── scripts/                        # Helper scripts for testing and deployment
 ├── .gitignore
 ├── README.md                       # This file
 └── LICENSE
@@ -98,6 +102,8 @@ forge coverage
 - `forge test --match-test testSpecificFunction` : Run specific test
 - `forge test --match-contract BlockTixMain` : Run tests for specific contract
 - `forge coverage` : Generate coverage report
+- `./scripts/test-all.sh` : Run all tests (helper script)
+- `./scripts/generate-metrics.sh` : Generate all metrics files
 
 **Test Results**:
 - Total Tests : 103
@@ -110,6 +116,7 @@ forge coverage
 - `forge snapshot` : Generate gas snapshot
 - `forge snapshot --diff` : Compare with previous snapshot
 - `forge test --gas-report` : Display gas usage during tests
+- `./scripts/measure-gas.sh` : Generate gas snapshot (helper script)
 
 ---
 
