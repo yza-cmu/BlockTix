@@ -1,0 +1,8 @@
+{
+  "chain": "sepolia",
+  "address": "0x...",
+  "creationTx": "0x...",
+  "deployBlock": 5555555,
+  "compiler": "solc 0.8.24",
+  "etherscan": "https://sepolia.etherscan.io/address/0x..."
+}

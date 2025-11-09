@@ -540,6 +540,130 @@ This document tracks the completed phases and achievements of the BlockTix proje
 
 ---
 
+## Phase 7: Transaction Performance Measurement
+
+**Status:** COMPLETED
+**Date Completed:** 2025-11-09
+
+### 7.1 Execute Primary Operations
+
+**Completed Tasks:**
+- Executed 3 event creation transactions on Sepolia
+- Executed 3 ticket purchase transactions
+- Executed 3 ticket transfer transactions
+- Collected performance metrics for all 9 transactions
+- Documented transaction contexts and parameters
+
+**Deliverables:**
+
+#### Event Creation Transactions
+1. **Tech Conference 2025**
+   - TX Hash: `0xe8da1cdfba3dd27a5b9d145c68e93f094d8f2546a2b271d7af877128a645723a`
+   - Block: 9594575
+   - Parameters: 50 tickets, 0.01 ETH base price, 20% markup limit
+
+2. **Music Festival**
+   - TX Hash: `0xf0658c1d2da629d65a0ef0d577372eb28287426b99ccf5dea1756e527971deba`
+   - Block: 9594581
+   - Parameters: 100 tickets, 0.05 ETH base price, 50% markup limit
+
+3. **Sports Game**
+   - TX Hash: `0x339007df4edd06ed121e1399355aff5f12bf140375c6d5b50dc82d37f923d363`
+   - Block: 9594583
+   - Parameters: 200 tickets, 0.02 ETH base price, 30% markup limit
+
+#### Ticket Purchase Transactions
+4. **Purchase from Event 0**
+   - TX Hash: `0xb746786cd208028428502048b2e489c4848aceba517f6f9494e06e6615370fc3`
+   - Block: 9594586
+   - Amount: 0.015 ETH
+
+5. **Purchase from Event 1**
+   - TX Hash: `0x791fbad89e56cec3ac914b0dd739aaa501c06f8a57479498ecf20e448161d5ac`
+   - Block: 9594588
+   - Amount: 0.06 ETH
+
+6. **Purchase from Event 2**
+   - TX Hash: `0x9b67638251fc8b7e5628fffffd371ec252fba90040901879bff7b1d7d089cdf4`
+   - Block: 9594590
+   - Amount: 0.025 ETH
+
+#### Ticket Transfer Transactions
+7. **Transfer Ticket 0**
+   - TX Hash: `0x9010c215b2c23f1f5d79d2a3993f69f50ffbb99809173912028c43f320972a99`
+   - Block: 9594596
+   - Recipient: `0x70997970C51812dc3A010C7d01b50e0d17dc79C8`
+
+8. **Transfer Ticket 1**
+   - TX Hash: `0x7bf8a697b1b99592926155ca32869529b95c031e3b8a6d0530bc4bf1cfb0b3f9`
+   - Block: 9594598
+   - Recipient: `0x70997970C51812dc3A010C7d01b50e0d17dc79C8`
+
+9. **Transfer Ticket 2**
+   - TX Hash: `0x0306eef71a0fa35d0f2f9bca71d360de455d13bcbc6320ebab8bed816bfdfe17`
+   - Block: 9594600
+   - Recipient: `0x70997970C51812dc3A010C7d01b50e0d17dc79C8`
+
+### 7.2 Collect Latency Data
+
+**Completed Tasks:**
+- Captured transaction hash for each operation
+- Recorded block numbers for all confirmations
+- Measured latency from submission to confirmation
+- Logged gas used per transaction
+- Recorded effective gas price (1.000010 gwei)
+- Calculated calldata size in bytes
+
+**Performance Metrics Collected:**
+- Transaction hashes(9)
+- Block numbers (range: 9594575-9594600)
+- Latency measurements (range: 14.5s - 58.2s)
+- Gas consumption per transaction
+- Calldata sizes: 228 bytes (events), 36 bytes (purchases), 100 bytes (transfers)
+
+### 7.3 Generate Latency Report
+
+**Completed Tasks:**
+- Compiled all 9 transaction measurements
+- Formatted data into CSV structure
+- Calculated average metrics per operation type
+- Created performance analysis summary
+- Populated `metrics/latency/latency.csv`
+
+**Deliverables:**
+- **File:** `metrics/latency/latency.csv`
+- **Format:** txHash,blockNumber,latencyMs,gasUsed,effectiveGasPrice,calldataBytes,status
+- **Records:** 9 transactions (all successful)
+
+**Performance Analysis:**
+
+#### Event Creation Metrics
+- Average Latency: 23.7 seconds
+- Average Gas Used:  210,558 gas
+- Calldata Size: 228 bytes
+- Success Rate: 100%
+
+#### Ticket Purchase Metrics
+- Average Latency: 25.0 seconds
+- Average Gas Used: 327,199 gas
+- Calldata Size: 36 bytes
+- Success Rate: 100%
+
+#### Ticket Transfer Metrics
+- Average Latency: 35.2 seconds
+- Average Gas Used: 46,905 gas
+- Calldata Size: 100 bytes
+- Success Rate: 100%
+
+**Validation:**
+- All 9 transactions confirmed on Sepolia
+- 100% success rate (no failures)
+- CSV format matches specification exactly
+- All required metrics captured
+- Performance data ready for analysis
+
+---
+
 ## Next Steps
 
 ### Phase 4: Gas Optimization and Benchmarking (PENDING)
@@ -552,11 +676,6 @@ This document tracks the completed phases and achievements of the BlockTix proje
 - Create CLI interaction guide
 - Document Etherscan verification steps
 - Provide transaction submission examples
-
-### Phase 7: Transaction Performance Measurement (PENDING)
-- Execute 9 transactions (3 events, 3 purchases, 3 transfers)
-- Collect latency data
-- Generate performance report
 
 ### Phase 9: Usability Testing (PENDING)
 - Conduct testing with ≥3 participants
@@ -600,4 +719,4 @@ This document tracks the completed phases and achievements of the BlockTix proje
 ---
 
 **Last Updated:** 2025-11-09
-**Current Phase:** Phase 5.3 Complete  ->  Ready for Phase 7 (Transaction Performance Measurement)
+**Current Phase:** Phase 5.3 & 7 Complete  ->  Ready for Phase 4 (Gas Optimization) or Phase 9 (Usability Testing)

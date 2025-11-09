@@ -156,6 +156,17 @@ forge script script/Deploy.s.sol:Deploy --rpc-url http://localhost:8545 --broadc
 forge script script/Deploy.s.sol:Deploy --rpc-url $SEPOLIA_RPC_URL --broadcast --verify
 ```
 
+**Sepolia Deployment Addresses**(Chain ID 11155111):
+- BlockTixMain: 0x4572b63734CE8395CB32E199cfb2239f9e7D7095
+- TicketNFT: 0xF82bA5dac740Ab9955800ff5e807d16bC4014861
+- PriceOracle: 0x3c7D84D7AF3Fb18AcFFF66d310fca456eB76245e
+- Deployer Address: https://sepolia.etherscan.io/address/0x1ba94e09c8b1d8f54a43a6eb269c4da10cc111cb
+
+**Etherscan Links**:
+- [BlockTixMain](https://sepolia.etherscan.io/address/0x4572b63734ce8395cb32e199cfb2239f9e7d7095)
+- [TicketNFT](https://sepolia.etherscan.io/address/0xf82ba5dac740ab9955800ff5e807d16bc4014861)
+- [PriceOracle](https://sepolia.etherscan.io/address/0x3c7d84d7af3fb18acfff66d310fca456eb76245e)
+
 ### Contract Verification
 
 **Command**:
@@ -332,8 +343,11 @@ ETHERSCAN_API_KEY=YOUR_ETHERSCAN_API_KEY
 
 **Completed Phases**:
 - Phase 1 : Environment Setup and Contract Foundation
-- Phase 3.1 : Unit Tests Implementation (103 tests, 100% pass rate)
+- Phase 3.1 : Unit Tests Implementation (105 tests, 100% pass rate)
+- Phase 3.4 : Coverage Report Generation (97%+ coverage)
 - Phase 5.1 & 5.2 : Deployment Script and Local Anvil Deployment
+- Phase 5.3 : Sepolia Testnet Deployment (All contracts verified)
+- Phase 7 : Transaction Performance Measurement (9 transactions)
 
 **Statistics**:
 - Total Contracts : 3
@@ -341,9 +355,11 @@ ETHERSCAN_API_KEY=YOUR_ETHERSCAN_API_KEY
 - Total Test Files : 3
 - Lines of Smart Contract Code : ~1,160
 - Lines of Test Code : ~1,850
-- Total Tests : 103
+- Total Tests : 105
 - Test Pass Rate : 100%
+- Test Coverage : 97%+ (all core contracts)
 - Compilation Status : SUCCESS
+- Sepolia Deployment : LIVE
 
 ---
 
