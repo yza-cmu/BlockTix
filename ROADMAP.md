@@ -181,52 +181,7 @@
 - Edge cases properly tested
 - Gas usage recorded for each test
 
-### 3.2 Integration Tests
-
-**Tasks:**
-- Create complete event lifecycle tests
-- Implement multi-user interaction scenarios
-- Test cross-contract communication
-- Verify fund flow through system
-- Test resale rule enforcement across transfers
-- Validate fee distribution accuracy
-- Test system behavior under load
-
-**Deliverables:**
-- test/integration/E2E.t.sol with full workflows
-- Multi-user test scenarios
-- Fund distribution verification tests
-- Performance benchmark results
-
-**Validation:**
-- End-to-end flows execute successfully
-- Funds distributed correctly to all parties
-- No unexpected state changes
-- System maintains consistency
-
-### 3.3 Fuzz Testing
-
-**Tasks:**
-- Implement property-based tests for pricing functions
-- Create fuzz tests for arithmetic operations
-- Test boundary conditions with random inputs
-- Verify invariants hold under all conditions
-- Test for integer overflow/underflow
-- Validate input sanitization
-
-**Deliverables:**
-- test/fuzz/BlockTixFuzz.t.sol
-- Invariant test definitions
-- Fuzz test configuration
-- Property verification results
-
-**Validation:**
-- No invariant violations after 10,000+ runs
-- No arithmetic errors discovered
-- Input validation catches all invalid data
-- System remains in valid state
-
-### 3.4 Generate Coverage Report
+### 3.2 Generate Coverage Report
 
 **Tasks:**
 - Execute complete test suite with coverage tracking
@@ -429,145 +384,52 @@
 - Transaction hashes verifiable on Etherscan
 - Metadata complete and accurate
 
-## Phase 6: Frontend Implementation
-
-### 6.1 Initialize Next.js Project
+## Phase 6: CLI/Etherscan Interface Runbook
 
 **Tasks:**
-- Create Next.js application with TypeScript
-- Configure Tailwind CSS for styling
-- Set up app router structure
-- Configure environment variables
-- Install required dependencies
-- Set up development environment
+- Create comprehensive documentation for interacting with contracts via Etherscan
+- Write Foundry `cast` CLI commands for all key operations
+- Document step-by-step process for creating events
+- Document step-by-step process for purchasing tickets
+- Document step-by-step process for transferring tickets
+- Show how to check transaction status (pending/confirmed/failed)
+- Include Etherscan transaction links for monitoring
+- Add troubleshooting section for common errors
+- Document empty states (no events, no tickets)
 
 **Deliverables:**
-- Initialized Next.js project in frontend/
-- Package.json with all dependencies
-- TypeScript configuration
-- Tailwind configuration
-- Environment variables template
+- RUN.md or INTERFACE.md with complete interface runbook
+- CLI command examples using Foundry `cast` for all operations
+- Etherscan interaction guide with screenshots or detailed steps
+- Transaction state checking instructions
+- Error handling and troubleshooting guide
+
+**Example CLI Commands:**
+```bash
+# Create Event
+cast send $BLOCKTIX_ADDRESS "createEvent(string,uint256,uint256,uint256,uint256)" \
+  "Concert Name" 100 1000000000000000000 1735689600 500 \
+  --rpc-url $SEPOLIA_RPC_URL --private-key $PRIVATE_KEY
+
+# Purchase Ticket
+cast send $BLOCKTIX_ADDRESS "purchaseTicket(uint256)" 1 \
+  --value 1.05ether --rpc-url $SEPOLIA_RPC_URL --private-key $PRIVATE_KEY
+
+# Check Transaction Status
+cast receipt $TX_HASH --rpc-url $SEPOLIA_RPC_URL
+
+# View Event Details
+cast call $BLOCKTIX_ADDRESS "getEvent(uint256)" 1 --rpc-url $SEPOLIA_RPC_URL
+```
 
 **Validation:**
-- Development server starts without errors
-- TypeScript compilation successful
-- Tailwind styles apply correctly
-- Hot reload functioning
-
-### 6.2 Configure Wagmi
-
-**Tasks:**
-- Install wagmi and viem libraries
-- Create wagmi configuration file
-- Set up Sepolia chain configuration
-- Configure MetaMask connector
-- Implement provider setup
-- Create hooks configuration
-
-**Deliverables:**
-- src/lib/config.ts with wagmi setup
-- Provider configuration
-- Connector setup for MetaMask
-- Chain configuration for Sepolia
-
-**Validation:**
-- Wallet connection successful
-- Chain switching works
-- Provider connects to Sepolia
-- Account changes detected
-
-### 6.3 Implement Contract Integration
-
-**Tasks:**
-- Export contract ABIs from Foundry
-- Create contract address constants
-- Set up typed contract hooks
-- Implement read function wrappers
-- Create write function wrappers
-- Handle transaction states
-
-**Deliverables:**
-- src/lib/contracts.ts with addresses and ABIs
-- Typed contract interfaces
-- Custom hooks for contract interaction
-- Transaction state management
-
-**Validation:**
-- Contract calls execute successfully
-- Type safety maintained
-- ABIs match deployed contracts
-- Addresses correctly configured
-
-### 6.4 Implement Transaction Logger
-
-**Tasks:**
-- Create txLogger utility as specified in course materials
-- Implement transaction timing measurement
-- Capture gas usage and costs
-- Log calldata size
-- Format output as CSV
-- Handle transaction failures
-
-**Deliverables:**
-- src/lib/txLogger.ts implementation
-- CSV output formatting
-- Error handling logic
-- Console logging for debugging
-
-**Validation:**
-- Logger captures all required metrics
-- CSV format matches specification exactly
-- All transaction types logged correctly
-- Timing measurements accurate
-
-### 6.5 Build Core Pages
-
-**Tasks:**
-- Create landing page with event listings
-- Build event detail page with ticket purchase
-- Implement user ticket management page
-- Create user profile dashboard
-- Add navigation between pages
-- Implement responsive design
-
-**Deliverables:**
-- app/page.tsx (event listing)
-- app/events/[id]/page.tsx (event details)
-- app/tickets/page.tsx (user tickets)
-- app/profile/page.tsx (dashboard)
-- Navigation components
-- Layout templates
-
-**Validation:**
-- All pages render without errors
-- Navigation works correctly
-- Responsive on mobile devices
-- Data fetches successfully
-
-### 6.6 Implement Key Components
-
-**Tasks:**
-- Build wallet connection component
-- Create ticket purchase form
-- Implement ticket transfer modal
-- Design event card component
-- Add loading states
-- Implement error boundaries
-- Create success notifications
-
-**Deliverables:**
-- components/wallet/ConnectButton.tsx
-- components/tickets/PurchaseForm.tsx
-- components/tickets/TransferModal.tsx
-- components/events/EventCard.tsx
-- Common UI components
-- Error handling components
-
-**Validation:**
-- Components render correctly
-- User interactions work properly
-- Error states display appropriately
-- Loading states show during transactions
+- Someone can create event using Etherscan OR CLI
+- Someone can purchase ticket using Etherscan OR CLI
+- Transaction status check works
+- Etherscan links provided and functional
+- Clear instructions for all core operations
+- Error states documented
+- Empty states documented
 
 ## Phase 7: Transaction Performance Measurement
 
@@ -821,55 +683,9 @@
 - Calculations accurate
 - No missing data points
 
-## Phase 10: Continuous Integration
+## Phase 10: Final Metrics Compilation
 
-### 10.1 Create GitHub Actions Workflow
-
-**Tasks:**
-- Create .github/workflows directory
-- Write test workflow configuration
-- Configure Foundry toolchain action
-- Set up test execution steps
-- Configure failure notifications
-- Add branch protection rules
-
-**Deliverables:**
-- .github/workflows/test.yml
-- CI pipeline configuration
-- Branch protection settings
-- Build status badges
-
-**Validation:**
-- Workflow triggers on push/PR
-- Tests execute successfully
-- Failures properly reported
-- All branches covered
-
-### 10.2 Implement Coverage Reporting
-
-**Tasks:**
-- Create coverage workflow
-- Configure coverage tool
-- Set up artifact storage
-- Generate coverage badges
-- Configure coverage thresholds
-- Add PR comments with coverage
-
-**Deliverables:**
-- .github/workflows/coverage.yml
-- Coverage configuration
-- Artifact storage setup
-- Coverage reporting
-
-**Validation:**
-- Coverage reports generated
-- Artifacts properly stored
-- Thresholds enforced
-- Reports accessible
-
-## Phase 11: Final Metrics Compilation
-
-### 11.1 Generate Complete Metrics Pack
+### 10.1 Generate Complete Metrics Pack
 
 **Tasks:**
 - Collect gas-snapshot.txt from Phase 4
@@ -891,7 +707,7 @@
 - No test or placeholder data
 - Archive properly structured
 
-### 11.2 Verify Data Completeness
+### 10.2 Verify Data Completeness
 
 **Tasks:**
 - Verify all transaction hashes are real Sepolia transactions
@@ -913,81 +729,36 @@
 - No missing required fields
 - All data from production deployments
 
-## Phase 12: Documentation Finalization
-
-### 12.1 Create Sprint Deliverables
+## Phase 11: Developer Documentation & Runbook
 
 **Tasks:**
-- Organize Sprint 1 concept documents
-- Package Sprint 2 architecture materials
-- Compile Sprint 3 MVP demonstrations
-- Assemble Sprint 4 beta deliverables
-- Create demo video recordings
-- Generate metrics packs per sprint
+- Create comprehensive RUN.md at repository root
+- Document setup instructions (clone → install → configure)
+- Document how to run tests: `forge test`
+- Document how to generate coverage: `forge coverage`
+- Document how to deploy to Sepolia (commands + prerequisites)
+- Document environment variables needed (.env setup)
+- Add troubleshooting section for common issues
+- Fill in shell script files:
+  - scripts/deploy-sepolia.sh (deployment commands)
+  - scripts/generate-metrics.sh (metrics generation)
+  - scripts/test-all.sh (test execution)
+  - scripts/measure-gas.sh (gas snapshot)
 
 **Deliverables:**
-- docs/sprints/sprint1/ complete package
-- docs/sprints/sprint2/ complete package
-- docs/sprints/sprint3/ complete package
-- docs/sprints/sprint4/ complete package
-- All required PDFs and videos
-- Sprint-specific metrics
+- RUN.md at repository root with complete instructions
+- Filled-in shell scripts (currently empty 0-byte files)
+- Troubleshooting guide
 
 **Validation:**
-- All sprint requirements met
-- Videos properly formatted (MP4)
-- PDFs readable and complete
-- Metrics match sprint milestones
+- Someone can clone and run from RUN.md instructions
+- All commands work as documented
+- Shell scripts are executable and functional
+- Setup can be completed in <10 minutes
 
-### 12.2 Generate API Documentation
+## Phase 12: Repository Finalization
 
-**Tasks:**
-- Document all public functions
-- Describe function parameters
-- Specify return values
-- Document access controls
-- List all events emitted
-- Create usage examples
-
-**Deliverables:**
-- docs/api/contract-api.md
-- Function signature reference
-- Parameter type specifications
-- Event documentation
-- Access control matrix
-
-**Validation:**
-- All functions documented
-- Parameters accurately described
-- Examples compile correctly
-- Documentation matches implementation
-
-### 12.3 Create Architecture Documentation
-
-**Tasks:**
-- Draw system architecture diagram
-- Create data flow diagrams
-- Design state machine diagrams
-- Build sequence diagrams for operations
-- Document contract interactions
-- Explain design decisions
-
-**Deliverables:**
-- docs/architecture/system-design.md
-- docs/architecture/smart-contracts.md
-- docs/architecture/data-flow.md
-- All diagram files
-- Design rationale document
-
-**Validation:**
-- Diagrams accurately represent system
-- All components documented
-- Interactions clearly shown
-- Design decisions justified
-
-## Phase 13: Repository Finalization
-
-### 13.1 Tag Release Versions
+### 12.1 Tag Release Versions
 
 **Tasks:**
 - Create sprint1 tag at Sprint 1 completion
@@ -1009,7 +780,7 @@
 - Releases accessible on GitHub
 - Chronological order maintained
 
-### 13.2 Ensure Repository Access
+### 12.2 Ensure Repository Access
 
 **Tasks:**
 - Add aazamcs as repository collaborator
@@ -1031,7 +802,7 @@
 - All branches visible
 - History preserved
 
-### 13.3 Create Final Submission Package
+### 12.3 Create Final Submission Package
 
 **Tasks:**
 - Export complete source code
@@ -1053,25 +824,3 @@
 - All files present
 - No broken references
 - Setup instructions work
-
-### 13.4 Verify Reproducibility
-
-**Tasks:**
-- Clone repository on clean machine
-- Install dependencies for contracts
-- Run all contract tests
-- Install frontend dependencies
-- Start development server
-- Execute sample transactions
-
-**Deliverables:**
-- Reproducibility test report
-- Dependency installation logs
-- Test execution results
-- Setup time documentation
-
-**Validation:**
-- Clone completes successfully
-- All dependencies install
-- Tests pass on clean setup
-- Frontend runs without configuration changes
