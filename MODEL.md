@@ -322,10 +322,10 @@ BlockTix is a decentralized event ticketing platform built on Ethereum that enab
 
 **Mitigations Implemented:**
 ```solidity
-✅ ReentrancyGuard on all state-changing functions
-✅ Checks-Effects-Interactions pattern
-✅ State updates before external calls
-✅ Pull payment pattern (pendingWithdrawals)
+[X] ReentrancyGuard on all state-changing functions
+[X] Checks-Effects-Interactions pattern
+[X] State updates before external calls
+[X] Pull payment pattern (pendingWithdrawals)
 ```
 
 **Example Protection:**
@@ -364,11 +364,11 @@ function withdraw() external nonReentrant {
 
 **Mitigations Implemented:**
 ```solidity
-✅ Maximum resale markup enforced (organizer-defined)
-✅ Transparent surge pricing algorithm
-✅ Platform fee capped at 10%
-✅ Price validation in transfers
-✅ No owner control over individual prices
+[X] Maximum resale markup enforced (organizer-defined)
+[X] Transparent surge pricing algorithm
+[X] Platform fee capped at 10%
+[X] Price validation in transfers
+[X] No owner control over individual prices
 ```
 
 **Example Protection:**
@@ -400,10 +400,10 @@ function transferTicket(uint256 ticketId, address to) external payable {
 
 **Mitigations Implemented:**
 ```solidity
-✅ Surge pricing increases cost for bulk buying
-✅ Resale markup limits reduce MEV profitability
-✅ Dynamic pricing makes front-running less predictable
-⚠️  No commit-reveal scheme (future enhancement)
+[X] Surge pricing increases cost for bulk buying
+[X] Resale markup limits reduce MEV profitability
+[X] Dynamic pricing makes front-running less predictable
+WARNING:  No commit-reveal scheme (future enhancement)
 ```
 
 **Residual Risk:** HIGH - Inherent blockchain limitation
@@ -430,11 +430,11 @@ function transferTicket(uint256 ticketId, address to) external payable {
 
 **Mitigations Implemented:**
 ```solidity
-✅ Pull payment pattern (failures don't block others)
-✅ Event creation requires organizer commitment
-✅ No loops over unbounded arrays
-✅ Gas-efficient storage patterns
-✅ Failure restoration in withdraw
+[X] Pull payment pattern (failures don't block others)
+[X] Event creation requires organizer commitment
+[X] No loops over unbounded arrays
+[X] Gas-efficient storage patterns
+[X] Failure restoration in withdraw
 ```
 
 **Example Protection:**
@@ -465,10 +465,10 @@ if (!success) {
 
 **Mitigations Implemented:**
 ```solidity
-✅ Solidity 0.8.24 built-in overflow checks
-✅ Basis points (10000) for percentage calculations
-✅ Validation of input parameters
-✅ Reasonable limits on all values
+[X] Solidity 0.8.24 built-in overflow checks
+[X] Basis points (10000) for percentage calculations
+[X] Validation of input parameters
+[X] Reasonable limits on all values
 ```
 
 **Residual Risk:** VERY LOW - Language-level protection
@@ -492,11 +492,11 @@ if (!success) {
 
 **Mitigations Implemented:**
 ```solidity
-✅ Ownable pattern for admin functions
-✅ onlyBlockTixMain modifier on NFT/Oracle
-✅ Organizer checks in event functions
-✅ Owner checks in ticket usage
-✅ Custom error messages for clarity
+[X] Ownable pattern for admin functions
+[X] onlyBlockTixMain modifier on NFT/Oracle
+[X] Organizer checks in event functions
+[X] Owner checks in ticket usage
+[X] Custom error messages for clarity
 ```
 
 **Example Protection:**
@@ -531,11 +531,11 @@ function useTicket(uint256 ticketId) external {
 
 **Mitigations Implemented:**
 ```solidity
-✅ Organizer-defined maximum markup limits
-✅ Markup validation in transferTicket()
-✅ Platform fees on all transactions (reduces profit)
-✅ Transparent on-chain pricing
-⚠️  No purchase limits per address (future enhancement)
+[X] Organizer-defined maximum markup limits
+[X] Markup validation in transferTicket()
+[X] Platform fees on all transactions (reduces profit)
+[X] Transparent on-chain pricing
+WARNING:  No purchase limits per address (future enhancement)
 ```
 
 **Example Protection:**
@@ -568,12 +568,12 @@ if (msg.value > maxPrice) revert ResaleMarkupExceeded();
 
 **Mitigations Implemented:**
 ```solidity
-✅ On-chain transparency (all events visible)
-✅ Organizer address publicly linked
-✅ Platform fees incentivize legitimate behavior
-⚠️  No KYC or verification system
-⚠️  No reputation system
-⚠️  No deposit requirements
+[X] On-chain transparency (all events visible)
+[X] Organizer address publicly linked
+[X] Platform fees incentivize legitimate behavior
+WARNING:  No KYC or verification system
+WARNING:  No reputation system
+WARNING:  No deposit requirements
 ```
 
 **Residual Risk:** HIGH - Requires off-chain verification
@@ -598,15 +598,15 @@ if (msg.value > maxPrice) revert ResaleMarkupExceeded();
 
 **Mitigations Implemented:**
 ```solidity
-✅ Comprehensive unit tests (105 tests, 100% pass)
-✅ Multiple test categories (unit, integration, fuzz - planned)
-✅ OpenZeppelin battle-tested contracts
-✅ NatSpec documentation
-✅ Custom errors for clarity
-✅ Event emissions for transparency
-⚠️  No formal verification
-⚠️  No external audit (yet)
-⚠️  Not upgradeable (immutable deployment)
+[X] Comprehensive unit tests (105 tests, 100% pass)
+[X] Multiple test categories (unit, integration, fuzz - planned)
+[X] OpenZeppelin battle-tested contracts
+[X] NatSpec documentation
+[X] Custom errors for clarity
+[X] Event emissions for transparency
+WARNING:  No formal verification
+WARNING:  No external audit (yet)
+WARNING:  Not upgradeable (immutable deployment)
 ```
 
 **Residual Risk:** MEDIUM - Testing reduces but doesn't eliminate risk
@@ -630,11 +630,11 @@ if (msg.value > maxPrice) revert ResaleMarkupExceeded();
 
 **Mitigations Implemented:**
 ```solidity
-✅ Gas-efficient data structures
-✅ Optimized storage layout
-✅ No unbounded loops
-✅ Batch operations where appropriate
-✅ Gas usage tested and measured
+[X] Gas-efficient data structures
+[X] Optimized storage layout
+[X] No unbounded loops
+[X] Batch operations where appropriate
+[X] Gas usage tested and measured
 ```
 
 **Residual Risk:** LOW - Network-level issue, contract optimized
@@ -648,40 +648,40 @@ if (msg.value > maxPrice) revert ResaleMarkupExceeded();
 | Function | Platform Owner | Organizer | Ticket Holder | Anyone | Contract (Internal) |
 |----------|---------------|-----------|---------------|---------|---------------------|
 | **BlockTixMain** |
-| `createEvent()` | ✅ | ✅ | ✅ | ✅ | ❌ |
-| `purchaseTicket()` | ✅ | ✅ | ✅ | ✅ | ❌ |
-| `transferTicket()` | ✅ (if owns) | ✅ (if owns) | ✅ | ❌ | ❌ |
-| `useTicket()` | ❌ | ✅ (own events) | ❌ | ❌ | ❌ |
-| `cancelEvent()` | ❌ | ✅ (own events) | ❌ | ❌ | ❌ |
-| `withdraw()` | ✅ (own funds) | ✅ (own funds) | ✅ (own funds) | ❌ | ❌ |
-| `updatePlatformFee()` | ✅ | ❌ | ❌ | ❌ | ❌ |
-| `getEvent()` | ✅ | ✅ | ✅ | ✅ | ❌ |
-| `getTicket()` | ✅ | ✅ | ✅ | ✅ | ❌ |
+| `createEvent()` | [X] | [X] | [X] | [X] | [ ] |
+| `purchaseTicket()` | [X] | [X] | [X] | [X] | [ ] |
+| `transferTicket()` | [X] (if owns) | [X] (if owns) | [X] | [ ] | [ ] |
+| `useTicket()` | [ ] | [X] (own events) | [ ] | [ ] | [ ] |
+| `cancelEvent()` | [ ] | [X] (own events) | [ ] | [ ] | [ ] |
+| `withdraw()` | [X] (own funds) | [X] (own funds) | [X] (own funds) | [ ] | [ ] |
+| `updatePlatformFee()` | [X] | [ ] | [ ] | [ ] | [ ] |
+| `getEvent()` | [X] | [X] | [X] | [X] | [ ] |
+| `getTicket()` | [X] | [X] | [X] | [X] | [ ] |
 | **TicketNFT** |
-| `mint()` | ❌ | ❌ | ❌ | ❌ | ✅ (BlockTixMain only) |
-| `batchMint()` | ❌ | ❌ | ❌ | ❌ | ✅ (BlockTixMain only) |
-| `burn()` | ❌ | ❌ | ✅ (own tokens) | ❌ | ✅ (BlockTixMain) |
-| `setTokenURI()` | ❌ | ❌ | ❌ | ❌ | ✅ (BlockTixMain only) |
-| `setBaseURI()` | ✅ (NFT owner) | ❌ | ❌ | ❌ | ❌ |
-| `setBlockTixMain()` | ✅ (NFT owner) | ❌ | ❌ | ❌ | ❌ |
-| `transferFrom()` | ✅ (if approved) | ✅ (if approved) | ✅ (own tokens) | ❌ | ❌ |
-| `approve()` | ✅ (own tokens) | ✅ (own tokens) | ✅ | ❌ | ❌ |
+| `mint()` | [ ] | [ ] | [ ] | [ ] | [X] (BlockTixMain only) |
+| `batchMint()` | [ ] | [ ] | [ ] | [ ] | [X] (BlockTixMain only) |
+| `burn()` | [ ] | [ ] | [X] (own tokens) | [ ] | [X] (BlockTixMain) |
+| `setTokenURI()` | [ ] | [ ] | [ ] | [ ] | [X] (BlockTixMain only) |
+| `setBaseURI()` | [X] (NFT owner) | [ ] | [ ] | [ ] | [ ] |
+| `setBlockTixMain()` | [X] (NFT owner) | [ ] | [ ] | [ ] | [ ] |
+| `transferFrom()` | [X] (if approved) | [X] (if approved) | [X] (own tokens) | [ ] | [ ] |
+| `approve()` | [X] (own tokens) | [X] (own tokens) | [X] | [ ] | [ ] |
 | **PriceOracle** |
-| `calculatePrice()` | ❌ | ❌ | ❌ | ❌ | ✅ (BlockTixMain only) |
-| `calculatePriceWithTimeDecay()` | ❌ | ❌ | ❌ | ❌ | ✅ (BlockTixMain only) |
-| `validateResalePrice()` | ✅ | ✅ | ✅ | ✅ | ✅ |
-| `setDemandMultiplier()` | ✅ (Oracle owner) | ❌ | ❌ | ❌ | ❌ |
-| `setTimeDecay()` | ✅ (Oracle owner) | ❌ | ❌ | ❌ | ❌ |
-| `setSurgeMultipliers()` | ✅ (Oracle owner) | ❌ | ❌ | ❌ | ❌ |
-| `setBlockTixMain()` | ✅ (Oracle owner) | ❌ | ❌ | ❌ | ❌ |
-| `pause()` | ✅ (Oracle owner) | ❌ | ❌ | ❌ | ❌ |
-| `unpause()` | ✅ (Oracle owner) | ❌ | ❌ | ❌ | ❌ |
-| `getPriceHistory()` | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `calculatePrice()` | [ ] | [ ] | [ ] | [ ] | [X] (BlockTixMain only) |
+| `calculatePriceWithTimeDecay()` | [ ] | [ ] | [ ] | [ ] | [X] (BlockTixMain only) |
+| `validateResalePrice()` | [X] | [X] | [X] | [X] | [X] |
+| `setDemandMultiplier()` | [X] (Oracle owner) | [ ] | [ ] | [ ] | [ ] |
+| `setTimeDecay()` | [X] (Oracle owner) | [ ] | [ ] | [ ] | [ ] |
+| `setSurgeMultipliers()` | [X] (Oracle owner) | [ ] | [ ] | [ ] | [ ] |
+| `setBlockTixMain()` | [X] (Oracle owner) | [ ] | [ ] | [ ] | [ ] |
+| `pause()` | [X] (Oracle owner) | [ ] | [ ] | [ ] | [ ] |
+| `unpause()` | [X] (Oracle owner) | [ ] | [ ] | [ ] | [ ] |
+| `getPriceHistory()` | [X] | [X] | [X] | [X] | [X] |
 
 **Legend:**
-- ✅ = Allowed
-- ❌ = Denied
-- ✅ (condition) = Allowed with specific conditions
+- [X] = Allowed
+- [ ] = Denied
+- [X] (condition) = Allowed with specific conditions
 
 ---
 
@@ -835,33 +835,33 @@ function pause() external onlyOwner {
 
 | Risk | Likelihood | Impact | Severity | Status |
 |------|-----------|--------|----------|--------|
-| Reentrancy in fund transfers | LOW | CRITICAL | HIGH | ✅ MITIGATED |
-| Access control bypass | LOW | CRITICAL | HIGH | ✅ MITIGATED |
-| Integer overflow in pricing | VERY LOW | HIGH | MEDIUM | ✅ MITIGATED (Solidity 0.8) |
+| Reentrancy in fund transfers | LOW | CRITICAL | HIGH | [X] MITIGATED |
+| Access control bypass | LOW | CRITICAL | HIGH | [X] MITIGATED |
+| Integer overflow in pricing | VERY LOW | HIGH | MEDIUM | [X] MITIGATED (Solidity 0.8) |
 
 ### High Risks (Should Address)
 
 | Risk | Likelihood | Impact | Severity | Status |
 |------|-----------|--------|----------|--------|
-| Front-running ticket purchases | HIGH | MEDIUM | HIGH | ⚠️ PARTIALLY MITIGATED |
-| Fake event scams | MEDIUM | HIGH | HIGH | ⚠️ REQUIRES OFF-CHAIN |
-| Price manipulation | MEDIUM | HIGH | HIGH | ✅ MITIGATED |
-| Excessive scalping | MEDIUM | MEDIUM | MEDIUM | ✅ MITIGATED |
+| Front-running ticket purchases | HIGH | MEDIUM | HIGH | WARNING: PARTIALLY MITIGATED |
+| Fake event scams | MEDIUM | HIGH | HIGH | WARNING: REQUIRES OFF-CHAIN |
+| Price manipulation | MEDIUM | HIGH | HIGH | [X] MITIGATED |
+| Excessive scalping | MEDIUM | MEDIUM | MEDIUM | [X] MITIGATED |
 
 ### Medium Risks (Monitor)
 
 | Risk | Likelihood | Impact | Severity | Status |
 |------|-----------|--------|----------|--------|
-| DoS via event spam | LOW | MEDIUM | LOW | ✅ MITIGATED |
-| Gas manipulation | MEDIUM | LOW | LOW | ✅ MITIGATED |
-| Undiscovered bugs | MEDIUM | VARIES | MEDIUM | ⚠️ TESTING ONGOING |
+| DoS via event spam | LOW | MEDIUM | LOW | [X] MITIGATED |
+| Gas manipulation | MEDIUM | LOW | LOW | [X] MITIGATED |
+| Undiscovered bugs | MEDIUM | VARIES | MEDIUM | WARNING: TESTING ONGOING |
 
 ### Low Risks (Accept)
 
 | Risk | Likelihood | Impact | Severity | Status |
 |------|-----------|--------|----------|--------|
-| Network congestion | HIGH | LOW | LOW | ✅ ACCEPTED |
-| User error | MEDIUM | LOW | LOW | ✅ ACCEPTED |
+| Network congestion | HIGH | LOW | LOW | [X] ACCEPTED |
+| User error | MEDIUM | LOW | LOW | [X] ACCEPTED |
 
 ---
 
@@ -986,12 +986,12 @@ function pause() external onlyOwner {
 ## Conclusion
 
 The BlockTix platform implements robust security controls including:
-- ✅ Comprehensive access control system
-- ✅ Reentrancy protection on all fund transfers
-- ✅ Input validation and sanity checks
-- ✅ Transparent pricing mechanisms
-- ✅ Pull payment pattern for safe withdrawals
-- ✅ Extensive testing (105 tests, 100% pass rate)
+- [X] Comprehensive access control system
+- [X] Reentrancy protection on all fund transfers
+- [X] Input validation and sanity checks
+- [X] Transparent pricing mechanisms
+- [X] Pull payment pattern for safe withdrawals
+- [X] Extensive testing (105 tests, 100% pass rate)
 
 **Key Strengths:**
 - Well-defined role separation

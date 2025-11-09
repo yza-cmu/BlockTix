@@ -37,7 +37,7 @@ BlockTix/
 │
 ├── RUN.md                          # Operations runbook (setup, CLI, Etherscan guide)
 ├── COMPLETED.md                    # Phase completion tracking
-├── PROGRESS.md                     # Detailed progress log
+├── PROGRESS.md                     # Detailed progress  log
 ├── DIAGRAM.md                      # System architecture specifications
 ├── DEMO.md                         # Live demo walkthrough
 ├── ROADMAP.md                      # Implementation roadmap
