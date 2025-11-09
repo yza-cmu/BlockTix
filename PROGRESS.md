@@ -12,8 +12,8 @@
 |--------|--------|----------|--------------|
 | Sprint 1 |  Completed | Week 1-2 | Concept, WhyChain Canvas, Literature Scan, Team Charter |
 | **Sprint 2** |  **COMPLETED** | Week 3-6 | Architecture, Smart Contracts, Tests, Local Deployment |
-| **Sprint 3** | 🔄 **IN PROGRESS** | Week 7-10 | Sepolia Deployment, Frontend, Metrics, Gas Optimization |
-| **Sprint 4** | 📋 **PLANNED** | Week 11-14 | Security Audit, Usability Testing, CI/CD, Final Metrics |
+| **Sprint 3** | **IN PROGRESS** | Week 7-10 | Sepolia Deployment, Frontend, Metrics, Gas Optimization |
+| **Sprint 4** | **PLANNED** | Week 11-14 | Security Audit, Usability Testing, CI/CD, Final Metrics |
 
 ---
 
@@ -103,13 +103,13 @@
 
 ---
 
-## 🔄 Sprint 3: Production Deployment & Frontend (IN PROGRESS)
+## Sprint 3: Production Deployment & Frontend (IN PROGRESS)
 
 **Objective:** Deploy to Sepolia testnet, build frontend interface, implement performance metrics, and optimize gas usage.
 
 ### Phase 5.3: Deploy to Sepolia Testnet
 
-**Status:** ✅ COMPLETED
+**Status:** COMPLETED
 **Priority:** HIGH
 **Completion Date:** 2025-11-09
 
@@ -123,30 +123,30 @@
 - [x] Test contract interactions on Sepolia
 
 **Deliverables:**
-- ✅ Sepolia deployment addresses (3 contracts)
+- Sepolia deployment addresses(3 contracts)
   - BlockTixMain: `0x4572b63734CE8395CB32E199cfb2239f9e7D7095`
   - TicketNFT: `0xF82bA5dac740Ab9955800ff5e807d16bC4014861`
   - PriceOracle: `0x3c7D84D7AF3Fb18AcFFF66d310fca456eB76245e`
-- ✅ Etherscan verification links
+- Etherscan verification links
   - [BlockTixMain](https://sepolia.etherscan.io/address/0x4572b63734ce8395cb32e199cfb2239f9e7d7095)
   - [TicketNFT](https://sepolia.etherscan.io/address/0xf82ba5dac740ab9955800ff5e807d16bc4014861)
   - [PriceOracle](https://sepolia.etherscan.io/address/0x3c7d84d7af3fb18acfff66d310fca456eb76245e)
-- ✅ Deployment transaction hashes (saved in `broadcast/Deploy.s.sol/11155111/run-latest.json`)
-- ✅ Gas cost analysis: 4,096,525 total gas (~0.0042 ETH)
-- ✅ Deployment metadata documented in `metrics/deploy.json`
+- Deployment transaction hashes (saved in `broadcast/Deploy.s.sol/11155111/run-latest.json`)
+- Gas cost analysis: 4,096,525 total gas(~0.0042 ETH)
+- Deployment metadata documented in `metrics/deploy.json`
 
 **Acceptance Criteria:**
-- ✅ All 3 contracts deployed to Sepolia successfully
-- ✅ Etherscan verification shows verified source code
-- ✅ Contracts are accessible and functional via Etherscan
-- ✅ Cross-contract references properly configured
-- ✅ Deployment metadata documented
+- All 3 contracts deployed to Sepolia succesfully
+- Etherscan verification shows verified source code
+- Contracts are accessible and functional via Etherscan
+- Cross-contract references properly configured
+- Deployment metadata documented
 
 ---
 
 ### Phase 6: Frontend Implementation
 
-**Status:** 📋 Pending
+**Status:** Pending
 **Priority:** HIGH
 **Estimated Effort:** 15-20 hours
 
@@ -254,7 +254,7 @@
 
 ### Phase 3.4: Coverage Report Generation
 
-**Status:** ✅ COMPLETED
+**Status:** COMPLETED
 **Priority:** MEDIUM
 **Completion Date:** 2025-11-09
 
@@ -267,15 +267,15 @@
 - [x] Calculate coverage percentages per contract
 
 **Deliverables:**
-- ✅ `metrics/coverage/coverage-summary.txt` - Comprehensive coverage report
-- ✅ `metrics/coverage/lcov.info` - LCOV format coverage data
-- ✅ Coverage analysis and documentation
-- ✅ All core contracts exceed 95% coverage target
+- `metrics/coverage/coverage-summary.txt` - Comprehensive coverage report
+- `metrics/coverage/lcov.info` - LCOV format coverage data
+- Coverage analysis and documentation
+- All core contracts exceed 95% coverage target
 
 **Results:**
-- BlockTixMain.sol: 97.53% line coverage ✅
-- TicketNFT.sol: 97.83% line coverage ✅
-- PriceOracle.sol: 97.37% line coverage ✅
+- BlockTixMain.sol: 97.53% line coverage
+- TicketNFT.sol: 97.83% line coverage
+- PriceOracle.sol: 97.37% line coverage
 - 105/105 tests passing (100% pass rate)
 - ALL CORE CONTRACTS EXCEED 95% TARGET
 
@@ -283,7 +283,7 @@
 
 ### Phase 4.3: Final Gas Snapshot
 
-**Status:** 📋 Pending
+**Status:** Pending
 **Priority:** MEDIUM
 **Estimated Effort:** 2-3 hours
 
@@ -332,7 +332,7 @@
 
 ### Phase 7: Transaction Performance Measurement
 
-**Status:** 📋 Pending
+**Status:** Pending
 **Priority:** HIGH
 **Estimated Effort:** 3-4 hours
 
@@ -403,13 +403,13 @@ txHash,blockNumber,latencyMs,gasUsed,effectiveGasPrice,calldataBytes,status
 
 ---
 
-## 📋 Sprint 4: Security, Testing & Final Delivery (PLANNED)
+## Sprint 4: Security, Testing & Final Delivery (PLANNED)
 
 **Objective:** Complete security audit, usability testing, CI/CD setup, and final metrics compilation.
 
 ### Phase 8: Security Analysis
 
-**Status:** 📋 Planned
+**Status:** Planned
 **Priority:** HIGH
 **Estimated Effort:** 4-6 hours
 
@@ -459,7 +459,7 @@ txHash,blockNumber,latencyMs,gasUsed,effectiveGasPrice,calldataBytes,status
 
 ### Phase 9: Usability Testing Infrastructure
 
-**Status:** 📋 Planned
+**Status:** Planned
 **Priority:** MEDIUM
 **Estimated Effort:** 6-8 hours
 
@@ -534,7 +534,7 @@ testerId,success,timeOnTaskSec,SEQ_1to7,comment
 
 ### Phase 10: Continuous Integration
 
-**Status:** 📋 Planned
+**Status:** Planned
 **Priority:** MEDIUM
 **Estimated Effort:** 2-3 hours
 
@@ -572,7 +572,7 @@ testerId,success,timeOnTaskSec,SEQ_1to7,comment
 
 ### Phase 11: Final Metrics Compilation
 
-**Status:** 📋 Planned
+**Status:** Planned
 **Priority:** HIGH
 **Estimated Effort:** 2-3 hours
 
