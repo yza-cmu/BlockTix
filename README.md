@@ -10,9 +10,9 @@ BlockTix/
 │
 ├── contracts/                      # Smart contract development (Foundry)
 │   ├── src/
-│   │   ├── BlockTixMain.sol       # Primary ticketing contract with event management
-│   │   ├── TicketNFT.sol          # ERC-721 implementation for ticket tokens
-│   │   ├── PriceOracle.sol        # Dynamic pricing and fee calculation contract
+│   │   ├── BlockTixMain.sol       # Primary ticketing contract (399 lines)
+│   │   ├── TicketNFT.sol          # ERC-721 implementation (186 lines)
+│   │   ├── PriceOracle.sol        # Dynamic pricing engine (289 lines)
 │   │   └── interfaces/
 │   │       ├── IBlockTix.sol      # Main contract interface
 │   │       ├── ITicketNFT.sol     # NFT interface specifications
@@ -20,30 +20,51 @@ BlockTix/
 │   │
 │   ├── test/
 │   │   └── unit/
-│   │       ├── BlockTixMain.t.sol # Unit tests for main contract (31 tests)
-│   │       ├── TicketNFT.t.sol    # NFT functionality tests (32 tests)
-│   │       └── PriceOracle.t.sol  # Pricing mechanism tests (40 tests)
+│   │       ├── BlockTixMain.t.sol # Unit tests (31 tests)
+│   │       ├── TicketNFT.t.sol    # NFT tests (32 tests)
+│   │       └── PriceOracle.t.sol  # Pricing tests (40 tests)
 │   │
 │   ├── script/
-│   │   └── Deploy.s.sol           # Deployment script for all contracts
+│   │   └── Deploy.s.sol           # Deployment script
 │   │
 │   ├── lib/                       # Dependencies (managed by Foundry)
 │   │   ├── forge-std/             # Foundry standard library
-│   │   └── openzeppelin-contracts/# OpenZeppelin v5.x contracts
+│   │   └── openzeppelin-contracts/# OpenZeppelin v5.x
 │   │
 │   ├── foundry.toml               # Foundry configuration
-│   ├── .env.example               # Environment variables template
+│   ├── .env.example               # Environment template
 │   └── remappings.txt             # Import remappings
 │
-├── RUN.md                          # Operations runbook (setup, CLI, Etherscan guide)
-├── COMPLETED.md                    # Phase completion tracking
-├── PROGRESS.md                     # Detailed progress  log
-├── DIAGRAM.md                      # System architecture specifications
-├── DEMO.md                         # Live demo walkthrough
-├── ROADMAP.md                      # Implementation roadmap
-├── scripts/                        # Helper scripts for testing and deployment
-├── .gitignore
+├── metrics/                        # Sprint 4 metrics & analysis
+│   ├── METRICS-SUMMARY.md         # Quick metrics overview
+│   ├── coverage/                  # Test coverage reports (97%+)
+│   ├── gas/                       # Gas optimization analysis (24-44% savings)
+│   ├── latency/                   # Transaction performance data
+│   ├── security/                  # Slither security analysis
+│   └── usability/                 # Usability improvements documentation
+│
+├── scripts/                        # Helper scripts
+│   ├── test-all.sh                # Run all tests
+│   ├── measure-gas.sh             # Generate gas snapshot
+│   ├── generate-metrics.sh        # Generate all metrics
+│   └── deploy-sepolia.sh          # Deploy to Sepolia
+│
+├── archive/                        # Progress tracking files
+│   ├── COMPLETED.md               # Phase completion tracking
+│   ├── PROGRESS.md                # Detailed progress log
+│   └── ROADMAP.md                 # Implementation roadmap
+│
+├── architecture/                   # System architecture diagrams
+├── logs/                           # Deployment and test logs
+│
 ├── README.md                       # This file
+├── RUN.md                          # Operations runbook
+├── AIUSAGE.txt                     # AI usage documentation
+├── ARCHITECTURE.md                 # Architecture documentation
+├── CONTRACT.md                     # Contract API documentation
+├── MODEL.md                        # Threat model & permissions
+├── DEMO.md                         # Live demo walkthrough
+├── .gitignore
 └── LICENSE
 
 ```
@@ -73,7 +94,7 @@ cp .env.example .env
 # Compile contracts
 forge build
 
-# Run all tests (103 tests)
+# Run all tests (105 tests)
 forge test -vv
 
 # Run tests with gas reporting
@@ -81,6 +102,9 @@ forge test --gas-report
 
 # Generate coverage report
 forge coverage
+
+# Generate gas snapshot
+forge snapshot
 ```
 
 ---
@@ -106,8 +130,9 @@ forge coverage
 - `./scripts/generate-metrics.sh` : Generate all metrics files
 
 **Test Results**:
-- Total Tests : 103
-- Pass Rate : 100% (103/103 passing)
+- Total Tests : 105
+- Pass Rate : 100% (105/105 passing)
+- Coverage : 97%+ (exceeds 95% target)
 - Compilation : SUCCESS (0 errors, 0 warnings)
 
 ### Gas Measurements
@@ -219,6 +244,13 @@ BlockTix implements a modular three-contract architecture for decentralized even
 - `cancelEvent()` : Cancel events (organizer only)
 - `withdraw()` : Withdraw accumulated funds
 - `updatePlatformFee()` : Update platform fee (owner only)
+
+**Helper Functions (Sprint 4)**:
+- `getAvailableTickets()` : Check remaining tickets for event
+- `getMaxResalePrice()` : Calculate maximum allowed resale price
+- `getTicketPrice()` : Preview current ticket price
+- `isEventSelling()` : Check if event is accepting purchases
+- `getEventStats()` : Get sales statistics (sold/total/percentage)
 
 **State Management**:
 - Event struct : eventId, organizer, name, totalTickets, ticketsSold, basePrice, eventDate, isActive, maxResaleMarkup
@@ -337,36 +369,76 @@ ETHERSCAN_API_KEY=YOUR_ETHERSCAN_API_KEY
 
 ---
 
+## Sprint 4 Metrics & Quality Assurance
+
+**Metrics Location**: `metrics/` folder (see [METRICS-SUMMARY.md](metrics/METRICS-SUMMARY.md) for overview)
+
+**Security**:
+- ✓ Slither static analysis completed
+- ✓ 3 reentrancy vulnerabilities fixed (1 Medium, 2 Low)
+- ✓ 0 High/Medium/Low severity issues remaining
+- ✓ Security report: `metrics/security/slither-summary.txt`
+
+**Gas Optimization**:
+- ✓ 24-44% gas reduction achieved (target: 20%)
+- ✓ Struct packing optimization (8 slots → 3 slots)
+- ✓ Immutable variables for contract references
+- ✓ Details: `metrics/gas/gas-improvements.txt`
+
+**Usability Improvements**:
+- ✓ 12 enhancements (4 validations, 3 error improvements, 5 helpers)
+- ✓ Helper functions: getAvailableTickets(), getMaxResalePrice(), etc.
+- ✓ Better error messages with parameters
+- ✓ Details: `metrics/usability/usability-improvements.txt`
+
+**Performance**:
+- ✓ 9 Sepolia transactions tested (100% success rate)
+- ✓ Average latency: 24-35 seconds
+- ✓ Details: `metrics/latency/latency.csv`
+
+**Feature Completeness**:
+- ✓ 100% of planned features implemented
+- ✓ All roadmap phases complete
+- ✓ Details: `metrics/coverage/feature-completeness.txt`
+
+---
+
 ## Project Documentation
 
 ### Key Files
-- `COMPLETED.md` : Tracks completed phases and achievements
-- `PROGRESS.md` : Detailed progress log with metrics
-- `DIAGRAM.md` : System architecture specifications
+- `RUN.md` : Complete operations runbook (setup, CLI commands, Etherscan)
+- `AIUSAGE.txt` : AI usage documentation for all sprints
+- `ARCHITECTURE.md` : System architecture with diagrams
+- `CONTRACT.md` : Complete contract API documentation
+- `MODEL.md` : Threat model and permission matrix
 - `DEMO.md` : Live demo walkthrough with cast commands
-- `ROADMAP.md` : Implementation roadmap
+- `metrics/METRICS-SUMMARY.md` : Sprint 4 metrics overview
+- `archive/` : Progress tracking files (COMPLETED.md, PROGRESS.md, ROADMAP.md)
 
 ### Current Implementation Status
 
-**Completed Phases**:
-- Phase 1 : Environment Setup and Contract Foundation
-- Phase 3.1 : Unit Tests Implementation (105 tests, 100% pass rate)
-- Phase 3.4 : Coverage Report Generation (97%+ coverage)
-- Phase 5.1 & 5.2 : Deployment Script and Local Anvil Deployment
-- Phase 5.3 : Sepolia Testnet Deployment (All contracts verified)
-- Phase 7 : Transaction Performance Measurement (9 transactions)
+**All Phases Complete**:
+- ✓ Phase 1: Environment Setup
+- ✓ Phase 2: Smart Contract Implementation
+- ✓ Phase 3: Testing Suite (105 tests, 97%+ coverage)
+- ✓ Phase 4: Gas Optimization (24-44% reduction)
+- ✓ Phase 5: Deployment (Sepolia verified)
+- ✓ Phase 6: Operations Runbook
+- ✓ Phase 7: Performance Measurement
+- ✓ Phase 8: Security Analysis
+- ✓ Sprint 4: Feature Completeness & Polish
 
-**Statistics**:
-- Total Contracts : 3
+**Final Statistics**:
+- Total Contracts : 3 (874 lines)
 - Total Interfaces : 3
-- Total Test Files : 3
-- Lines of Smart Contract Code : ~1,160
-- Lines of Test Code : ~1,850
+- Total Test Files : 3 (1,850 lines)
 - Total Tests : 105
 - Test Pass Rate : 100%
 - Test Coverage : 97%+ (all core contracts)
+- Gas Optimization : 24-44% savings
+- Security Issues : 0 critical remaining
 - Compilation Status : SUCCESS
-- Sepolia Deployment : LIVE
+- Sepolia Deployment : LIVE & VERIFIED
 
 ---
 
