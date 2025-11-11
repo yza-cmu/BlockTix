@@ -63,8 +63,10 @@ contract TicketNFT is ERC721URIStorage, Ownable {
     function mint(address to, uint256 eventId) external onlyBlockTixMain returns (uint256) {
         uint256 tokenId = _tokenIdCounter++;
 
-        _safeMint(to, tokenId);
+        // Set state before external call (checks-effects-interactions pattern)
         tokenToEvent[tokenId] = eventId;
+
+        _safeMint(to, tokenId);
 
         emit TicketMinted(tokenId, to, eventId);
 
@@ -87,9 +89,12 @@ contract TicketNFT is ERC721URIStorage, Ownable {
 
         for (uint256 i = 0; i < amount; i++) {
             uint256 tokenId = _tokenIdCounter++;
-            _safeMint(to, tokenId);
+
+            // Set state before external call (checks-effects-interactions pattern)
             tokenToEvent[tokenId] = eventId;
             tokenIds[i] = tokenId;
+
+            _safeMint(to, tokenId);
 
             emit TicketMinted(tokenId, to, eventId);
         }

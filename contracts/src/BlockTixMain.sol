@@ -284,11 +284,13 @@ contract BlockTixMain is ReentrancyGuard, Ownable {
 
         if (amount == 0) revert NoWithdrawalAvailable();
 
+        // Clear balance before external call (checks-effects-interactions pattern)
         pendingWithdrawals[msg.sender] = 0;
 
         (bool success, ) = msg.sender.call{value: amount}("");
         if (!success) {
-            pendingWithdrawals[msg.sender] = amount; // Restore on failure
+            // Don't restore state after external call - just revert
+            // User can try withdrawal again, nonReentrant protects against exploits
             revert WithdrawalFailed();
         }
 
