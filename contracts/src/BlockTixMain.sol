@@ -13,37 +13,36 @@ import {IPriceOracle} from "./interfaces/IPriceOracle.sol";
  */
 contract BlockTixMain is ReentrancyGuard, Ownable {
     // State Variables
-    ITicketNFT public ticketNFT;
-    IPriceOracle public priceOracle;
+    ITicketNFT public immutable ticketNFT;
+    IPriceOracle public immutable priceOracle;
 
     uint256 public eventCount;
     uint256 public platformFeePercentage; // basis points, 100 = 1%
 
     // Structs
     struct Event {
-        uint256 eventId;
-        address organizer;
-        string name;
-        uint256 totalTickets;
-        uint256 ticketsSold;
-        uint256 basePrice;
-        uint256 eventDate;
-        bool isActive;
-        uint256 maxResaleMarkup; // Basis points
+        uint64 eventId;
+        address organizer;  // 20 bytes + 8 bytes = 28 bytes in slot 0
+        uint32 totalTickets;
+        uint32 ticketsSold; // slot 1: 4 + 4 = 8 bytes
+        uint128 basePrice;  // slot 1: + 16 bytes = 24 bytes
+        uint64 eventDate;   // slot 2: 8 bytes
+        bool isActive;      // slot 2: + 1 byte = 9 bytes
+        uint16 maxResaleMarkup; // slot 2: + 2 bytes = 11 bytes (Basis points)
+        string name;        // slot 3+
     }
 
     struct Ticket {
-        uint256 ticketId;
-        uint256 eventId;
-        address currentOwner;
-        uint256 purchasePrice;
-        bool isUsed;
+        uint128 ticketId;
+        uint128 eventId;        // slot 0: 16 + 16 = 32 bytes
+        address currentOwner;   // slot 1: 20 bytes
+        bool isUsed;            // slot 1: + 1 byte = 21 bytes
+        uint128 purchasePrice;  // slot 2: 16 bytes
     }
 
     // Mappings
     mapping(uint256 => Event) public events;
     mapping(uint256 => Ticket) public tickets;
-    mapping(uint256 => uint256) public ticketToEvent; // ticketId => eventId
     mapping(address => uint256) public pendingWithdrawals;
 
     // Events
@@ -127,19 +126,22 @@ contract BlockTixMain is ReentrancyGuard, Ownable {
         if (totalTickets == 0 || basePrice == 0 || eventDate <= block.timestamp) {
             revert InvalidParameters();
         }
+        if (totalTickets > type(uint32).max || basePrice > type(uint128).max || eventDate > type(uint64).max || maxResaleMarkup > type(uint16).max) {
+            revert InvalidParameters();
+        }
 
         uint256 eventId = eventCount++;
 
         events[eventId] = Event({
-            eventId: eventId,
+            eventId: uint64(eventId),
             organizer: msg.sender,
             name: name,
-            totalTickets: totalTickets,
+            totalTickets: uint32(totalTickets),
             ticketsSold: 0,
-            basePrice: basePrice,
-            eventDate: eventDate,
+            basePrice: uint128(basePrice),
+            eventDate: uint64(eventDate),
             isActive: true,
-            maxResaleMarkup: maxResaleMarkup
+            maxResaleMarkup: uint16(maxResaleMarkup)
         });
 
         emit EventCreated(eventId, msg.sender, name, totalTickets, basePrice, eventDate);
@@ -169,18 +171,18 @@ contract BlockTixMain is ReentrancyGuard, Ownable {
         );
 
         if (msg.value < price) revert InsufficientPayment();
+        if (price > type(uint128).max) revert InvalidParameters();
 
         uint256 ticketId = ticketNFT.mint(msg.sender, eventId);
 
         tickets[ticketId] = Ticket({
-            ticketId: ticketId,
-            eventId: eventId,
+            ticketId: uint128(ticketId),
+            eventId: uint128(eventId),
             currentOwner: msg.sender,
-            purchasePrice: price,
-            isUsed: false
+            isUsed: false,
+            purchasePrice: uint128(price)
         });
 
-        ticketToEvent[ticketId] = eventId;
         eventData.ticketsSold++;
 
         // Calculate and distribute fees
@@ -234,7 +236,7 @@ contract BlockTixMain is ReentrancyGuard, Ownable {
 
         // Update ticket ownership
         ticket.currentOwner = to;
-        ticket.purchasePrice = msg.value;
+        ticket.purchasePrice = uint128(msg.value);
 
         // Transfer NFT
         ticketNFT.transferFrom(msg.sender, to, ticketId);

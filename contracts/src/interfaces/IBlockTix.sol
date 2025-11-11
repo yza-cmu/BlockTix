@@ -9,23 +9,23 @@ pragma solidity ^0.8.24;
 interface IBlockTix {
     // Structs
     struct Event {
-        uint256 eventId;
+        uint64 eventId;
         address organizer;
-        string name;
-        uint256 totalTickets;
-        uint256 ticketsSold;
-        uint256 basePrice;
-        uint256 eventDate;
+        uint32 totalTickets;
+        uint32 ticketsSold;
+        uint128 basePrice;
+        uint64 eventDate;
         bool isActive;
-        uint256 maxResaleMarkup;
+        uint16 maxResaleMarkup;
+        string name;
     }
 
     struct Ticket {
-        uint256 ticketId;
-        uint256 eventId;
+        uint128 ticketId;
+        uint128 eventId;
         address currentOwner;
-        uint256 purchasePrice;
         bool isUsed;
+        uint128 purchasePrice;
     }
 
     // Events
