@@ -58,10 +58,13 @@ interface IBlockTix {
     error InsufficientPayment();
     error NotTicketOwner();
     error TicketAlreadyUsed();
-    error ResaleMarkupExceeded();
+    error ResaleMarkupExceeded(uint256 maxPrice);
     error NoWithdrawalAvailable();
     error WithdrawalFailed();
     error InvalidParameters();
+    error InvalidAddress();
+    error NotEventOrganizer();
+    error EmptyEventName();
 
     /**
      * @notice Create a new event

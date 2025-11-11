@@ -116,6 +116,8 @@ contract PriceOracle is Ownable, Pausable {
         uint256 totalTickets,
         uint256 eventDate
     ) external whenNotPaused onlyBlockTixMain returns (uint256) {
+        if (totalTickets == 0) revert InvalidParameters();
+
         uint256 price = basePrice;
 
         // Apply surge pricing (percentage-based) + demand multiplier

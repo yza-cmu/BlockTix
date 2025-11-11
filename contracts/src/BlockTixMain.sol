@@ -85,10 +85,13 @@ contract BlockTixMain is ReentrancyGuard, Ownable {
     error InsufficientPayment();
     error NotTicketOwner();
     error TicketAlreadyUsed();
-    error ResaleMarkupExceeded();
+    error ResaleMarkupExceeded(uint256 maxPrice);
     error NoWithdrawalAvailable();
     error WithdrawalFailed();
     error InvalidParameters();
+    error InvalidAddress();
+    error NotEventOrganizer();
+    error EmptyEventName();
 
     /**
      * @notice Constructor
@@ -123,6 +126,7 @@ contract BlockTixMain is ReentrancyGuard, Ownable {
         uint256 eventDate,
         uint256 maxResaleMarkup
     ) external returns (uint256) {
+        if (bytes(name).length == 0) revert EmptyEventName();
         if (totalTickets == 0 || basePrice == 0 || eventDate <= block.timestamp) {
             revert InvalidParameters();
         }
@@ -209,6 +213,9 @@ contract BlockTixMain is ReentrancyGuard, Ownable {
      * @param to Address of the buyer
      */
     function transferTicket(uint256 ticketId, address to) external payable nonReentrant {
+        if (to == address(0)) revert InvalidAddress();
+        if (msg.value == 0) revert InsufficientPayment();
+
         Ticket storage ticket = tickets[ticketId];
 
         if (ticket.currentOwner != msg.sender) revert NotTicketOwner();
@@ -253,7 +260,7 @@ contract BlockTixMain is ReentrancyGuard, Ownable {
         Ticket storage ticket = tickets[ticketId];
         Event storage eventData = events[ticket.eventId];
 
-        if (msg.sender != eventData.organizer) revert NotTicketOwner();
+        if (msg.sender != eventData.organizer) revert NotEventOrganizer();
         if (ticket.isUsed) revert TicketAlreadyUsed();
 
         ticket.isUsed = true;
@@ -328,5 +335,77 @@ contract BlockTixMain is ReentrancyGuard, Ownable {
      */
     function getTicket(uint256 ticketId) external view returns (Ticket memory) {
         return tickets[ticketId];
+    }
+
+    /**
+     * @notice Get number of available tickets for an event
+     * @param eventId ID of the event
+     * @return Number of tickets still available
+     */
+    function getAvailableTickets(uint256 eventId) external view returns (uint256) {
+        if (eventId >= eventCount) revert InvalidEventId();
+        Event storage eventData = events[eventId];
+        return eventData.totalTickets - eventData.ticketsSold;
+    }
+
+    /**
+     * @notice Get maximum resale price for a ticket
+     * @param ticketId ID of the ticket
+     * @return Maximum allowed resale price in wei
+     */
+    function getMaxResalePrice(uint256 ticketId) external view returns (uint256) {
+        Ticket storage ticket = tickets[ticketId];
+        Event storage eventData = events[ticket.eventId];
+        return ticket.purchasePrice + (ticket.purchasePrice * eventData.maxResaleMarkup) / 10000;
+    }
+
+    /**
+     * @notice Preview current ticket price for an event (view function)
+     * @param eventId ID of the event
+     * @return Current ticket price in wei
+     */
+    function getTicketPrice(uint256 eventId) external view returns (uint256) {
+        if (eventId >= eventCount) revert InvalidEventId();
+        Event storage eventData = events[eventId];
+
+        // Calculate price without recording history (view function)
+        uint256 price = eventData.basePrice;
+
+        // Apply surge pricing based on tickets sold
+        if (eventData.ticketsSold >= 90) {
+            price = price + (price * 2000) / 10000; // 20% surge
+        } else if (eventData.ticketsSold >= 75) {
+            price = price + (price * 1000) / 10000; // 10% surge
+        } else if (eventData.ticketsSold >= 50) {
+            price = price + (price * 500) / 10000; // 5% surge
+        }
+
+        return price;
+    }
+
+    /**
+     * @notice Check if an event is actively selling tickets
+     * @param eventId ID of the event
+     * @return True if event is active and has tickets available
+     */
+    function isEventSelling(uint256 eventId) external view returns (bool) {
+        if (eventId >= eventCount) return false;
+        Event storage eventData = events[eventId];
+        return eventData.isActive && eventData.ticketsSold < eventData.totalTickets;
+    }
+
+    /**
+     * @notice Get event statistics
+     * @param eventId ID of the event
+     * @return sold Number of tickets sold
+     * @return total Total number of tickets
+     * @return soldPercentage Percentage of tickets sold (in basis points)
+     */
+    function getEventStats(uint256 eventId) external view returns (uint32 sold, uint32 total, uint256 soldPercentage) {
+        if (eventId >= eventCount) revert InvalidEventId();
+        Event storage eventData = events[eventId];
+        sold = eventData.ticketsSold;
+        total = eventData.totalTickets;
+        soldPercentage = total > 0 ? (uint256(sold) * 10000) / uint256(total) : 0;
     }
 }

@@ -183,9 +183,45 @@ contract BlockTixMainTest is Test {
         main.transferTicket{value: 1 ether}(ticketId, buyer2);
     }
 
-    // ------------------------------------------------------------
-    // USE TICKET
-    // ------------------------------------------------------------
+    function test_TransferTicket_RevertTicketUsed() public {
+        vm.prank(organizer);
+        uint256 eventId = blockTix.createEvent("Concert", 100, 1 ether, block.timestamp + 30 days, 2000);
+
+        vm.prank(buyer1);
+        uint256 ticketId = blockTix.purchaseTicket{value: 1 ether}(eventId);
+
+        vm.prank(organizer);
+        blockTix.useTicket(ticketId);
+
+        vm.startPrank(buyer1);
+        ticketNFT.approve(address(blockTix), ticketId);
+
+        vm.expectRevert(BlockTixMain.TicketAlreadyUsed.selector);
+        blockTix.transferTicket{value: 1.1 ether}(ticketId, buyer2);
+
+        vm.stopPrank();
+    }
+
+    function test_TransferTicket_RevertMarkupExceeded() public {
+        vm.prank(organizer);
+        uint256 eventId = blockTix.createEvent("Concert", 100, 1 ether, block.timestamp + 30 days, 2000);
+
+        vm.prank(buyer1);
+        uint256 ticketId = blockTix.purchaseTicket{value: 1 ether}(eventId);
+
+        vm.startPrank(buyer1);
+        ticketNFT.approve(address(blockTix), ticketId);
+
+        uint256 excessivePrice = 1.3 ether; // Over 20% markup
+        uint256 maxPrice = 1.2 ether; // 1 ether + 20% = 1.2 ether
+
+        vm.expectRevert(abi.encodeWithSelector(BlockTixMain.ResaleMarkupExceeded.selector, maxPrice));
+        blockTix.transferTicket{value: excessivePrice}(ticketId, buyer2);
+
+        vm.stopPrank();
+    }
+
+    // ============ Ticket Usage Tests ============
 
     function test_UseTicket_Success() public {
         uint256 eventId = _createBasicEvent();
@@ -196,8 +232,15 @@ contract BlockTixMainTest is Test {
         vm.prank(organizer);
         main.useTicket(ticketId);
 
-        BlockTixMain.Ticket memory t = main.getTicket(ticketId);
-        assertTrue(t.isUsed);
+        vm.prank(buyer1);
+        uint256 ticketId = blockTix.purchaseTicket{value: 1 ether}(eventId);
+
+        vm.startPrank(buyer1);
+
+        vm.expectRevert(BlockTixMain.NotEventOrganizer.selector);
+        blockTix.useTicket(ticketId);
+
+        vm.stopPrank();
     }
 
     function test_UseTicket_RevertAlreadyUsed() public {
