@@ -16,7 +16,7 @@ contract PriceOracle is Ownable, Pausable {
     address public blockTixMain;
 
     // Price adjustment thresholds
-    uint256 public constant SURGE_THRESHOLD_1 = 50; // 50% sold
+    uint256 public constant SURGE_THRESHOLD_1 = 50; // 50% sold (or 50 tickets depending on usage)
     uint256 public constant SURGE_THRESHOLD_2 = 75; // 75% sold
     uint256 public constant SURGE_THRESHOLD_3 = 90; // 90% sold
 
@@ -74,7 +74,7 @@ contract PriceOracle is Ownable, Pausable {
     }
 
     /**
-     * @notice Calculate dynamic price for ticket
+     * @notice Calculate dynamic price for ticket (surge only)
      * @param eventId ID of event
      * @param basePrice Base price of ticket
      * @param ticketsSold Number of tickets sold already
@@ -87,7 +87,7 @@ contract PriceOracle is Ownable, Pausable {
     ) external whenNotPaused onlyBlockTixMain returns (uint256) {
         uint256 price = basePrice;
 
-        // Apply surge pricing based on tickets sold percentage
+        // Apply surge + demand multiplier
         price = _applySurgePricing(price, ticketsSold);
 
         // Record price in history
@@ -118,7 +118,7 @@ contract PriceOracle is Ownable, Pausable {
     ) external whenNotPaused onlyBlockTixMain returns (uint256) {
         uint256 price = basePrice;
 
-        // Apply surge pricing
+        // Apply surge pricing (percentage-based) + demand multiplier
         uint256 soldPercentage = (ticketsSold * 100) / totalTickets;
         price = _applySurgePricingWithPercentage(price, soldPercentage);
 
@@ -162,39 +162,53 @@ contract PriceOracle is Ownable, Pausable {
 
     /**
      * @notice Internal function to apply surge pricing based on tickets sold
-     * @param basePrice base price
-     * @param ticketsSold number of tickets sold
-     * @return price adjusted price
+     *         Also applies demand multiplier if set
      */
     function _applySurgePricing(uint256 basePrice, uint256 ticketsSold) internal view returns (uint256) {
+        uint256 price = basePrice;
+
         if (ticketsSold >= SURGE_THRESHOLD_3) {
-            return basePrice + (basePrice * surgeMultiplier3) / 10000;
+            price = basePrice + (basePrice * surgeMultiplier3) / 10000;
         } else if (ticketsSold >= SURGE_THRESHOLD_2) {
-            return basePrice + (basePrice * surgeMultiplier2) / 10000;
+            price = basePrice + (basePrice * surgeMultiplier2) / 10000;
         } else if (ticketsSold >= SURGE_THRESHOLD_1) {
-            return basePrice + (basePrice * surgeMultiplier1) / 10000;
+            price = basePrice + (basePrice * surgeMultiplier1) / 10000;
         }
-        return basePrice;
+
+        // Apply demand multiplier on top if configured
+        if (demandMultiplierBasisPoints > 0) {
+            uint256 demandIncrease = (price * demandMultiplierBasisPoints) / 10000;
+            price = price + demandIncrease;
+        }
+
+        return price;
     }
 
     /**
      * @notice Internal function to apply surge pricing based on percentage
-     * @param basePrice Base price
-     * @param soldPercentage Percentage of tickets sold
-     * @return price Adjusted price
+     *         Also applies demand multiplier if set
      */
     function _applySurgePricingWithPercentage(
         uint256 basePrice,
         uint256 soldPercentage
     ) internal view returns (uint256) {
+        uint256 price = basePrice;
+
         if (soldPercentage >= SURGE_THRESHOLD_3) {
-            return basePrice + (basePrice * surgeMultiplier3) / 10000;
+            price = basePrice + (basePrice * surgeMultiplier3) / 10000;
         } else if (soldPercentage >= SURGE_THRESHOLD_2) {
-            return basePrice + (basePrice * surgeMultiplier2) / 10000;
+            price = basePrice + (basePrice * surgeMultiplier2) / 10000;
         } else if (soldPercentage >= SURGE_THRESHOLD_1) {
-            return basePrice + (basePrice * surgeMultiplier1) / 10000;
+            price = basePrice + (basePrice * surgeMultiplier1) / 10000;
         }
-        return basePrice;
+
+        // Apply demand multiplier on top if configured
+        if (demandMultiplierBasisPoints > 0) {
+            uint256 demandIncrease = (price * demandMultiplierBasisPoints) / 10000;
+            price = price + demandIncrease;
+        }
+
+        return price;
     }
 
     /**
@@ -286,3 +300,4 @@ contract PriceOracle is Ownable, Pausable {
         return history[history.length - 1].price;
     }
 }
+
