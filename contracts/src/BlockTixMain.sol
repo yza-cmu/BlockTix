@@ -152,13 +152,22 @@ contract BlockTixMain is ReentrancyGuard, Ownable {
      * @param eventId ID of the event
      */
     function purchaseTicket(uint256 eventId) external payable nonReentrant returns (uint256) {
+        if (eventId >= eventCount) revert InvalidEventId();
+
         Event storage eventData = events[eventId];
 
-        if (eventId >= eventCount) revert InvalidEventId();
         if (!eventData.isActive) revert EventNotActive();
         if (eventData.ticketsSold >= eventData.totalTickets) revert SoldOut();
 
-        uint256 price = priceOracle.calculatePrice(eventId, eventData.basePrice, eventData.ticketsSold);
+        // 🔹 Use full dynamic pricing: surge + time decay (via PriceOracle)
+        uint256 price = priceOracle.calculatePriceWithTimeDecay(
+            eventId,
+            eventData.basePrice,
+            eventData.ticketsSold,
+            eventData.totalTickets,
+            eventData.eventDate
+        );
+
         if (msg.value < price) revert InsufficientPayment();
 
         uint256 ticketId = ticketNFT.mint(msg.sender, eventId);
@@ -208,9 +217,13 @@ contract BlockTixMain is ReentrancyGuard, Ownable {
 
         if (!eventData.isActive) revert EventNotActive();
 
-        // Validate resale price doesn't exceed markup limit
-        uint256 maxPrice = ticket.purchasePrice + (ticket.purchasePrice * eventData.maxResaleMarkup) / 10000;
-        if (msg.value > maxPrice) revert ResaleMarkupExceeded();
+        // 🔹 Validate resale price via PriceOracle
+        bool isValid = priceOracle.validateResalePrice(
+            ticket.purchasePrice,
+            msg.value,
+            eventData.maxResaleMarkup
+        );
+        if (!isValid) revert ResaleMarkupExceeded();
 
         // Calculate fees
         uint256 platformFee = (msg.value * platformFeePercentage) / 10000;
@@ -252,9 +265,10 @@ contract BlockTixMain is ReentrancyGuard, Ownable {
      * @dev Only callable by event organizer
      */
     function cancelEvent(uint256 eventId) external {
+        if (eventId >= eventCount) revert InvalidEventId();
+
         Event storage eventData = events[eventId];
 
-        if (eventId >= eventCount) revert InvalidEventId();
         if (msg.sender != eventData.organizer) revert NotTicketOwner();
 
         eventData.isActive = false;
