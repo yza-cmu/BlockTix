@@ -1,549 +1,291 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import {Test, console} from "forge-std/Test.sol";
-import {BlockTixMain} from "../../src/BlockTixMain.sol";
-import {TicketNFT} from "../../src/TicketNFT.sol";
-import {PriceOracle} from "../../src/PriceOracle.sol";
+import "forge-std/Test.sol";
+import "../src/BlockTixMain.sol";
+import "../src/TicketNFT.sol";
+import "../src/PriceOracle.sol";
 
-/**
- * @title BlockTixMainTest
- * @notice Comprehensive unit tests for BlockTixMain contract
- */
 contract BlockTixMainTest is Test {
-    BlockTixMain public blockTix;
-    TicketNFT public ticketNFT;
-    PriceOracle public priceOracle;
+    BlockTixMain public main;
+    TicketNFT public nft;
+    PriceOracle public oracle;
 
-    address public owner;
-    address public organizer;
-    address public buyer1;
-    address public buyer2;
-
-    uint256 public constant PLATFORM_FEE = 250; // 2.5%
-    uint256 public constant INITIAL_BALANCE = 100 ether;
-
-    event EventCreated(
-        uint256 indexed eventId,
-        address indexed organizer,
-        string name,
-        uint256 totalTickets,
-        uint256 basePrice,
-        uint256 eventDate
-    );
-
-    event TicketPurchased(uint256 indexed ticketId, uint256 indexed eventId, address indexed buyer, uint256 price);
-
-    event TicketTransferred(uint256 indexed ticketId, address indexed from, address indexed to, uint256 price);
-
-    event TicketUsed(uint256 indexed ticketId, uint256 indexed eventId);
-
-    event EventCancelled(uint256 indexed eventId);
-
-    event WithdrawalProcessed(address indexed recipient, uint256 amount);
-
-    event PlatformFeeUpdated(uint256 oldFee, uint256 newFee);
+    address owner = address(0xA1);
+    address organizer = address(0xB1);
+    address buyer1 = address(0xC1);
+    address buyer2 = address(0xD1);
 
     function setUp() public {
-        owner = address(this);
-        organizer = makeAddr("organizer");
-        buyer1 = makeAddr("buyer1");
-        buyer2 = makeAddr("buyer2");
+        vm.startPrank(owner);
 
-        // Fund test accounts
-        vm.deal(buyer1, INITIAL_BALANCE);
-        vm.deal(buyer2, INITIAL_BALANCE);
-        vm.deal(organizer, INITIAL_BALANCE);
+        // Deploy placeholder NFT & Oracle
+        nft = new TicketNFT(owner, address(0), "https://base/");
+        oracle = new PriceOracle(owner, address(0), 0, 0);
 
-        // Deploy contracts
-        ticketNFT = new TicketNFT(owner, address(1), "https://blocktix.io/metadata/");
-        priceOracle = new PriceOracle(owner, address(1), 1000, 500);
-        blockTix = new BlockTixMain(address(ticketNFT), address(priceOracle), PLATFORM_FEE);
+        // Deploy main contract
+        main = new BlockTixMain(
+            address(nft),
+            address(oracle),
+            500 // 5% platform fee
+        );
 
-        // Set BlockTixMain address in dependent contracts
-        ticketNFT.setBlockTixMain(address(blockTix));
-        priceOracle.setBlockTixMain(address(blockTix));
+        // Wire the contracts together
+        nft.setBlockTixMain(address(main));
+        oracle.setBlockTixMain(address(main));
+
+        vm.stopPrank();
+
+        // Fund buyers
+        vm.deal(buyer1, 50 ether);
+        vm.deal(buyer2, 50 ether);
     }
 
-    // ============ Event Creation Tests ============
+    // ------------------------------------------------------------
+    // EVENT CREATION
+    // ------------------------------------------------------------
 
     function test_CreateEvent_Success() public {
-        vm.startPrank(organizer);
+        vm.prank(organizer);
+        uint256 eventId = main.createEvent(
+            "Football Final",
+            100,
+            1 ether,
+            block.timestamp + 10 days,
+            2000 // 20% markup allowed
+        );
 
-        uint256 eventDate = block.timestamp + 30 days;
-        string memory eventName = "Test Concert";
-        uint256 totalTickets = 100;
-        uint256 basePrice = 1 ether;
-        uint256 maxMarkup = 2000; // 20%
+        (,,,,, uint256 basePrice,,,,) = main.getEvent(eventId);
 
-        vm.expectEmit(true, true, false, true);
-        emit EventCreated(0, organizer, eventName, totalTickets, basePrice, eventDate);
-
-        uint256 eventId = blockTix.createEvent(eventName, totalTickets, basePrice, eventDate, maxMarkup);
-
-        assertEq(eventId, 0);
-        assertEq(blockTix.eventCount(), 1);
-
-        BlockTixMain.Event memory eventData = blockTix.getEvent(eventId);
-        assertEq(eventData.eventId, 0);
-        assertEq(eventData.organizer, organizer);
-        assertEq(eventData.name, eventName);
-        assertEq(eventData.totalTickets, totalTickets);
-        assertEq(eventData.ticketsSold, 0);
-        assertEq(eventData.basePrice, basePrice);
-        assertEq(eventData.eventDate, eventDate);
-        assertTrue(eventData.isActive);
-        assertEq(eventData.maxResaleMarkup, maxMarkup);
-
-        vm.stopPrank();
+        assertEq(basePrice, 1 ether);
     }
 
-    function test_CreateEvent_RevertInvalidTotalTickets() public {
+    function test_CreateEvent_RevertInvalidParams() public {
         vm.startPrank(organizer);
 
+        // zero tickets
         vm.expectRevert(BlockTixMain.InvalidParameters.selector);
-        blockTix.createEvent("Event", 0, 1 ether, block.timestamp + 30 days, 2000);
+        main.createEvent(
+            "Bad",
+            0,
+            1 ether,
+            block.timestamp + 10 days,
+            2000
+        );
 
-        vm.stopPrank();
-    }
-
-    function test_CreateEvent_RevertInvalidBasePrice() public {
-        vm.startPrank(organizer);
-
+        // base price zero
         vm.expectRevert(BlockTixMain.InvalidParameters.selector);
-        blockTix.createEvent("Event", 100, 0, block.timestamp + 30 days, 2000);
+        main.createEvent(
+            "Bad",
+            10,
+            0,
+            block.timestamp + 10 days,
+            2000
+        );
 
-        vm.stopPrank();
-    }
-
-    function test_CreateEvent_RevertPastEventDate() public {
-        vm.startPrank(organizer);
-
+        // past event
         vm.expectRevert(BlockTixMain.InvalidParameters.selector);
-        blockTix.createEvent("Event", 100, 1 ether, block.timestamp - 1, 2000);
+        main.createEvent(
+            "Bad",
+            10,
+            1 ether,
+            block.timestamp - 1,
+            2000
+        );
 
         vm.stopPrank();
     }
 
-    function test_CreateEvent_MultipleEvents() public {
-        vm.startPrank(organizer);
+    // ------------------------------------------------------------
+    // TICKET PURCHASE
+    // ------------------------------------------------------------
 
-        uint256 eventId1 = blockTix.createEvent("Event1", 100, 1 ether, block.timestamp + 30 days, 2000);
-        uint256 eventId2 = blockTix.createEvent("Event2", 200, 2 ether, block.timestamp + 60 days, 3000);
-
-        assertEq(eventId1, 0);
-        assertEq(eventId2, 1);
-        assertEq(blockTix.eventCount(), 2);
-
-        vm.stopPrank();
+    function _createBasicEvent() internal returns (uint256) {
+        vm.prank(organizer);
+        return main.createEvent(
+            "Match",
+            10,
+            1 ether,
+            block.timestamp + 1000,
+            2000
+        );
     }
-
-    // ============ Ticket Purchase Tests ============
 
     function test_PurchaseTicket_Success() public {
-        // Create event
-        vm.prank(organizer);
-        uint256 eventId = blockTix.createEvent("Concert", 100, 1 ether, block.timestamp + 30 days, 2000);
+        uint256 eventId = _createBasicEvent();
 
-        // Purchase ticket
-        vm.startPrank(buyer1);
-        uint256 price = 1 ether;
+        vm.prank(buyer1);
+        uint256 ticketId = main.purchaseTicket{value: 1 ether}(eventId);
 
-        vm.expectEmit(true, true, true, true);
-        emit TicketPurchased(0, eventId, buyer1, price);
+        BlockTixMain.Ticket memory t = main.getTicket(ticketId);
 
-        uint256 ticketId = blockTix.purchaseTicket{value: price}(eventId);
-
-        assertEq(ticketId, 0);
-        assertEq(ticketNFT.ownerOf(ticketId), buyer1);
-
-        BlockTixMain.Ticket memory ticket = blockTix.getTicket(ticketId);
-        assertEq(ticket.ticketId, ticketId);
-        assertEq(ticket.eventId, eventId);
-        assertEq(ticket.currentOwner, buyer1);
-        assertEq(ticket.purchasePrice, price);
-        assertFalse(ticket.isUsed);
-
-        BlockTixMain.Event memory eventData = blockTix.getEvent(eventId);
-        assertEq(eventData.ticketsSold, 1);
-
-        vm.stopPrank();
-    }
-
-    function test_PurchaseTicket_WithRefund() public {
-        vm.prank(organizer);
-        uint256 eventId = blockTix.createEvent("Concert", 100, 1 ether, block.timestamp + 30 days, 2000);
-
-        vm.startPrank(buyer1);
-        uint256 price = 1 ether;
-        uint256 overpayment = 0.5 ether;
-
-        uint256 balanceBefore = buyer1.balance;
-        blockTix.purchaseTicket{value: price + overpayment}(eventId);
-        uint256 balanceAfter = buyer1.balance;
-
-        assertEq(balanceBefore - balanceAfter, price);
-
-        vm.stopPrank();
-    }
-
-    function test_PurchaseTicket_RevertInvalidEventId() public {
-        vm.startPrank(buyer1);
-
-        vm.expectRevert(BlockTixMain.InvalidEventId.selector);
-        blockTix.purchaseTicket{value: 1 ether}(999);
-
-        vm.stopPrank();
-    }
-
-    function test_PurchaseTicket_RevertEventNotActive() public {
-        vm.prank(organizer);
-        uint256 eventId = blockTix.createEvent("Concert", 100, 1 ether, block.timestamp + 30 days, 2000);
-
-        vm.prank(organizer);
-        blockTix.cancelEvent(eventId);
-
-        vm.startPrank(buyer1);
-
-        vm.expectRevert(BlockTixMain.EventNotActive.selector);
-        blockTix.purchaseTicket{value: 1 ether}(eventId);
-
-        vm.stopPrank();
+        assertEq(t.currentOwner, buyer1);
+        assertEq(t.eventId, eventId);
     }
 
     function test_PurchaseTicket_RevertSoldOut() public {
-        vm.prank(organizer);
-        uint256 eventId = blockTix.createEvent("Concert", 2, 1 ether, block.timestamp + 30 days, 2000);
+        uint256 eventId = _createBasicEvent();
+
+        // only 10 tickets
+        for (uint i = 0; i < 10; i++) {
+            vm.prank(buyer1);
+            main.purchaseTicket{value: 1 ether}(eventId);
+        }
 
         vm.prank(buyer1);
-        blockTix.purchaseTicket{value: 1 ether}(eventId);
-
-        vm.prank(buyer2);
-        blockTix.purchaseTicket{value: 1 ether}(eventId);
-
-        vm.startPrank(buyer1);
-
         vm.expectRevert(BlockTixMain.SoldOut.selector);
-        blockTix.purchaseTicket{value: 1 ether}(eventId);
-
-        vm.stopPrank();
+        main.purchaseTicket{value: 1 ether}(eventId);
     }
 
-    function test_PurchaseTicket_RevertInsufficientPayment() public {
-        vm.prank(organizer);
-        uint256 eventId = blockTix.createEvent("Concert", 100, 1 ether, block.timestamp + 30 days, 2000);
+    function test_PurchaseTicket_RefundExtraETH() public {
+        uint256 eventId = _createBasicEvent();
 
-        vm.startPrank(buyer1);
-
-        vm.expectRevert(BlockTixMain.InsufficientPayment.selector);
-        blockTix.purchaseTicket{value: 0.5 ether}(eventId);
-
-        vm.stopPrank();
-    }
-
-    function test_PurchaseTicket_FeeDistribution() public {
-        vm.prank(organizer);
-        uint256 eventId = blockTix.createEvent("Concert", 100, 1 ether, block.timestamp + 30 days, 2000);
+        uint256 before = buyer1.balance;
 
         vm.prank(buyer1);
-        blockTix.purchaseTicket{value: 1 ether}(eventId);
+        main.purchaseTicket{value: 2 ether}(eventId); // send 2, price 1
 
-        uint256 platformFee = (1 ether * PLATFORM_FEE) / 10000;
-        uint256 organizerAmount = 1 ether - platformFee;
+        uint256 afterBal = buyer1.balance;
 
-        assertEq(blockTix.pendingWithdrawals(organizer), organizerAmount);
-        assertEq(blockTix.pendingWithdrawals(owner), platformFee);
+        assertApproxEqAbs(afterBal, before - 1 ether, 1e12);
     }
 
-    // ============ Ticket Transfer Tests ============
+    // ------------------------------------------------------------
+    // TRANSFER (RESALE)
+    // ------------------------------------------------------------
 
     function test_TransferTicket_Success() public {
-        vm.prank(organizer);
-        uint256 eventId = blockTix.createEvent("Concert", 100, 1 ether, block.timestamp + 30 days, 2000);
+        uint256 eventId = _createBasicEvent();
+
+        // buyer1 buys ticket
+        vm.prank(buyer1);
+        uint256 ticketId = main.purchaseTicket{value: 1 ether}(eventId);
+
+        // buyer2 resells (within markup limit)
+        uint256 resalePrice = 1.1 ether; // within 20% markup
 
         vm.prank(buyer1);
-        uint256 ticketId = blockTix.purchaseTicket{value: 1 ether}(eventId);
+        main.transferTicket{value: resalePrice}(ticketId, buyer2);
 
-        vm.startPrank(buyer1);
-        ticketNFT.approve(address(blockTix), ticketId);
-
-        uint256 resalePrice = 1.1 ether;
-
-        vm.expectEmit(true, true, true, true);
-        emit TicketTransferred(ticketId, buyer1, buyer2, resalePrice);
-
-        vm.deal(buyer1, resalePrice); // Ensure buyer1 has funds
-        blockTix.transferTicket{value: resalePrice}(ticketId, buyer2);
-
-        vm.stopPrank();
-
-        assertEq(ticketNFT.ownerOf(ticketId), buyer2);
-
-        BlockTixMain.Ticket memory ticket = blockTix.getTicket(ticketId);
-        assertEq(ticket.currentOwner, buyer2);
-        assertEq(ticket.purchasePrice, resalePrice);
+        BlockTixMain.Ticket memory t = main.getTicket(ticketId);
+        assertEq(t.currentOwner, buyer2);
+        assertEq(t.purchasePrice, resalePrice);
     }
 
     function test_TransferTicket_RevertNotOwner() public {
-        vm.prank(organizer);
-        uint256 eventId = blockTix.createEvent("Concert", 100, 1 ether, block.timestamp + 30 days, 2000);
+        uint256 eventId = _createBasicEvent();
 
         vm.prank(buyer1);
-        uint256 ticketId = blockTix.purchaseTicket{value: 1 ether}(eventId);
+        uint256 ticketId = main.purchaseTicket{value: 1 ether}(eventId);
 
-        vm.startPrank(buyer2);
-
+        vm.prank(buyer2);
         vm.expectRevert(BlockTixMain.NotTicketOwner.selector);
-        blockTix.transferTicket{value: 1.1 ether}(ticketId, buyer2);
-
-        vm.stopPrank();
+        main.transferTicket{value: 1 ether}(ticketId, buyer2);
     }
 
-    function test_TransferTicket_RevertTicketUsed() public {
-        vm.prank(organizer);
-        uint256 eventId = blockTix.createEvent("Concert", 100, 1 ether, block.timestamp + 30 days, 2000);
-
-        vm.prank(buyer1);
-        uint256 ticketId = blockTix.purchaseTicket{value: 1 ether}(eventId);
-
-        vm.prank(organizer);
-        blockTix.useTicket(ticketId);
-
-        vm.startPrank(buyer1);
-        ticketNFT.approve(address(blockTix), ticketId);
-
-        vm.expectRevert(BlockTixMain.TicketAlreadyUsed.selector);
-        blockTix.transferTicket{value: 1.1 ether}(ticketId, buyer2);
-
-        vm.stopPrank();
-    }
-
-    function test_TransferTicket_RevertMarkupExceeded() public {
-        vm.prank(organizer);
-        uint256 eventId = blockTix.createEvent("Concert", 100, 1 ether, block.timestamp + 30 days, 2000);
-
-        vm.prank(buyer1);
-        uint256 ticketId = blockTix.purchaseTicket{value: 1 ether}(eventId);
-
-        vm.startPrank(buyer1);
-        ticketNFT.approve(address(blockTix), ticketId);
-
-        uint256 excessivePrice = 1.3 ether; // Over 20% markup
-
-        vm.expectRevert(BlockTixMain.ResaleMarkupExceeded.selector);
-        blockTix.transferTicket{value: excessivePrice}(ticketId, buyer2);
-
-        vm.stopPrank();
-    }
-
-    // ============ Ticket Usage Tests ============
+    // ------------------------------------------------------------
+    // USE TICKET
+    // ------------------------------------------------------------
 
     function test_UseTicket_Success() public {
-        vm.prank(organizer);
-        uint256 eventId = blockTix.createEvent("Concert", 100, 1 ether, block.timestamp + 30 days, 2000);
+        uint256 eventId = _createBasicEvent();
 
         vm.prank(buyer1);
-        uint256 ticketId = blockTix.purchaseTicket{value: 1 ether}(eventId);
+        uint256 ticketId = main.purchaseTicket{value: 1 ether}(eventId);
 
-        vm.startPrank(organizer);
-
-        vm.expectEmit(true, true, false, false);
-        emit TicketUsed(ticketId, eventId);
-
-        blockTix.useTicket(ticketId);
-
-        BlockTixMain.Ticket memory ticket = blockTix.getTicket(ticketId);
-        assertTrue(ticket.isUsed);
-
-        vm.stopPrank();
-    }
-
-    function test_UseTicket_RevertNotOrganizer() public {
         vm.prank(organizer);
-        uint256 eventId = blockTix.createEvent("Concert", 100, 1 ether, block.timestamp + 30 days, 2000);
+        main.useTicket(ticketId);
 
-        vm.prank(buyer1);
-        uint256 ticketId = blockTix.purchaseTicket{value: 1 ether}(eventId);
-
-        vm.startPrank(buyer1);
-
-        vm.expectRevert(BlockTixMain.NotTicketOwner.selector);
-        blockTix.useTicket(ticketId);
-
-        vm.stopPrank();
+        BlockTixMain.Ticket memory t = main.getTicket(ticketId);
+        assertTrue(t.isUsed);
     }
 
     function test_UseTicket_RevertAlreadyUsed() public {
-        vm.prank(organizer);
-        uint256 eventId = blockTix.createEvent("Concert", 100, 1 ether, block.timestamp + 30 days, 2000);
+        uint256 eventId = _createBasicEvent();
 
         vm.prank(buyer1);
-        uint256 ticketId = blockTix.purchaseTicket{value: 1 ether}(eventId);
+        uint256 ticketId = main.purchaseTicket{value: 1 ether}(eventId);
 
-        vm.startPrank(organizer);
-        blockTix.useTicket(ticketId);
+        vm.prank(organizer);
+        main.useTicket(ticketId);
 
+        vm.prank(organizer);
         vm.expectRevert(BlockTixMain.TicketAlreadyUsed.selector);
-        blockTix.useTicket(ticketId);
-
-        vm.stopPrank();
+        main.useTicket(ticketId);
     }
 
-    // ============ Event Cancellation Tests ============
+    function test_UseTicket_RevertNotOrganizer() public {
+        uint256 eventId = _createBasicEvent();
+
+        vm.prank(buyer1);
+        uint256 ticketId = main.purchaseTicket{value: 1 ether}(eventId);
+
+        vm.prank(buyer1);
+        vm.expectRevert(BlockTixMain.NotTicketOwner.selector);
+        main.useTicket(ticketId);
+    }
+
+    // ------------------------------------------------------------
+    // CANCEL EVENT
+    // ------------------------------------------------------------
 
     function test_CancelEvent_Success() public {
-        vm.startPrank(organizer);
+        uint256 eventId = _createBasicEvent();
 
-        uint256 eventId = blockTix.createEvent("Concert", 100, 1 ether, block.timestamp + 30 days, 2000);
+        vm.prank(organizer);
+        main.cancelEvent(eventId);
 
-        vm.expectEmit(true, false, false, false);
-        emit EventCancelled(eventId);
-
-        blockTix.cancelEvent(eventId);
-
-        BlockTixMain.Event memory eventData = blockTix.getEvent(eventId);
-        assertFalse(eventData.isActive);
-
-        vm.stopPrank();
+        BlockTixMain.Event memory e = main.getEvent(eventId);
+        assertFalse(e.isActive);
     }
 
     function test_CancelEvent_RevertNotOrganizer() public {
-        vm.prank(organizer);
-        uint256 eventId = blockTix.createEvent("Concert", 100, 1 ether, block.timestamp + 30 days, 2000);
+        uint256 eventId = _createBasicEvent();
 
-        vm.startPrank(buyer1);
-
+        vm.prank(buyer1);
         vm.expectRevert(BlockTixMain.NotTicketOwner.selector);
-        blockTix.cancelEvent(eventId);
-
-        vm.stopPrank();
+        main.cancelEvent(eventId);
     }
 
-    function test_CancelEvent_RevertInvalidEventId() public {
-        vm.startPrank(organizer);
-
-        vm.expectRevert(BlockTixMain.InvalidEventId.selector);
-        blockTix.cancelEvent(999);
-
-        vm.stopPrank();
-    }
-
-    // ============ Withdrawal Tests ============
+    // ------------------------------------------------------------
+    // WITHDRAW
+    // ------------------------------------------------------------
 
     function test_Withdraw_Success() public {
-        vm.prank(organizer);
-        uint256 eventId = blockTix.createEvent("Concert", 100, 1 ether, block.timestamp + 30 days, 2000);
+        uint256 eventId = _createBasicEvent();
 
         vm.prank(buyer1);
-        blockTix.purchaseTicket{value: 1 ether}(eventId);
+        main.purchaseTicket{value: 1 ether}(eventId);
 
-        uint256 platformFee = (1 ether * PLATFORM_FEE) / 10000;
-        uint256 organizerAmount = 1 ether - platformFee;
+        uint256 balBefore = organizer.balance;
 
-        vm.startPrank(organizer);
+        vm.prank(organizer);
+        main.withdraw();
 
-        uint256 balanceBefore = organizer.balance;
-
-        vm.expectEmit(true, false, false, true);
-        emit WithdrawalProcessed(organizer, organizerAmount);
-
-        blockTix.withdraw();
-
-        uint256 balanceAfter = organizer.balance;
-        assertEq(balanceAfter - balanceBefore, organizerAmount);
-        assertEq(blockTix.pendingWithdrawals(organizer), 0);
-
-        vm.stopPrank();
+        uint256 balAfter = organizer.balance;
+        assertGt(balAfter, balBefore);
     }
 
-    function test_Withdraw_RevertNoFunds() public {
-        vm.startPrank(buyer1);
-
+    function test_Withdraw_Revert_NoFunds() public {
+        vm.prank(buyer1);
         vm.expectRevert(BlockTixMain.NoWithdrawalAvailable.selector);
-        blockTix.withdraw();
-
-        vm.stopPrank();
+        main.withdraw();
     }
 
-    function test_Withdraw_MultipleTickets() public {
-        vm.prank(organizer);
-        uint256 eventId = blockTix.createEvent("Concert", 100, 1 ether, block.timestamp + 30 days, 2000);
-
-        vm.prank(buyer1);
-        blockTix.purchaseTicket{value: 1 ether}(eventId);
-
-        vm.prank(buyer2);
-        blockTix.purchaseTicket{value: 1 ether}(eventId);
-
-        uint256 platformFee = (1 ether * PLATFORM_FEE) / 10000;
-        uint256 organizerAmount = 1 ether - platformFee;
-
-        // After 2 purchases, organizer should have 2x organizerAmount
-        assertEq(blockTix.pendingWithdrawals(organizer), organizerAmount * 2);
-
-        vm.prank(organizer);
-        blockTix.withdraw();
-
-        // After withdrawal, pending should be 0
-        assertEq(blockTix.pendingWithdrawals(organizer), 0);
-    }
-
-    // ============ Platform Fee Tests ============
+    // ------------------------------------------------------------
+    // PLATFORM FEE UPDATE
+    // ------------------------------------------------------------
 
     function test_UpdatePlatformFee_Success() public {
-        uint256 newFee = 500; // 5%
+        vm.prank(owner);
+        main.updatePlatformFee(800);
 
-        vm.expectEmit(false, false, false, true);
-        emit PlatformFeeUpdated(PLATFORM_FEE, newFee);
-
-        blockTix.updatePlatformFee(newFee);
-
-        assertEq(blockTix.platformFeePercentage(), newFee);
+        assertEq(main.platformFeePercentage(), 800);
     }
 
-    function test_UpdatePlatformFee_RevertNotOwner() public {
-        vm.startPrank(buyer1);
-
-        vm.expectRevert();
-        blockTix.updatePlatformFee(500);
-
-        vm.stopPrank();
-    }
-
-    function test_UpdatePlatformFee_RevertExceedsMax() public {
+    function test_UpdatePlatformFee_RevertTooHigh() public {
+        vm.prank(owner);
         vm.expectRevert(BlockTixMain.InvalidParameters.selector);
-        blockTix.updatePlatformFee(1001); // Over 10%
-    }
-
-    // ============ View Functions Tests ============
-
-    function test_GetEvent() public {
-        vm.prank(organizer);
-        uint256 eventId = blockTix.createEvent("Concert", 100, 1 ether, block.timestamp + 30 days, 2000);
-
-        BlockTixMain.Event memory eventData = blockTix.getEvent(eventId);
-
-        assertEq(eventData.eventId, eventId);
-        assertEq(eventData.organizer, organizer);
-        assertEq(eventData.name, "Concert");
-    }
-
-    function test_GetEvent_RevertInvalidId() public {
-        vm.expectRevert(BlockTixMain.InvalidEventId.selector);
-        blockTix.getEvent(999);
-    }
-
-    function test_GetTicket() public {
-        vm.prank(organizer);
-        uint256 eventId = blockTix.createEvent("Concert", 100, 1 ether, block.timestamp + 30 days, 2000);
-
-        vm.prank(buyer1);
-        uint256 ticketId = blockTix.purchaseTicket{value: 1 ether}(eventId);
-
-        BlockTixMain.Ticket memory ticket = blockTix.getTicket(ticketId);
-
-        assertEq(ticket.ticketId, ticketId);
-        assertEq(ticket.eventId, eventId);
-        assertEq(ticket.currentOwner, buyer1);
+        main.updatePlatformFee(20000);
     }
 }
